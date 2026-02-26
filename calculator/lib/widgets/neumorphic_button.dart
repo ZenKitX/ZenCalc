@@ -7,6 +7,7 @@ class NeumorphicButton extends StatefulWidget {
   final Color? textColor;
   final double? fontSize;
   final bool isOperator;
+  final bool isEquals;
 
   const NeumorphicButton({
     super.key,
@@ -15,6 +16,7 @@ class NeumorphicButton extends StatefulWidget {
     this.textColor,
     this.fontSize,
     this.isOperator = false,
+    this.isEquals = false,
   });
 
   @override
@@ -29,9 +31,17 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final defaultTextColor = isDark ? AppTheme.darkText : AppTheme.lightText;
     final accentColor = isDark ? AppTheme.accentColorDark : AppTheme.accentColor;
-    final textColor = widget.isOperator 
-        ? accentColor 
-        : (widget.textColor ?? defaultTextColor);
+    
+    // 等号按钮特殊处理
+    final backgroundColor = widget.isEquals
+        ? (isDark ? AppTheme.accentColorDark : AppTheme.accentColor)
+        : (isDark ? AppTheme.darkBackground : AppTheme.lightBackground);
+    
+    final textColor = widget.isEquals
+        ? Colors.white
+        : (widget.isOperator 
+            ? (isDark ? AppTheme.darkText : AppTheme.lightText)
+            : (widget.textColor ?? defaultTextColor));
 
     return GestureDetector(
       onTapDown: (_) {
@@ -47,47 +57,50 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
         decoration: BoxDecoration(
-          color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: isPressed
-              ? [
-                  // 按下状态：内阴影效果（更柔和）
-                  BoxShadow(
-                    color: isDark
-                        ? AppTheme.darkShadowDark.withOpacity(0.5)
-                        : AppTheme.lightShadowDark.withOpacity(0.3),
-                    offset: const Offset(3, 3),
-                    blurRadius: 6,
-                    spreadRadius: 0,
-                  ),
-                  BoxShadow(
-                    color: isDark
-                        ? AppTheme.darkShadowLight.withOpacity(0.5)
-                        : AppTheme.lightShadowLight.withOpacity(0.9),
-                    offset: const Offset(-3, -3),
-                    blurRadius: 6,
-                    spreadRadius: 0,
-                  ),
-                ]
-              : [
-                  // 正常状态：外阴影效果（更立体）
-                  BoxShadow(
-                    color: isDark
-                        ? AppTheme.darkShadowDark.withOpacity(0.6)
-                        : AppTheme.lightShadowDark.withOpacity(0.4),
-                    offset: const Offset(6, 6),
-                    blurRadius: 12,
-                    spreadRadius: 0,
-                  ),
-                  BoxShadow(
-                    color: isDark
-                        ? AppTheme.darkShadowLight.withOpacity(0.6)
-                        : AppTheme.lightShadowLight.withOpacity(1.0),
-                    offset: const Offset(-6, -6),
-                    blurRadius: 12,
-                    spreadRadius: 0,
-                  ),
-                ],
+          color: backgroundColor,
+          shape: BoxShape.circle,
+          shape: BoxShape.circle,
+          boxShadow: widget.isEquals
+              ? [] // 等号按钮不需要阴影
+              : (isPressed
+                  ? [
+                      // 按下状态：内阴影效果（更柔和）
+                      BoxShadow(
+                        color: isDark
+                            ? AppTheme.darkShadowDark.withOpacity(0.5)
+                            : AppTheme.lightShadowDark.withOpacity(0.3),
+                        offset: const Offset(3, 3),
+                        blurRadius: 6,
+                        spreadRadius: 0,
+                      ),
+                      BoxShadow(
+                        color: isDark
+                            ? AppTheme.darkShadowLight.withOpacity(0.5)
+                            : AppTheme.lightShadowLight.withOpacity(0.9),
+                        offset: const Offset(-3, -3),
+                        blurRadius: 6,
+                        spreadRadius: 0,
+                      ),
+                    ]
+                  : [
+                      // 正常状态：外阴影效果（更立体）
+                      BoxShadow(
+                        color: isDark
+                            ? AppTheme.darkShadowDark.withOpacity(0.6)
+                            : AppTheme.lightShadowDark.withOpacity(0.4),
+                        offset: const Offset(6, 6),
+                        blurRadius: 12,
+                        spreadRadius: 0,
+                      ),
+                      BoxShadow(
+                        color: isDark
+                            ? AppTheme.darkShadowLight.withOpacity(0.6)
+                            : AppTheme.lightShadowLight.withOpacity(1.0),
+                        offset: const Offset(-6, -6),
+                        blurRadius: 12,
+                        spreadRadius: 0,
+                      ),
+                    ]),
         ),
         child: Center(
           child: Text(
