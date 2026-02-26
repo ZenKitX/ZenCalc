@@ -383,12 +383,12 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             child: Container(
               constraints: BoxConstraints(maxWidth: maxWidth),
               child: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: isSmallScreen ? 16.0 : 24.0,
-                vertical: isSmallScreen ? 8.0 : 16.0,
-              ),
-              child: Column(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isSmallScreen ? 16.0 : 24.0,
+                    vertical: isSmallScreen ? 8.0 : 16.0,
+                  ),
+                  child: Column(
                 children: [
                   // 顶部 - 极简设计，主题切换和设置
                   Row(
@@ -789,6 +789,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             ),
           ),
         ),
+          ),  // Center 结束
         
         // 禅语浮层
         if (_currentQuote != null)
@@ -807,7 +808,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               ),
             ),
           ),
-      ],
-    );
+        ],  // Stack children 结束
+      ),  // Stack 结束 (body)
+    );  // Scaffold 结束
   }
 }
