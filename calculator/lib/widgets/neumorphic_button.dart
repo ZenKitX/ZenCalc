@@ -59,7 +59,6 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
         decoration: BoxDecoration(
           color: backgroundColor,
           shape: BoxShape.circle,
-          shape: BoxShape.circle,
           boxShadow: widget.isEquals
               ? [] // 等号按钮不需要阴影
               : (isPressed
