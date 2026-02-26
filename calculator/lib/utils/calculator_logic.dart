@@ -5,6 +5,7 @@ class CalculatorLogic {
       // 替换显示符号为计算符号
       expression = expression.replaceAll('×', '*');
       expression = expression.replaceAll('÷', '/');
+      // % 保持不变，作为取模运算符
       
       // 移除空格
       expression = expression.replaceAll(' ', '');
@@ -31,32 +32,30 @@ class CalculatorLogic {
       expression = '0$expression';
     }
     
-    // 先处理乘除
-    expression = _processMulDiv(expression);
+    // 先处理乘除和取模
+    expression = _processMulDivMod(expression);
     
     // 再处理加减
     return _processAddSub(expression);
   }
   
-  // 处理乘除运算
-  static String _processMulDiv(String expression) {
-    while (expression.contains('*') || expression.contains('/')) {
-      // 找到第一个乘除运算符
+  // 处理乘除和取模运算
+  static String _processMulDivMod(String expression) {
+    while (expression.contains('*') || expression.contains('/') || expression.contains('%')) {
+      // 找到第一个乘除取模运算符
       int opIndex = -1;
       String operator = '';
       
       int mulIndex = expression.indexOf('*');
       int divIndex = expression.indexOf('/');
+      int modIndex = expression.indexOf('%');
       
-      if (mulIndex != -1 && (divIndex == -1 || mulIndex < divIndex)) {
-        opIndex = mulIndex;
-        operator = '*';
-      } else if (divIndex != -1) {
-        opIndex = divIndex;
-        operator = '/';
-      }
+      // 找到最靠前的运算符
+      List<int> indices = [mulIndex, divIndex, modIndex].where((i) => i != -1).toList();
+      if (indices.isEmpty) break;
       
-      if (opIndex == -1) break;
+      opIndex = indices.reduce((a, b) => a < b ? a : b);
+      operator = expression[opIndex];
       
       // 提取左操作数
       int leftStart = _findNumberStart(expression, opIndex - 1);
@@ -72,9 +71,14 @@ class CalculatorLogic {
       double result;
       if (operator == '*') {
         result = left * right;
-      } else {
+      } else if (operator == '/') {
         if (right == 0) throw Exception('Division by zero');
         result = left / right;
+      } else if (operator == '%') {
+        if (right == 0) throw Exception('Modulo by zero');
+        result = left % right;
+      } else {
+        throw Exception('Unknown operator');
       }
       
       // 替换表达式
@@ -184,10 +188,8 @@ class CalculatorLogic {
       return true;
     }
     
-    // 不能连续输入运算符
-    if (_isOperator(current[current.length - 1]) && _isOperator(newChar)) {
-      return false;
-    }
+    // 不能连续输入运算符（这个检查将在界面层处理，允许替换）
+    // 这里只检查基本的有效性
     
     // 小数点验证
     if (newChar == '.') {
@@ -208,7 +210,7 @@ class CalculatorLogic {
   
   // 判断是否是运算符
   static bool _isOperator(String char) {
-    return char == '+' || char == '-' || char == '×' || char == '÷';
+    return char == '+' || char == '-' || char == '×' || char == '÷' || char == '%';
   }
   
   // 获取当前正在输入的数字

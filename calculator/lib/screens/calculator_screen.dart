@@ -43,7 +43,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           displayText = '0.';
         } else if (value == '00') {
           displayText = '0';
-        } else if (!_isOperator(value) && value != '%') {
+        } else if (!_isOperator(value)) {
           displayText = value;
         } else {
           displayText = '0$value';
@@ -59,6 +59,15 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         }
         displayText += '00';
         return;
+      }
+
+      // 处理运算符替换
+      if (_isOperator(value)) {
+        // 如果最后一个字符也是运算符，替换它
+        if (displayText.isNotEmpty && _isOperator(displayText[displayText.length - 1])) {
+          displayText = displayText.substring(0, displayText.length - 1) + value;
+          return;
+        }
       }
 
       // 验证输入
@@ -104,7 +113,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   }
 
   bool _isOperator(String char) {
-    return char == '+' || char == '-' || char == '×' || char == '÷';
+    return char == '+' || char == '-' || char == '×' || char == '÷' || char == '%';
   }
 
   @override
