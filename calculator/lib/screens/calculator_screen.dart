@@ -111,69 +111,99 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    
+    // 根据屏幕大小调整布局
     final isSmallScreen = screenHeight < 600;
+    final maxWidth = screenWidth > 500 ? 500.0 : screenWidth;
     
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(isSmallScreen ? 12.0 : 20.0),
-          child: Column(
-            children: [
-              // 主题切换按钮
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+      body: Center(
+        child: Container(
+          constraints: BoxConstraints(maxWidth: maxWidth),
+          child: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isSmallScreen ? 16.0 : 24.0,
+                vertical: isSmallScreen ? 8.0 : 16.0,
+              ),
+              child: Column(
                 children: [
-                  GestureDetector(
-                    onTap: widget.onThemeToggle,
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: isDark
-                                ? AppTheme.darkShadowDark.withOpacity(0.6)
-                                : AppTheme.lightShadowDark.withOpacity(0.4),
-                            offset: const Offset(4, 4),
-                            blurRadius: 8,
+                  // 顶部菜单栏
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // 左侧：应用名称
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.calculate_outlined,
+                            color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                            size: 24,
                           ),
-                          BoxShadow(
-                            color: isDark
-                                ? AppTheme.darkShadowLight.withOpacity(0.6)
-                                : AppTheme.lightShadowLight,
-                            offset: const Offset(-4, -4),
-                            blurRadius: 8,
+                          const SizedBox(width: 8),
+                          Text(
+                            'Calculator',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                            ),
                           ),
                         ],
                       ),
-                      child: Icon(
-                        isDark ? Icons.light_mode : Icons.dark_mode,
-                        color: isDark ? AppTheme.darkText : AppTheme.lightText,
-                        size: 24,
+                      // 右侧：主题切换按钮
+                      GestureDetector(
+                        onTap: widget.onThemeToggle,
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: isDark
+                                    ? AppTheme.darkShadowDark.withOpacity(0.6)
+                                    : AppTheme.lightShadowDark.withOpacity(0.4),
+                                offset: const Offset(3, 3),
+                                blurRadius: 6,
+                              ),
+                              BoxShadow(
+                                color: isDark
+                                    ? AppTheme.darkShadowLight.withOpacity(0.6)
+                                    : AppTheme.lightShadowLight,
+                                offset: const Offset(-3, -3),
+                                blurRadius: 6,
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            isDark ? Icons.light_mode : Icons.dark_mode,
+                            color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                            size: 20,
+                          ),
+                        ),
                       ),
+                    ],
+                  ),
+                  
+                  SizedBox(height: isSmallScreen ? 16 : 24),
+                  
+                  // 显示区域 - 占据更多空间
+                  Expanded(
+                    flex: 3,
+                    child: NeumorphicDisplay(
+                      displayText: displayText,
+                      result: result,
                     ),
                   ),
-                ],
-              ),
               
-              SizedBox(height: isSmallScreen ? 12 : 20),
+              SizedBox(height: isSmallScreen ? 16 : 24),
               
-              // 显示区域
+              // 按钮区域 - 减小比例
               Expanded(
-                flex: 2,
-                child: NeumorphicDisplay(
-                  displayText: displayText,
-                  result: result,
-                ),
-              ),
-              
-              SizedBox(height: isSmallScreen ? 12 : 20),
-              
-              // 按钮区域
-              Expanded(
-                flex: 3,
+                flex: 5,
                 child: Column(
                   children: [
                     // 第一行：AC, %, ⌫, ÷
@@ -182,7 +212,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: 'AC',
                                 onTap: onClear,
@@ -192,7 +222,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '%',
                                 onTap: () => onButtonPressed('%'),
@@ -202,7 +232,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '⌫',
                                 onTap: onDelete,
@@ -212,7 +242,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '÷',
                                 onTap: () => onButtonPressed('÷'),
@@ -230,7 +260,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '7',
                                 onTap: () => onButtonPressed('7'),
@@ -239,7 +269,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '8',
                                 onTap: () => onButtonPressed('8'),
@@ -248,7 +278,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '9',
                                 onTap: () => onButtonPressed('9'),
@@ -257,7 +287,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '×',
                                 onTap: () => onButtonPressed('×'),
@@ -275,7 +305,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '4',
                                 onTap: () => onButtonPressed('4'),
@@ -284,7 +314,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '5',
                                 onTap: () => onButtonPressed('5'),
@@ -293,7 +323,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '6',
                                 onTap: () => onButtonPressed('6'),
@@ -302,7 +332,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '-',
                                 onTap: () => onButtonPressed('-'),
@@ -320,7 +350,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '1',
                                 onTap: () => onButtonPressed('1'),
@@ -329,7 +359,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '2',
                                 onTap: () => onButtonPressed('2'),
@@ -338,7 +368,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '3',
                                 onTap: () => onButtonPressed('3'),
@@ -347,7 +377,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '+',
                                 onTap: () => onButtonPressed('+'),
@@ -365,7 +395,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '00',
                                 onTap: () => onButtonPressed('00'),
@@ -374,7 +404,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '0',
                                 onTap: () => onButtonPressed('0'),
@@ -383,7 +413,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '.',
                                 onTap: () => onButtonPressed('.'),
@@ -392,7 +422,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: NeumorphicButton(
                                 text: '=',
                                 onTap: onEquals,
@@ -406,7 +436,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   ],
                 ),
               ),
-            ],
+                ],
+              ),
+            ),
           ),
         ),
       ),

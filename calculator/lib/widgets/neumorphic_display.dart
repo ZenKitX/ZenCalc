@@ -16,7 +16,8 @@ class NeumorphicDisplay extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
-      padding: const EdgeInsets.all(24.0),
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
       decoration: BoxDecoration(
         color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
         borderRadius: BorderRadius.circular(20),
@@ -45,19 +46,26 @@ class NeumorphicDisplay extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           // 输入显示
-          Text(
-            displayText,
-            style: Theme.of(context).textTheme.displayMedium,
-            textAlign: TextAlign.right,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+          Flexible(
+            child: SingleChildScrollView(
+              reverse: true,
+              child: Text(
+                displayText,
+                style: Theme.of(context).textTheme.displayMedium,
+                textAlign: TextAlign.right,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
           // 结果显示
           Text(
             result,
             style: Theme.of(context).textTheme.displayLarge,
             textAlign: TextAlign.right,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
