@@ -1,38 +1,25 @@
 import 'package:flutter/material.dart';
-import 'theme/app_theme.dart';
-import 'screens/calculator_screen.dart';
+import 'package:get/get.dart';
+import 'app/routes/app_pages.dart';
+import 'app/config/theme/app_theme.dart';
 
 void main() {
-  runApp(const CalculatorApp());
+  runApp(const MyApp());
 }
 
-class CalculatorApp extends StatefulWidget {
-  const CalculatorApp({super.key});
-
-  @override
-  State<CalculatorApp> createState() => _CalculatorAppState();
-}
-
-class _CalculatorAppState extends State<CalculatorApp> {
-  ThemeMode themeMode = ThemeMode.light;
-
-  void toggleTheme() {
-    setState(() {
-      themeMode = themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
-    });
-  }
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'ZenCalc',
-      debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: themeMode,
-      themeAnimationDuration: const Duration(milliseconds: 800), // 缓慢的主题切换
-      themeAnimationCurve: Curves.easeInOutCubic, // 流畅的曲线
-      home: CalculatorScreen(onThemeToggle: toggleTheme),
+      themeMode: ThemeMode.system,
+      initialRoute: AppPages.INITIAL,
+      getPages: AppPages.routes,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

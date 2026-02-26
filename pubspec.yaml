@@ -35,6 +35,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   
+  # GetX 状态管理和路由
+  get: ^4.6.6
+  
   # 触觉反馈
   vibration: ^2.0.0
   
