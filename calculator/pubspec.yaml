@@ -40,6 +40,9 @@ dependencies:
   
   # 音频播放
   audioplayers: ^6.0.0
+  
+  # 本地存储
+  shared_preferences: ^2.2.0
 
 dev_dependencies:
   flutter_test:

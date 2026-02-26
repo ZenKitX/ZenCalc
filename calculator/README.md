@@ -46,6 +46,13 @@
   - 水滴声（运算符）
   - 钟声（等号）
   - 风铃声（清除）
+- **禅意语录**
+  - 清除时：「放下执念，心自清明」
+  - 计算时：「一即一切，一切即一」
+  - 错误时：「错误亦是修行」
+  - 特殊数字：「九九归一」「三生万物」
+  - 30+ 条精选禅语
+  - 智能触发机制
 
 ## 🚀 核心功能
 
@@ -58,6 +65,7 @@
 - ✅ 深色/浅色主题切换
 - ✅ 触觉反馈系统
 - ✅ 禅意音效（可选）
+- ✅ 禅意语录显示
 
 ## 📸 截图
 
@@ -105,7 +113,8 @@ calculator/
 │   │   └── neumorphic_container.dart  # 通用容器组件
 │   ├── services/
 │   │   ├── haptic_service.dart        # 触觉反馈服务
-│   │   └── audio_service.dart         # 音效服务
+│   │   ├── audio_service.dart         # 音效服务
+│   │   └── zen_quote_service.dart     # 禅语服务
 │   ├── utils/
 │   │   └── calculator_logic.dart      # 计算逻辑
 │   └── theme/

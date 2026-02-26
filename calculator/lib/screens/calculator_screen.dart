@@ -7,6 +7,8 @@ import '../utils/calculator_logic.dart';
 import '../services/haptic_service.dart';
 import '../services/audio_service.dart';
 import '../services/zen_quote_service.dart';
+import '../services/history_service.dart';
+import 'history_screen.dart';
 
 class CalculatorScreen extends StatefulWidget {
   final VoidCallback onThemeToggle;
@@ -26,6 +28,13 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   bool shouldResetDisplay = false;
   ZenQuote? _currentQuote;
   bool _showZenQuotes = true; // 默认开启禅语
+  
+  @override
+  void initState() {
+    super.initState();
+    // 加载历史记录
+    HistoryService.loadFromLocal();
+  }
 
   void onButtonPressed(String value) {
     setState(() {
@@ -120,6 +129,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       // 计算结果
       result = CalculatorLogic.calculate(expression);
       shouldResetDisplay = true;
+      
+      // 保存到历史记录
+      if (result != 'Error') {
+        HistoryService.addHistory(expression, result);
+      }
       
       // 显示等号相关的禅语
       if (_showZenQuotes) {
@@ -417,51 +431,107 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         ),
                       ),
                       
-                      // 主题切换按钮
-                      GestureDetector(
-                        onTap: () {
-                          HapticService.selection();
-                          widget.onThemeToggle();
-                        },
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: isDark
-                                    ? AppTheme.darkShadowDark.withOpacity(0.6)
-                                    : AppTheme.lightShadowDark.withOpacity(0.4),
-                                offset: const Offset(3, 3),
-                                blurRadius: 6,
-                              ),
-                              BoxShadow(
-                                color: isDark
-                                    ? AppTheme.darkShadowLight.withOpacity(0.6)
-                                    : AppTheme.lightShadowLight,
-                                offset: const Offset(-3, -3),
-                                blurRadius: 6,
-                              ),
-                            ],
-                          ),
-                          child: AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 300),
-                            transitionBuilder: (Widget child, Animation<double> animation) {
-                              return RotationTransition(
-                                turns: animation,
-                                child: FadeTransition(opacity: animation, child: child),
+                      Row(
+                        children: [
+                          // 历史记录按钮
+                          GestureDetector(
+                            onTap: () {
+                              HapticService.selection();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HistoryScreen(
+                                    onSelectHistory: (value) {
+                                      setState(() {
+                                        displayText = value;
+                                        result = value;
+                                        shouldResetDisplay = true;
+                                      });
+                                    },
+                                  ),
+                                ),
                               );
                             },
-                            child: Icon(
-                              isDark ? Icons.wb_sunny_outlined : Icons.nightlight_outlined,
-                              key: ValueKey<bool>(isDark),
-                              color: isDark ? AppTheme.darkText : AppTheme.lightText,
-                              size: 20,
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: isDark
+                                        ? AppTheme.darkShadowDark.withOpacity(0.6)
+                                        : AppTheme.lightShadowDark.withOpacity(0.4),
+                                    offset: const Offset(3, 3),
+                                    blurRadius: 6,
+                                  ),
+                                  BoxShadow(
+                                    color: isDark
+                                        ? AppTheme.darkShadowLight.withOpacity(0.6)
+                                        : AppTheme.lightShadowLight,
+                                    offset: const Offset(-3, -3),
+                                    blurRadius: 6,
+                                  ),
+                                ],
+                              ),
+                              child: Icon(
+                                Icons.history,
+                                color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                                size: 20,
+                              ),
                             ),
                           ),
-                        ),
+                          
+                          const SizedBox(width: 12),
+                          
+                          // 主题切换按钮
+                          GestureDetector(
+                            onTap: () {
+                              HapticService.selection();
+                              widget.onThemeToggle();
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: isDark
+                                        ? AppTheme.darkShadowDark.withOpacity(0.6)
+                                        : AppTheme.lightShadowDark.withOpacity(0.4),
+                                    offset: const Offset(3, 3),
+                                    blurRadius: 6,
+                                  ),
+                                  BoxShadow(
+                                    color: isDark
+                                        ? AppTheme.darkShadowLight.withOpacity(0.6)
+                                        : AppTheme.lightShadowLight,
+                                    offset: const Offset(-3, -3),
+                                    blurRadius: 6,
+                                  ),
+                                ],
+                              ),
+                              child: AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 300),
+                                transitionBuilder: (Widget child, Animation<double> animation) {
+                                  return RotationTransition(
+                                    turns: animation,
+                                    child: FadeTransition(opacity: animation, child: child),
+                                  );
+                                },
+                                child: Icon(
+                                  isDark ? Icons.wb_sunny_outlined : Icons.nightlight_outlined,
+                                  key: ValueKey<bool>(isDark),
+                                  color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
