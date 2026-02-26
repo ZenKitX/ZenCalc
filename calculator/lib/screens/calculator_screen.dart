@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../widgets/neumorphic_button.dart';
 import '../widgets/neumorphic_display.dart';
+import '../widgets/zen_quote_widget.dart';
 import '../utils/calculator_logic.dart';
 import '../services/haptic_service.dart';
 import '../services/audio_service.dart';
+import '../services/zen_quote_service.dart';
 
 class CalculatorScreen extends StatefulWidget {
   final VoidCallback onThemeToggle;
@@ -22,6 +24,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   String displayText = '0';
   String result = '0';
   bool shouldResetDisplay = false;
+  ZenQuote? _currentQuote;
+  bool _showZenQuotes = true; // 默认开启禅语
 
   void onButtonPressed(String value) {
     setState(() {
@@ -87,6 +91,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       displayText = '0';
       result = '0';
       shouldResetDisplay = false;
+      
+      // 显示清除相关的禅语
+      if (_showZenQuotes && ZenQuoteService.shouldShowQuote(probability: 0.5)) {
+        _currentQuote = ZenQuoteService.getQuote(ZenContext.clear);
+      }
     });
   }
 
@@ -111,6 +120,25 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       // 计算结果
       result = CalculatorLogic.calculate(expression);
       shouldResetDisplay = true;
+      
+      // 显示等号相关的禅语
+      if (_showZenQuotes) {
+        if (result == 'Error') {
+          // 错误时显示错误相关禅语
+          if (ZenQuoteService.shouldShowQuote(probability: 0.6)) {
+            _currentQuote = ZenQuoteService.getQuote(ZenContext.error);
+          }
+        } else {
+          // 检查特殊结果
+          if (result == '0' && ZenQuoteService.shouldShowQuote(probability: 0.4)) {
+            _currentQuote = ZenQuoteService.getQuote(ZenContext.zero);
+          } else if ((result == '100' || result == '1000') && ZenQuoteService.shouldShowQuote(probability: 0.7)) {
+            _currentQuote = ZenQuoteService.getQuote(ZenContext.equals, trigger: result);
+          } else if (ZenQuoteService.shouldShowQuote(probability: 0.3)) {
+            _currentQuote = ZenQuoteService.getQuote(ZenContext.equals);
+          }
+        }
+      }
     });
   }
 
@@ -176,6 +204,29 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         setDialogState(() {
                           HapticService.setEnabled(value);
                           if (value) HapticService.light();
+                        });
+                      },
+                      isDark: isDark,
+                    ),
+                    
+                    const SizedBox(height: 16),
+                    
+                    // 禅语开关
+                    _buildSettingRow(
+                      context,
+                      icon: Icons.spa_outlined,
+                      title: '禅意语录',
+                      subtitle: '在特定时刻显示禅语',
+                      value: _showZenQuotes,
+                      onChanged: (value) {
+                        setDialogState(() {
+                          _showZenQuotes = value;
+                          // 如果开启，立即显示一条禅语作为示例
+                          if (value) {
+                            setState(() {
+                              _currentQuote = ZenQuoteService.getQuote(ZenContext.general);
+                            });
+                          }
                         });
                       },
                       isDark: isDark,
@@ -311,10 +362,13 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-      body: Center(
-        child: Container(
-          constraints: BoxConstraints(maxWidth: maxWidth),
-          child: SafeArea(
+      body: Stack(
+        children: [
+          // 主界面
+          Center(
+            child: Container(
+              constraints: BoxConstraints(maxWidth: maxWidth),
+              child: SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: isSmallScreen ? 16.0 : 24.0,
@@ -665,7 +719,25 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             ),
           ),
         ),
-      ),
+        
+        // 禅语浮层
+        if (_currentQuote != null)
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              child: ZenQuoteWidget(
+                quote: _currentQuote!,
+                onDismiss: () {
+                  setState(() {
+                    _currentQuote = null;
+                  });
+                },
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
