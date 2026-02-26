@@ -139,62 +139,51 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               ),
               child: Column(
                 children: [
-                  // 顶部菜单栏
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // 左侧：应用名称
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.calculate_outlined,
-                            color: isDark ? AppTheme.darkText : AppTheme.lightText,
-                            size: 24,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Calculator',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                  // 顶部 - 极简设计，只保留主题切换
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: widget.onThemeToggle,
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: isDark
+                                  ? AppTheme.darkShadowDark.withOpacity(0.6)
+                                  : AppTheme.lightShadowDark.withOpacity(0.4),
+                              offset: const Offset(3, 3),
+                              blurRadius: 6,
                             ),
-                          ),
-                        ],
-                      ),
-                      // 右侧：主题切换按钮
-                      GestureDetector(
-                        onTap: widget.onThemeToggle,
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: isDark
-                                    ? AppTheme.darkShadowDark.withOpacity(0.6)
-                                    : AppTheme.lightShadowDark.withOpacity(0.4),
-                                offset: const Offset(3, 3),
-                                blurRadius: 6,
-                              ),
-                              BoxShadow(
-                                color: isDark
-                                    ? AppTheme.darkShadowLight.withOpacity(0.6)
-                                    : AppTheme.lightShadowLight,
-                                offset: const Offset(-3, -3),
-                                blurRadius: 6,
-                              ),
-                            ],
-                          ),
+                            BoxShadow(
+                              color: isDark
+                                  ? AppTheme.darkShadowLight.withOpacity(0.6)
+                                  : AppTheme.lightShadowLight,
+                              offset: const Offset(-3, -3),
+                              blurRadius: 6,
+                            ),
+                          ],
+                        ),
+                        child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          transitionBuilder: (Widget child, Animation<double> animation) {
+                            return RotationTransition(
+                              turns: animation,
+                              child: FadeTransition(opacity: animation, child: child),
+                            );
+                          },
                           child: Icon(
-                            isDark ? Icons.light_mode : Icons.dark_mode,
+                            isDark ? Icons.wb_sunny_outlined : Icons.nightlight_outlined,
+                            key: ValueKey<bool>(isDark),
                             color: isDark ? AppTheme.darkText : AppTheme.lightText,
                             size: 20,
                           ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
                   
                   SizedBox(height: isSmallScreen ? 16 : 24),

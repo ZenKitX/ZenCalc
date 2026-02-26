@@ -25,11 +25,13 @@ class _CalculatorAppState extends State<CalculatorApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Neumorphic Calculator',
+      title: 'ZenCalc',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: themeMode,
+      themeAnimationDuration: const Duration(milliseconds: 800), // 缓慢的主题切换
+      themeAnimationCurve: Curves.easeInOutCubic, // 流畅的曲线
       home: CalculatorScreen(onThemeToggle: toggleTheme),
     );
   }

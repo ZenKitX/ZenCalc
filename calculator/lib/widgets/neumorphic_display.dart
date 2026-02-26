@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 
-class NeumorphicDisplay extends StatelessWidget {
+class NeumorphicDisplay extends StatefulWidget {
   final String displayText;
   final String result;
 
@@ -10,6 +10,21 @@ class NeumorphicDisplay extends StatelessWidget {
     required this.displayText,
     required this.result,
   });
+
+  @override
+  State<NeumorphicDisplay> createState() => _NeumorphicDisplayState();
+}
+
+class _NeumorphicDisplayState extends State<NeumorphicDisplay> {
+  String _previousResult = '';
+
+  @override
+  void didUpdateWidget(NeumorphicDisplay oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.result != widget.result) {
+      _previousResult = oldWidget.result;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,27 +60,64 @@ class NeumorphicDisplay extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          // 输入显示
+          // 输入显示 - 带淡入动画
           Flexible(
             child: SingleChildScrollView(
               reverse: true,
-              child: Text(
-                displayText,
-                style: Theme.of(context).textTheme.displayMedium,
-                textAlign: TextAlign.right,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(0.0, 0.1),
+                        end: Offset.zero,
+                      ).animate(CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeOutCubic,
+                      )),
+                      child: child,
+                    ),
+                  );
+                },
+                child: Text(
+                  widget.displayText,
+                  key: ValueKey<String>(widget.displayText),
+                  style: Theme.of(context).textTheme.displayMedium,
+                  textAlign: TextAlign.right,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
           ),
           const SizedBox(height: 16),
-          // 结果显示
-          Text(
-            result,
-            style: Theme.of(context).textTheme.displayLarge,
-            textAlign: TextAlign.right,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+          // 结果显示 - 带淡入淡出动画
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 400),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return FadeTransition(
+                opacity: animation,
+                child: ScaleTransition(
+                  scale: Tween<double>(begin: 0.95, end: 1.0).animate(
+                    CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeOutCubic,
+                    ),
+                  ),
+                  child: child,
+                ),
+              );
+            },
+            child: Text(
+              widget.result,
+              key: ValueKey<String>(widget.result),
+              style: Theme.of(context).textTheme.displayLarge,
+              textAlign: TextAlign.right,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       ),
