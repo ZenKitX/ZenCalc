@@ -53,6 +53,13 @@
   - 特殊数字：「九九归一」「三生万物」
   - 30+ 条精选禅语
   - 智能触发机制
+- **历史记录**
+  - 自动保存计算历史
+  - 统计信息（总计/今日/本周）
+  - 滑动删除单条记录
+  - 一键清除所有记录
+  - 点击历史记录快速复用
+  - 本地持久化存储
 
 ## 🚀 核心功能
 
@@ -66,6 +73,7 @@
 - ✅ 触觉反馈系统
 - ✅ 禅意音效（可选）
 - ✅ 禅意语录显示
+- ✅ 历史记录功能
 
 ## 📸 截图
 
@@ -106,15 +114,20 @@ calculator/
 ├── lib/
 │   ├── main.dart                      # 应用入口
 │   ├── screens/
-│   │   └── calculator_screen.dart     # 计算器主界面
+│   │   ├── calculator_screen.dart     # 计算器主界面
+│   │   └── history_screen.dart        # 历史记录界面
 │   ├── widgets/
 │   │   ├── neumorphic_button.dart     # Neumorphic 按钮组件
 │   │   ├── neumorphic_display.dart    # 显示屏组件
-│   │   └── neumorphic_container.dart  # 通用容器组件
+│   │   ├── neumorphic_container.dart  # 通用容器组件
+│   │   └── zen_quote_widget.dart      # 禅语显示组件
+│   ├── models/
+│   │   └── calculation_history.dart   # 历史记录模型
 │   ├── services/
 │   │   ├── haptic_service.dart        # 触觉反馈服务
 │   │   ├── audio_service.dart         # 音效服务
-│   │   └── zen_quote_service.dart     # 禅语服务
+│   │   ├── zen_quote_service.dart     # 禅语服务
+│   │   └── history_service.dart       # 历史记录服务
 │   ├── utils/
 │   │   └── calculator_logic.dart      # 计算逻辑
 │   └── theme/
@@ -162,6 +175,9 @@ calculator/
 
 - **触觉反馈**：开启/关闭震动反馈
 - **禅意音效**：开启/关闭自然音效
+- **禅意语录**：开启/关闭禅语显示
+
+点击右上角历史图标可以查看计算历史。
 
 ## 🧘 使用建议
 
@@ -190,12 +206,16 @@ calculator/
 5. ✅ 音效系统框架（可扩展）
 6. ✅ 设置对话框（用户控制）
 
+### 第三阶段：禅意功能增强
+7. ✅ 禅语系统（30+ 条语录）
+8. ✅ 历史记录功能（自动保存、统计）
+
 ### 未来计划
 - [ ] 呼吸模式动画（待机时）
-- [ ] 禅语显示（特定时刻）
 - [ ] 手势操作（左滑清除、长按复制）
 - [ ] 专注模式（隐藏历史）
 - [ ] 自定义音效文件
+- [ ] 科学计算器模式
 
 ## 📄 许可证
 
