@@ -5,7 +5,12 @@ import '../widgets/neumorphic_display.dart';
 import '../utils/calculator_logic.dart';
 
 class CalculatorScreen extends StatefulWidget {
-  const CalculatorScreen({super.key});
+  final VoidCallback onThemeToggle;
+  
+  const CalculatorScreen({
+    super.key,
+    required this.onThemeToggle,
+  });
 
   @override
   State<CalculatorScreen> createState() => _CalculatorScreenState();
@@ -92,13 +97,57 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isSmallScreen = screenHeight < 600;
+    
     return Scaffold(
-      backgroundColor: AppTheme.lightBackground,
+      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(isSmallScreen ? 12.0 : 20.0),
           child: Column(
             children: [
+              // 主题切换按钮
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: widget.onThemeToggle,
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: isDark
+                                ? AppTheme.darkShadowDark.withOpacity(0.6)
+                                : AppTheme.lightShadowDark.withOpacity(0.4),
+                            offset: const Offset(4, 4),
+                            blurRadius: 8,
+                          ),
+                          BoxShadow(
+                            color: isDark
+                                ? AppTheme.darkShadowLight.withOpacity(0.6)
+                                : AppTheme.lightShadowLight,
+                            offset: const Offset(-4, -4),
+                            blurRadius: 8,
+                          ),
+                        ],
+                      ),
+                      child: Icon(
+                        isDark ? Icons.light_mode : Icons.dark_mode,
+                        color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                        size: 24,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              
+              SizedBox(height: isSmallScreen ? 12 : 20),
+              
               // 显示区域
               Expanded(
                 flex: 2,
@@ -108,7 +157,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 ),
               ),
               
-              const SizedBox(height: 20),
+              SizedBox(height: isSmallScreen ? 12 : 20),
               
               // 按钮区域
               Expanded(

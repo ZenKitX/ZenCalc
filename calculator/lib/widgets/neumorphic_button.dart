@@ -28,8 +28,9 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final defaultTextColor = isDark ? AppTheme.darkText : AppTheme.lightText;
+    final accentColor = isDark ? AppTheme.accentColorDark : AppTheme.accentColor;
     final textColor = widget.isOperator 
-        ? AppTheme.accentColor 
+        ? accentColor 
         : (widget.textColor ?? defaultTextColor);
 
     return GestureDetector(
@@ -50,41 +51,41 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
           borderRadius: BorderRadius.circular(15),
           boxShadow: isPressed
               ? [
-                  // 按下状态：内阴影效果
+                  // 按下状态：内阴影效果（更柔和）
                   BoxShadow(
                     color: isDark
-                        ? AppTheme.darkShadowDark
-                        : AppTheme.lightShadowDark,
-                    offset: const Offset(4, 4),
-                    blurRadius: 8,
-                    spreadRadius: 1,
+                        ? AppTheme.darkShadowDark.withOpacity(0.5)
+                        : AppTheme.lightShadowDark.withOpacity(0.3),
+                    offset: const Offset(3, 3),
+                    blurRadius: 6,
+                    spreadRadius: 0,
                   ),
                   BoxShadow(
                     color: isDark
-                        ? AppTheme.darkShadowLight
-                        : AppTheme.lightShadowLight,
-                    offset: const Offset(-4, -4),
-                    blurRadius: 8,
-                    spreadRadius: 1,
+                        ? AppTheme.darkShadowLight.withOpacity(0.5)
+                        : AppTheme.lightShadowLight.withOpacity(0.9),
+                    offset: const Offset(-3, -3),
+                    blurRadius: 6,
+                    spreadRadius: 0,
                   ),
                 ]
               : [
-                  // 正常状态：外阴影效果（凸起）
+                  // 正常状态：外阴影效果（更立体）
                   BoxShadow(
                     color: isDark
-                        ? AppTheme.darkShadowDark
-                        : AppTheme.lightShadowDark,
-                    offset: const Offset(8, 8),
-                    blurRadius: 15,
-                    spreadRadius: 1,
+                        ? AppTheme.darkShadowDark.withOpacity(0.6)
+                        : AppTheme.lightShadowDark.withOpacity(0.4),
+                    offset: const Offset(6, 6),
+                    blurRadius: 12,
+                    spreadRadius: 0,
                   ),
                   BoxShadow(
                     color: isDark
-                        ? AppTheme.darkShadowLight
-                        : AppTheme.lightShadowLight,
-                    offset: const Offset(-8, -8),
-                    blurRadius: 15,
-                    spreadRadius: 1,
+                        ? AppTheme.darkShadowLight.withOpacity(0.6)
+                        : AppTheme.lightShadowLight.withOpacity(1.0),
+                    offset: const Offset(-6, -6),
+                    blurRadius: 12,
+                    spreadRadius: 0,
                   ),
                 ],
         ),

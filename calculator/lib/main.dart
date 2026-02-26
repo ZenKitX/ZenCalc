@@ -6,8 +6,21 @@ void main() {
   runApp(const CalculatorApp());
 }
 
-class CalculatorApp extends StatelessWidget {
+class CalculatorApp extends StatefulWidget {
   const CalculatorApp({super.key});
+
+  @override
+  State<CalculatorApp> createState() => _CalculatorAppState();
+}
+
+class _CalculatorAppState extends State<CalculatorApp> {
+  ThemeMode themeMode = ThemeMode.light;
+
+  void toggleTheme() {
+    setState(() {
+      themeMode = themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +29,8 @@ class CalculatorApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.light,
-      home: const CalculatorScreen(),
+      themeMode: themeMode,
+      home: CalculatorScreen(onThemeToggle: toggleTheme),
     );
   }
 }

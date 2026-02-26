@@ -21,22 +21,22 @@ class NeumorphicDisplay extends StatelessWidget {
         color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
-          // 内阴影效果（凹陷）
+          // 内阴影效果（凹陷）- 更柔和
           BoxShadow(
             color: isDark
-                ? AppTheme.darkShadowDark
-                : AppTheme.lightShadowDark,
-            offset: const Offset(4, 4),
-            blurRadius: 10,
-            spreadRadius: 1,
+                ? AppTheme.darkShadowDark.withOpacity(0.5)
+                : AppTheme.lightShadowDark.withOpacity(0.3),
+            offset: const Offset(3, 3),
+            blurRadius: 8,
+            spreadRadius: 0,
           ),
           BoxShadow(
             color: isDark
-                ? AppTheme.darkShadowLight
-                : AppTheme.lightShadowLight,
-            offset: const Offset(-4, -4),
-            blurRadius: 10,
-            spreadRadius: 1,
+                ? AppTheme.darkShadowLight.withOpacity(0.5)
+                : AppTheme.lightShadowLight.withOpacity(0.9),
+            offset: const Offset(-3, -3),
+            blurRadius: 8,
+            spreadRadius: 0,
           ),
         ],
       ),
