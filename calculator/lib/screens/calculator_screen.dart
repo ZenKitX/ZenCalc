@@ -3,6 +3,8 @@ import '../theme/app_theme.dart';
 import '../widgets/neumorphic_button.dart';
 import '../widgets/neumorphic_display.dart';
 import '../utils/calculator_logic.dart';
+import '../services/haptic_service.dart';
+import '../services/audio_service.dart';
 
 class CalculatorScreen extends StatefulWidget {
   final VoidCallback onThemeToggle;
@@ -116,6 +118,187 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     return char == '+' || char == '-' || char == '×' || char == '÷' || char == '%';
   }
 
+  // 显示设置对话框
+  void _showSettingsDialog(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return Dialog(
+              backgroundColor: Colors.transparent,
+              child: Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: isDark
+                          ? AppTheme.darkShadowDark.withOpacity(0.6)
+                          : AppTheme.lightShadowDark.withOpacity(0.4),
+                      offset: const Offset(6, 6),
+                      blurRadius: 12,
+                    ),
+                    BoxShadow(
+                      color: isDark
+                          ? AppTheme.darkShadowLight.withOpacity(0.6)
+                          : AppTheme.lightShadowLight,
+                      offset: const Offset(-6, -6),
+                      blurRadius: 12,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '禅意设置',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500,
+                        color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    
+                    // 触觉反馈开关
+                    _buildSettingRow(
+                      context,
+                      icon: Icons.vibration,
+                      title: '触觉反馈',
+                      subtitle: '按钮按下时的震动反馈',
+                      value: HapticService.isEnabled,
+                      onChanged: (value) {
+                        setDialogState(() {
+                          HapticService.setEnabled(value);
+                          if (value) HapticService.light();
+                        });
+                      },
+                      isDark: isDark,
+                    ),
+                    
+                    const SizedBox(height: 16),
+                    
+                    // 音效开关
+                    _buildSettingRow(
+                      context,
+                      icon: Icons.music_note_outlined,
+                      title: '禅意音效',
+                      subtitle: '竹子、水滴等自然音效',
+                      value: AudioService.isEnabled,
+                      onChanged: (value) {
+                        setDialogState(() {
+                          AudioService.setEnabled(value);
+                        });
+                      },
+                      isDark: isDark,
+                    ),
+                    
+                    const SizedBox(height: 24),
+                    
+                    // 关闭按钮
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          HapticService.selection();
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          '完成',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: isDark ? AppTheme.accentColorDark : AppTheme.accentColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildSettingRow(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+    required bool isDark,
+  }) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: isDark
+                    ? AppTheme.darkShadowDark.withOpacity(0.5)
+                    : AppTheme.lightShadowDark.withOpacity(0.3),
+                offset: const Offset(2, 2),
+                blurRadius: 4,
+              ),
+              BoxShadow(
+                color: isDark
+                    ? AppTheme.darkShadowLight.withOpacity(0.5)
+                    : AppTheme.lightShadowLight,
+                offset: const Offset(-2, -2),
+                blurRadius: 4,
+              ),
+            ],
+          ),
+          child: Icon(
+            icon,
+            color: isDark ? AppTheme.darkText : AppTheme.lightText,
+            size: 20,
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                subtitle,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: isDark ? AppTheme.darkTextSecondary : AppTheme.lightTextSecondary,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Switch(
+          value: value,
+          onChanged: onChanged,
+          activeColor: isDark ? AppTheme.accentColorDark : AppTheme.accentColor,
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -139,51 +322,94 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               ),
               child: Column(
                 children: [
-                  // 顶部 - 极简设计，只保留主题切换
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: widget.onThemeToggle,
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: isDark
-                                  ? AppTheme.darkShadowDark.withOpacity(0.6)
-                                  : AppTheme.lightShadowDark.withOpacity(0.4),
-                              offset: const Offset(3, 3),
-                              blurRadius: 6,
-                            ),
-                            BoxShadow(
-                              color: isDark
-                                  ? AppTheme.darkShadowLight.withOpacity(0.6)
-                                  : AppTheme.lightShadowLight,
-                              offset: const Offset(-3, -3),
-                              blurRadius: 6,
-                            ),
-                          ],
-                        ),
-                        child: AnimatedSwitcher(
+                  // 顶部 - 极简设计，主题切换和设置
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // 设置按钮
+                      GestureDetector(
+                        onTap: () {
+                          HapticService.selection();
+                          _showSettingsDialog(context);
+                        },
+                        child: AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
-                          transitionBuilder: (Widget child, Animation<double> animation) {
-                            return RotationTransition(
-                              turns: animation,
-                              child: FadeTransition(opacity: animation, child: child),
-                            );
-                          },
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: isDark
+                                    ? AppTheme.darkShadowDark.withOpacity(0.6)
+                                    : AppTheme.lightShadowDark.withOpacity(0.4),
+                                offset: const Offset(3, 3),
+                                blurRadius: 6,
+                              ),
+                              BoxShadow(
+                                color: isDark
+                                    ? AppTheme.darkShadowLight.withOpacity(0.6)
+                                    : AppTheme.lightShadowLight,
+                                offset: const Offset(-3, -3),
+                                blurRadius: 6,
+                              ),
+                            ],
+                          ),
                           child: Icon(
-                            isDark ? Icons.wb_sunny_outlined : Icons.nightlight_outlined,
-                            key: ValueKey<bool>(isDark),
+                            Icons.tune_outlined,
                             color: isDark ? AppTheme.darkText : AppTheme.lightText,
                             size: 20,
                           ),
                         ),
                       ),
-                    ),
+                      
+                      // 主题切换按钮
+                      GestureDetector(
+                        onTap: () {
+                          HapticService.selection();
+                          widget.onThemeToggle();
+                        },
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: isDark
+                                    ? AppTheme.darkShadowDark.withOpacity(0.6)
+                                    : AppTheme.lightShadowDark.withOpacity(0.4),
+                                offset: const Offset(3, 3),
+                                blurRadius: 6,
+                              ),
+                              BoxShadow(
+                                color: isDark
+                                    ? AppTheme.darkShadowLight.withOpacity(0.6)
+                                    : AppTheme.lightShadowLight,
+                                offset: const Offset(-3, -3),
+                                blurRadius: 6,
+                              ),
+                            ],
+                          ),
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            transitionBuilder: (Widget child, Animation<double> animation) {
+                              return RotationTransition(
+                                turns: animation,
+                                child: FadeTransition(opacity: animation, child: child),
+                              );
+                            },
+                            child: Icon(
+                              isDark ? Icons.wb_sunny_outlined : Icons.nightlight_outlined,
+                              key: ValueKey<bool>(isDark),
+                              color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   
                   SizedBox(height: isSmallScreen ? 16 : 24),

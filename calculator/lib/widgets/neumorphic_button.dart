@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../services/haptic_service.dart';
+import '../services/audio_service.dart';
 
 class NeumorphicButton extends StatefulWidget {
   final String text;
@@ -67,6 +69,21 @@ class _NeumorphicButtonState extends State<NeumorphicButton> with SingleTickerPr
       onTapDown: (_) {
         setState(() => isPressed = true);
         _scaleController.forward();
+        
+        // 触觉反馈
+        if (widget.text == 'AC') {
+          HapticService.heavy();
+          AudioService.playClearSound();
+        } else if (widget.isEquals) {
+          HapticService.heavy();
+          AudioService.playEqualsSound();
+        } else if (widget.isOperator) {
+          HapticService.medium();
+          AudioService.playOperatorSound();
+        } else {
+          HapticService.light();
+          AudioService.playNumberSound();
+        }
       },
       onTapUp: (_) {
         setState(() => isPressed = false);
