@@ -2,9 +2,10 @@
 
 一个融合禅意美学的 Flutter 计算器应用，采用 Neumorphic 设计风格，提供宁静、专注的计算体验。
 
-![Flutter](https://img.shields.io/badge/Flutter-3.38.5-blue)
-![Dart](https://img.shields.io/badge/Dart-3.10.4-blue)
+![Flutter](https://img.shields.io/badge/Flutter-3.41+-blue)
+![Dart](https://img.shields.io/badge/Dart-3.11+-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
+![Release](https://img.shields.io/github/v/release/YOUR_USERNAME/Calculator)
 
 ## ✨ 禅意特性
 
@@ -83,18 +84,26 @@
 ### 深色主题 - 夜间竹林
 深竹绿灰背景，月光色文字，适合夜间专注使用
 
+## 📥 下载安装
+
+### 从 Release 下载
+前往 [Releases 页面](https://github.com/YOUR_USERNAME/Calculator/releases) 下载最新版本的 APK 文件。
+
+### 从源码构建
+参见下方"快速开始"部分。
+
 ## 🛠️ 快速开始
 
 ### 环境要求
-- Flutter SDK: 3.38.5 或更高
-- Dart: 3.10.4 或更高
+- Flutter SDK: 3.41+ 或更高
+- Dart: 3.11+ 或更高
 
 ### 安装步骤
 
 1. 克隆项目
 ```bash
-git clone https://github.com/ZenKitX/ZenCalc.git
-cd ZenCalc
+git clone https://github.com/YOUR_USERNAME/Calculator.git
+cd Calculator
 ```
 
 2. 获取依赖

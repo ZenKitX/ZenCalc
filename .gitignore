@@ -45,3 +45,10 @@ app.*.map.json
 /android/app/release
 
 .kiro/
+
+# 签名密钥文件（不要提交）
+*.jks
+*.keystore
+key.properties
+android/key.properties
+android/app/keystore.jks
