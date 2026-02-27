@@ -5,6 +5,18 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 并且本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.0.1] - 2026-02-26
+
+### 修复
+- 🔧 修复 GitHub Actions 权限问题
+- 🔧 更新工作流使用现代的 release action
+
+### 文档
+- 📝 添加 CHANGELOG.md 版本更新日志
+- 📝 更新 README.md 版本号和下载链接
+- 📝 添加应用签名配置文档（docs/SIGNING.md）
+- 📝 更新 .gitignore 忽略签名密钥文件
+
 ## [1.0.0] - 2026-02-26
 
 ### 新增
@@ -48,4 +60,5 @@
 - 🌿 自然配色方案
 - 🎯 单一焦点：计算本身
 
+[1.0.1]: https://github.com/ZenKitX/ZenCalc/releases/tag/v1.0.1
 [1.0.0]: https://github.com/ZenKitX/ZenCalc/releases/tag/v1.0.0
