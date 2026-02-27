@@ -5,7 +5,7 @@
 ![Flutter](https://img.shields.io/badge/Flutter-3.41+-blue)
 ![Dart](https://img.shields.io/badge/Dart-3.11+-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
-![Release](https://img.shields.io/github/v/release/YOUR_USERNAME/Calculator)
+![Release](https://img.shields.io/github/v/release/ZenKitX/ZenCalc)
 
 ## ✨ 禅意特性
 
@@ -87,7 +87,7 @@
 ## 📥 下载安装
 
 ### 从 Release 下载
-前往 [Releases 页面](https://github.com/YOUR_USERNAME/Calculator/releases) 下载最新版本的 APK 文件。
+前往 [Releases 页面](https://github.com/ZenKitX/ZenCalc/releases) 下载最新版本的 APK 文件。
 
 ### 从源码构建
 参见下方"快速开始"部分。
@@ -102,8 +102,8 @@
 
 1. 克隆项目
 ```bash
-git clone https://github.com/YOUR_USERNAME/Calculator.git
-cd Calculator
+git clone https://github.com/ZenKitX/ZenCalc.git
+cd ZenCalc
 ```
 
 2. 获取依赖

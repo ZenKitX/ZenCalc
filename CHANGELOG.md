@@ -48,4 +48,4 @@
 - 🌿 自然配色方案
 - 🎯 单一焦点：计算本身
 
-[1.0.0]: https://github.com/YOUR_USERNAME/Calculator/releases/tag/v1.0.0
+[1.0.0]: https://github.com/ZenKitX/ZenCalc/releases/tag/v1.0.0
