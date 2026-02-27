@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/calculation_history.dart';
+import 'package:zen_calc/app/data/models/calculation_history.dart';
 
 class HistoryService {
   static const String _historyKey = 'calculation_history';

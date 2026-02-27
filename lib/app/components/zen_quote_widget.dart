@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
-import '../services/zen_quote_service.dart';
+import 'package:zen_calc/app/config/theme/app_theme.dart';
+import 'package:zen_calc/app/services/zen_quote_service.dart';
 
 class ZenQuoteWidget extends StatefulWidget {
   final ZenQuote quote;

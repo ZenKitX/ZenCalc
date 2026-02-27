@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
-import '../services/haptic_service.dart';
-import '../services/audio_service.dart';
+import 'package:zen_calc/app/config/theme/app_theme.dart';
+import 'package:zen_calc/app/services/haptic_service.dart';
+import 'package:zen_calc/app/services/audio_service.dart';
 
 class NeumorphicButton extends StatefulWidget {
   final String text;

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
-import '../widgets/neumorphic_button.dart';
-import '../widgets/neumorphic_display.dart';
-import '../widgets/zen_quote_widget.dart';
-import '../utils/calculator_logic.dart';
-import '../services/haptic_service.dart';
-import '../services/audio_service.dart';
-import '../services/zen_quote_service.dart';
-import '../services/history_service.dart';
-import 'history_screen.dart';
+import 'package:zen_calc/app/config/theme/app_theme.dart';
+import 'package:zen_calc/app/components/neumorphic_button.dart';
+import 'package:zen_calc/app/components/neumorphic_display.dart';
+import 'package:zen_calc/app/components/zen_quote_widget.dart';
+import 'package:zen_calc/app/utils/calculator_logic.dart';
+import 'package:zen_calc/app/services/haptic_service.dart';
+import 'package:zen_calc/app/services/audio_service.dart';
+import 'package:zen_calc/app/services/zen_quote_service.dart';
+import 'package:zen_calc/app/services/history_service.dart';
+import 'package:zen_calc/app/modules/history/views/history_view.dart';
 
 class CalculatorScreen extends StatefulWidget {
   final VoidCallback onThemeToggle;

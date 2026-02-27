@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
-import '../models/calculation_history.dart';
-import '../services/history_service.dart';
-import '../services/haptic_service.dart';
+import 'package:zen_calc/app/config/theme/app_theme.dart';
+import 'package:zen_calc/app/data/models/calculation_history.dart';
+import 'package:zen_calc/app/services/history_service.dart';
+import 'package:zen_calc/app/services/haptic_service.dart';
 
 class HistoryScreen extends StatefulWidget {
   final Function(String) onSelectHistory;

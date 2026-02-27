@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import '../modules/calculator/bindings/calculator_binding.dart';
-import '../modules/calculator/views/calculator_view.dart';
+import '../modules/calculator/views/calculator_getx_view.dart';
 import '../modules/history/bindings/history_binding.dart';
-import '../modules/history/views/history_view.dart';
+import '../modules/history/views/history_getx_view.dart';
 
 part 'app_routes.dart';
 
