@@ -42,16 +42,21 @@ jobs:
           VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //' | sed 's/+.*//')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
       
+      - name: Rename APK
+        run: |
+          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/ZenCalc-${{ steps.version.outputs.version }}.apk
+      
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           name: ZenCalc ${{ steps.version.outputs.version }}
-          files: build/app/outputs/flutter-apk/app-release.apk
+          files: |
+            build/app/outputs/flutter-apk/ZenCalc-${{ steps.version.outputs.version }}.apk
           body: |
             ## ZenCalc ${{ steps.version.outputs.version }}
             
             ### 下载
-            - [ZenCalc-${{ steps.version.outputs.version }}.apk](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/app-release.apk)
+            - [ZenCalc-${{ steps.version.outputs.version }}.apk](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/ZenCalc-${{ steps.version.outputs.version }}.apk)
             
             ### 更新内容
             请查看 [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md)
