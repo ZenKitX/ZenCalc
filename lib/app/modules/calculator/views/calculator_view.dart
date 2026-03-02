@@ -32,6 +32,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   ZenQuote? _currentQuote;
   bool _showZenQuotes = true; // 默认开启禅语
   bool _isScientificMode = false; // 科学计算器模式
+  bool _isInverseMode = false; // 反函数模式
+  String _lastExpression = ''; // 保存上次的计算式
   
   @override
   void initState() {
@@ -171,6 +173,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         expression = expression.substring(0, expression.length - 1);
       }
 
+      // 保存计算式
+      _lastExpression = expression;
+
       // 根据模式选择计算逻辑
       String finalResult = _isScientificMode 
           ? ScientificCalculatorLogic.calculate(expression)
@@ -205,6 +210,25 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     });
   }
 
+  // deg 按钮：显示上次的计算式
+  void onShowLastExpression() {
+    setState(() {
+      if (_lastExpression.isNotEmpty) {
+        displayText = _lastExpression;
+        result = '0';
+        shouldResetDisplay = false;
+        _updatePreview();
+      }
+    });
+  }
+
+  // inv 按钮：切换反函数模式
+  void onToggleInverse() {
+    setState(() {
+      _isInverseMode = !_isInverseMode;
+    });
+  }
+
   bool _isOperator(String char) {
     return char == '+' || char == '-' || char == '×' || char == '÷' || char == '%';
   }
@@ -216,6 +240,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       onClear: onClear,
       onDelete: onDelete,
       onEquals: onEquals,
+      isInverseMode: _isInverseMode,
+      onToggleInverse: onToggleInverse,
+      onShowLastExpression: onShowLastExpression,
     );
   }
 

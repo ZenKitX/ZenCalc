@@ -6,6 +6,9 @@ class ScientificButtonGrid extends StatelessWidget {
   final VoidCallback onClear;
   final VoidCallback onDelete;
   final VoidCallback onEquals;
+  final bool isInverseMode;
+  final VoidCallback onToggleInverse;
+  final VoidCallback onShowLastExpression;
 
   const ScientificButtonGrid({
     super.key,
@@ -13,6 +16,9 @@ class ScientificButtonGrid extends StatelessWidget {
     required this.onClear,
     required this.onDelete,
     required this.onEquals,
+    required this.isInverseMode,
+    required this.onToggleInverse,
+    required this.onShowLastExpression,
   });
 
   @override
@@ -20,28 +26,29 @@ class ScientificButtonGrid extends StatelessWidget {
     return Column(
       key: const ValueKey('scientific'),
       children: [
-        // 第一行：sin, cos, tan, rad, deg
+        // 第一行：sin/sin⁻¹, cos/cos⁻¹, tan/tan⁻¹, rad, deg
         Expanded(
           child: Row(
             children: [
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: 'sin', onTap: () => onButtonPressed('sin'), isOperator: true, fontSize: 14))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: 'cos', onTap: () => onButtonPressed('cos'), isOperator: true, fontSize: 14))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: 'tan', onTap: () => onButtonPressed('tan'), isOperator: true, fontSize: 14))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: isInverseMode ? 'sin⁻¹' : 'sin', onTap: () => onButtonPressed(isInverseMode ? 'asin' : 'sin'), isOperator: true, fontSize: 14))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: isInverseMode ? 'cos⁻¹' : 'cos', onTap: () => onButtonPressed(isInverseMode ? 'acos' : 'cos'), isOperator: true, fontSize: 14))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: isInverseMode ? 'tan⁻¹' : 'tan', onTap: () => onButtonPressed(isInverseMode ? 'atan' : 'tan'), isOperator: true, fontSize: 14))),
               Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: 'rad', onTap: () {}, isOperator: true, fontSize: 14))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: 'deg', onTap: onShowLastExpression, isOperator: true, fontSize: 14))),
               Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: 'deg', onTap: () {}, isOperator: true, fontSize: 14))),
             ],
           ),
         ),
         
-        // 第二行：log, ln, (, ), inv
+        // 第二行：log/10^, ln/e^, (, ), inv
         Expanded(
           child: Row(
             children: [
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: 'log', onTap: () => onButtonPressed('log'), isOperator: true, fontSize: 14))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: 'ln', onTap: () => onButtonPressed('ln'), isOperator: true, fontSize: 14))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: isInverseMode ? '10^' : 'log', onTap: () => onButtonPressed(isInverseMode ? '10^' : 'log'), isOperator: true, fontSize: 14))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: isInverseMode ? 'e^' : 'ln', onTap: () => onButtonPressed(isInverseMode ? 'e^' : 'ln'), isOperator: true, fontSize: 14))),
               Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '(', onTap: () => onButtonPressed('('), isOperator: true))),
               Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: ')', onTap: () => onButtonPressed(')'), isOperator: true))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: 'inv', onTap: () {}, isOperator: true, fontSize: 14))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: 'inv', onTap: onToggleInverse, isOperator: true, fontSize: 14))),
             ],
           ),
         ),
@@ -72,11 +79,11 @@ class ScientificButtonGrid extends StatelessWidget {
           ),
         ),
         
-        // 第五行：√, 4, 5, 6, -
+        // 第五行：√/x², 4, 5, 6, -
         Expanded(
           child: Row(
             children: [
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '√', onTap: () => onButtonPressed('sqrt'), isOperator: true))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: isInverseMode ? 'x²' : '√', onTap: () => onButtonPressed(isInverseMode ? 'x²' : 'sqrt'), isOperator: true))),
               Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '4', onTap: () => onButtonPressed('4')))),
               Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '5', onTap: () => onButtonPressed('5')))),
               Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '6', onTap: () => onButtonPressed('6')))),
