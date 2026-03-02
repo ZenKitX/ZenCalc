@@ -12,6 +12,7 @@ import 'package:zen_calc/app/modules/history/views/history_view.dart';
 import 'package:zen_calc/app/modules/calculator/views/widgets/calculator_top_bar.dart';
 import 'package:zen_calc/app/modules/calculator/views/widgets/basic_button_grid.dart';
 import 'package:zen_calc/app/modules/calculator/views/widgets/scientific_button_grid.dart';
+import 'package:zen_calc/app/modules/converter/views/converter_view.dart';
 
 class CalculatorScreen extends StatefulWidget {
   final VoidCallback onThemeToggle;
@@ -498,6 +499,14 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                                   });
                                 },
                               ),
+                            ),
+                          );
+                        },
+                        onConverterTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ConverterView(),
                             ),
                           );
                         },

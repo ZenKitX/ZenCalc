@@ -8,6 +8,7 @@ class CalculatorTopBar extends StatelessWidget {
   final VoidCallback onSettingsTap;
   final VoidCallback onHistoryTap;
   final VoidCallback onThemeToggle;
+  final VoidCallback onConverterTap;
   final bool isDark;
 
   const CalculatorTopBar({
@@ -17,6 +18,7 @@ class CalculatorTopBar extends StatelessWidget {
     required this.onSettingsTap,
     required this.onHistoryTap,
     required this.onThemeToggle,
+    required this.onConverterTap,
     required this.isDark,
   });
 
@@ -99,6 +101,8 @@ class CalculatorTopBar extends StatelessWidget {
         
         Row(
           children: [
+            _buildIconButton(icon: Icons.swap_horiz, onTap: onConverterTap),
+            const SizedBox(width: 12),
             _buildIconButton(icon: Icons.history, onTap: onHistoryTap),
             const SizedBox(width: 12),
             _buildThemeButton(),
