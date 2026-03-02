@@ -21,27 +21,20 @@ class UnitSelector extends StatelessWidget {
     return GestureDetector(
       onTap: () => _showUnitPicker(context),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            selectedUnit?.name ?? '',
+            '${selectedUnit?.name ?? ''} ${selectedUnit?.symbol ?? ''}',
             style: TextStyle(
-              fontSize: 16,
-              color: isDark ? Colors.white70 : Colors.black54,
+              fontSize: 14,
+              color: isDark ? Colors.white60 : Colors.black54,
             ),
           ),
           const SizedBox(width: 4),
-          Text(
-            selectedUnit?.symbol ?? '',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: isDark ? Colors.white70 : Colors.black54,
-            ),
-          ),
-          const SizedBox(width: 8),
           Icon(
             Icons.arrow_drop_down,
-            color: isDark ? Colors.white70 : Colors.black54,
+            color: isDark ? Colors.white60 : Colors.black54,
+            size: 20,
           ),
         ],
       ),

@@ -35,53 +35,53 @@ class ConversionKeypad extends StatelessWidget {
           child: Row(
             children: [
               _buildKey('7', isDark),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               _buildKey('8', isDark),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               _buildKey('9', isDark),
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         // 第二行: 4 5 6
         Expanded(
           child: Row(
             children: [
               _buildKey('4', isDark),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               _buildKey('5', isDark),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               _buildKey('6', isDark),
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         // 第三行: 1 2 3
         Expanded(
           child: Row(
             children: [
               _buildKey('1', isDark),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               _buildKey('2', isDark),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               _buildKey('3', isDark),
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         // 第四行: 00 0 .
         Expanded(
           child: Row(
             children: [
               _buildKey('00', isDark),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               _buildKey('0', isDark),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               _buildKey('.', isDark),
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         // 第五行: AC 和 删除
         Expanded(
           child: Row(
@@ -90,7 +90,7 @@ class ConversionKeypad extends StatelessWidget {
                 flex: 2,
                 child: _buildSpecialKey('AC', isDark, () => controller.clear()),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               Expanded(
                 child: _buildSpecialKey('⌫', isDark, () => controller.deleteLast()),
               ),
@@ -185,21 +185,14 @@ class ConversionKeypad extends StatelessWidget {
         onTap: () => controller.inputDigit(label),
         child: Container(
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1A1A1A) : const Color(0xFFE8E4DC),
+            color: isDark ? const Color(0xFF2A2A2A) : Colors.white,
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
                 color: isDark
-                    ? Colors.black.withOpacity(0.5)
-                    : Colors.black.withOpacity(0.1),
-                offset: const Offset(4, 4),
-                blurRadius: 8,
-              ),
-              BoxShadow(
-                color: isDark
-                    ? Colors.white.withOpacity(0.05)
-                    : Colors.white.withOpacity(0.9),
-                offset: const Offset(-4, -4),
+                    ? Colors.black.withOpacity(0.3)
+                    : Colors.black.withOpacity(0.08),
+                offset: const Offset(0, 2),
                 blurRadius: 8,
               ),
             ],
@@ -208,7 +201,7 @@ class ConversionKeypad extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 28,
                 fontWeight: FontWeight.w400,
                 color: isDark ? Colors.white : Colors.black87,
               ),
@@ -224,21 +217,14 @@ class ConversionKeypad extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1A1A1A) : const Color(0xFFE8E4DC),
-          borderRadius: BorderRadius.circular(40),
+          color: isDark ? const Color(0xFF2A2A2A) : const Color(0xFFF5F5F5),
+          borderRadius: BorderRadius.circular(50),
           boxShadow: [
             BoxShadow(
               color: isDark
-                  ? Colors.black.withOpacity(0.5)
-                  : Colors.black.withOpacity(0.1),
-              offset: const Offset(4, 4),
-              blurRadius: 8,
-            ),
-            BoxShadow(
-              color: isDark
-                  ? Colors.white.withOpacity(0.05)
-                  : Colors.white.withOpacity(0.9),
-              offset: const Offset(-4, -4),
+                  ? Colors.black.withOpacity(0.3)
+                  : Colors.black.withOpacity(0.08),
+              offset: const Offset(0, 2),
               blurRadius: 8,
             ),
           ],
@@ -247,7 +233,7 @@ class ConversionKeypad extends StatelessWidget {
           child: Text(
             label,
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 28,
               fontWeight: FontWeight.w400,
               color: label == 'AC' ? Colors.red : (isDark ? Colors.white : Colors.black87),
             ),

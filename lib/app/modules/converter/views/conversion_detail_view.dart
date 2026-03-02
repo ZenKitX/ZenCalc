@@ -44,29 +44,42 @@ class ConversionDetailView extends StatelessWidget {
               ),
             ),
 
-            // 输入区域
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: _buildInputCard(controller, isDark),
+            // 换算卡片区域
+            Expanded(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  children: [
+                    // 左侧：输入和输出卡片
+                    Expanded(
+                      child: Column(
+                        children: [
+                          // 输入卡片
+                          Expanded(
+                            child: _buildInputCard(controller, isDark),
+                          ),
+                          const SizedBox(height: 16),
+                          // 输出卡片
+                          Expanded(
+                            child: _buildOutputCard(controller, isDark),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    // 右侧：交换按钮
+                    _buildSwapButton(controller, isDark),
+                  ],
+                ),
+              ),
             ),
 
             const SizedBox(height: 16),
-
-            // 交换按钮
-            _buildSwapButton(controller, isDark),
-
-            const SizedBox(height: 16),
-
-            // 输出区域
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: _buildOutputCard(controller, isDark),
-            ),
-
-            const SizedBox(height: 24),
 
             // 键盘
             Expanded(
+              flex: 4,
               child: ConversionKeypad(controller: controller),
             ),
           ],
@@ -80,21 +93,14 @@ class ConversionDetailView extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1A1A1A) : const Color(0xFFE8E4DC),
+        color: isDark ? const Color(0xFF2A2A2A) : Colors.white,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.5)
-                : Colors.black.withOpacity(0.1),
-            offset: const Offset(4, 4),
-            blurRadius: 8,
-          ),
-          BoxShadow(
-            color: isDark
-                ? Colors.white.withOpacity(0.05)
-                : Colors.white.withOpacity(0.9),
-            offset: const Offset(-4, -4),
+                ? Colors.black.withOpacity(0.3)
+                : Colors.black.withOpacity(0.08),
+            offset: const Offset(0, 2),
             blurRadius: 8,
           ),
         ],
@@ -109,15 +115,18 @@ class ConversionDetailView extends StatelessWidget {
                 onUnitChanged: (unit) => controller.setFromUnit(unit),
                 isDark: isDark,
               )),
-          const SizedBox(height: 16),
+          const Spacer(),
           // 输入值
           Obx(() => Text(
                 controller.inputValue.value.isEmpty ? '0' : controller.inputValue.value,
                 style: TextStyle(
-                  fontSize: 48,
+                  fontSize: 56,
                   fontWeight: FontWeight.w300,
                   color: const Color(0xFFFF6B35),
+                  height: 1.0,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               )),
         ],
       ),
@@ -132,21 +141,14 @@ class ConversionDetailView extends StatelessWidget {
         width: 56,
         height: 56,
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1A1A1A) : const Color(0xFFE8E4DC),
+          color: isDark ? const Color(0xFF2A2A2A) : Colors.white,
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
               color: isDark
-                  ? Colors.black.withOpacity(0.5)
-                  : Colors.black.withOpacity(0.1),
-              offset: const Offset(4, 4),
-              blurRadius: 8,
-            ),
-            BoxShadow(
-              color: isDark
-                  ? Colors.white.withOpacity(0.05)
-                  : Colors.white.withOpacity(0.9),
-              offset: const Offset(-4, -4),
+                  ? Colors.black.withOpacity(0.3)
+                  : Colors.black.withOpacity(0.08),
+              offset: const Offset(0, 2),
               blurRadius: 8,
             ),
           ],
@@ -165,21 +167,14 @@ class ConversionDetailView extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1A1A1A) : const Color(0xFFE8E4DC),
+        color: isDark ? const Color(0xFF2A2A2A) : Colors.white,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.5)
-                : Colors.black.withOpacity(0.1),
-            offset: const Offset(4, 4),
-            blurRadius: 8,
-          ),
-          BoxShadow(
-            color: isDark
-                ? Colors.white.withOpacity(0.05)
-                : Colors.white.withOpacity(0.9),
-            offset: const Offset(-4, -4),
+                ? Colors.black.withOpacity(0.3)
+                : Colors.black.withOpacity(0.08),
+            offset: const Offset(0, 2),
             blurRadius: 8,
           ),
         ],
@@ -194,15 +189,18 @@ class ConversionDetailView extends StatelessWidget {
                 onUnitChanged: (unit) => controller.setToUnit(unit),
                 isDark: isDark,
               )),
-          const SizedBox(height: 16),
+          const Spacer(),
           // 输出值
           Obx(() => Text(
                 controller.outputValue.value.isEmpty ? '0' : controller.outputValue.value,
                 style: TextStyle(
-                  fontSize: 48,
+                  fontSize: 56,
                   fontWeight: FontWeight.w300,
                   color: isDark ? Colors.white : Colors.black87,
+                  height: 1.0,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               )),
         ],
       ),
