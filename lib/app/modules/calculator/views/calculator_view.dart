@@ -164,6 +164,385 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     return char == '+' || char == '-' || char == '×' || char == '÷' || char == '%';
   }
 
+  // 构建科学计算器布局
+  Widget _buildScientificCalculator() {
+    return Column(
+      children: [
+        // 第一行：sin, cos, tan, (, )
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: 'sin',
+                    onTap: () => onButtonPressed('sin'),
+                    isOperator: true,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: 'cos',
+                    onTap: () => onButtonPressed('cos'),
+                    isOperator: true,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: 'tan',
+                    onTap: () => onButtonPressed('tan'),
+                    isOperator: true,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '(',
+                    onTap: () => onButtonPressed('('),
+                    isOperator: true,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: ')',
+                    onTap: () => onButtonPressed(')'),
+                    isOperator: true,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        // 第二行：log, ln, !, AC, %
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: 'log',
+                    onTap: () => onButtonPressed('log'),
+                    isOperator: true,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: 'ln',
+                    onTap: () => onButtonPressed('ln'),
+                    isOperator: true,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '!',
+                    onTap: () => onButtonPressed('!'),
+                    isOperator: true,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: 'AC',
+                    onTap: onClear,
+                    isOperator: true,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '%',
+                    onTap: () => onButtonPressed('%'),
+                    isOperator: true,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        // 第三行：^, 7, 8, 9, ⌫
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: 'xʸ',
+                    onTap: () => onButtonPressed('^'),
+                    isOperator: true,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '7',
+                    onTap: () => onButtonPressed('7'),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '8',
+                    onTap: () => onButtonPressed('8'),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '9',
+                    onTap: () => onButtonPressed('9'),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '⌫',
+                    onTap: onDelete,
+                    isOperator: true,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        // 第四行：√, 4, 5, 6, ÷
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '√',
+                    onTap: () => onButtonPressed('sqrt'),
+                    isOperator: true,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '4',
+                    onTap: () => onButtonPressed('4'),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '5',
+                    onTap: () => onButtonPressed('5'),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '6',
+                    onTap: () => onButtonPressed('6'),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '÷',
+                    onTap: () => onButtonPressed('÷'),
+                    isOperator: true,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        // 第五行：π, 1, 2, 3, ×
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: 'π',
+                    onTap: () => onButtonPressed('π'),
+                    isOperator: true,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '1',
+                    onTap: () => onButtonPressed('1'),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '2',
+                    onTap: () => onButtonPressed('2'),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '3',
+                    onTap: () => onButtonPressed('3'),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '×',
+                    onTap: () => onButtonPressed('×'),
+                    isOperator: true,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        // 第六行：e, 00, 0, ., -
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: 'e',
+                    onTap: () => onButtonPressed('e'),
+                    isOperator: true,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '00',
+                    onTap: () => onButtonPressed('00'),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '0',
+                    onTap: () => onButtonPressed('0'),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '.',
+                    onTap: () => onButtonPressed('.'),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '-',
+                    onTap: () => onButtonPressed('-'),
+                    isOperator: true,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        // 第七行：+, =（占两列）
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '+',
+                    onTap: () => onButtonPressed('+'),
+                    isOperator: true,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: NeumorphicButton(
+                    text: '=',
+                    onTap: onEquals,
+                    isEquals: true,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   // 显示设置对话框
   void _showSettingsDialog(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -435,6 +814,74 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         ),
                       ),
                       
+                      // 科学模式切换按钮
+                      GestureDetector(
+                        onTap: () {
+                          HapticService.selection();
+                          setState(() {
+                            _isScientificMode = !_isScientificMode;
+                          });
+                        },
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: _isScientificMode
+                                ? (isDark ? AppTheme.accentColorDark : AppTheme.accentColor)
+                                : (isDark ? AppTheme.darkBackground : AppTheme.lightBackground),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: _isScientificMode
+                                ? [
+                                    BoxShadow(
+                                      color: (isDark ? AppTheme.accentColorDark : AppTheme.accentColor)
+                                          .withOpacity(0.3),
+                                      offset: const Offset(0, 2),
+                                      blurRadius: 8,
+                                    ),
+                                  ]
+                                : [
+                                    BoxShadow(
+                                      color: isDark
+                                          ? AppTheme.darkShadowDark.withOpacity(0.6)
+                                          : AppTheme.lightShadowDark.withOpacity(0.4),
+                                      offset: const Offset(3, 3),
+                                      blurRadius: 6,
+                                    ),
+                                    BoxShadow(
+                                      color: isDark
+                                          ? AppTheme.darkShadowLight.withOpacity(0.6)
+                                          : AppTheme.lightShadowLight,
+                                      offset: const Offset(-3, -3),
+                                      blurRadius: 6,
+                                    ),
+                                  ],
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.functions,
+                                color: _isScientificMode
+                                    ? Colors.white
+                                    : (isDark ? AppTheme.darkText : AppTheme.lightText),
+                                size: 16,
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                _isScientificMode ? '科学' : '基础',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                  color: _isScientificMode
+                                      ? Colors.white
+                                      : (isDark ? AppTheme.darkText : AppTheme.lightText),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      
                       Row(
                         children: [
                           // 历史记录按钮
@@ -553,11 +1000,28 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               
               SizedBox(height: isSmallScreen ? 16 : 24),
               
-              // 按钮区域 - 减小比例
+              // 按钮区域 - 根据模式切换
               Expanded(
-                flex: 5,
-                child: Column(
-                  children: [
+                flex: _isScientificMode ? 6 : 5,
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder: (Widget child, Animation<double> animation) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: SlideTransition(
+                        position: Tween<Offset>(
+                          begin: const Offset(0.1, 0),
+                          end: Offset.zero,
+                        ).animate(animation),
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: _isScientificMode
+                      ? _buildScientificCalculator()
+                      : Column(
+                          key: const ValueKey('basic'),
+                          children: [
                     // 第一行：AC, %, ⌫, ÷
                     Expanded(
                       child: Row(
@@ -786,6 +1250,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       ),
                     ),
                   ],
+                        ),
                 ),
               ),
                 ],
@@ -814,6 +1279,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           ),
         ],  // Stack children 结束
       ),  // Stack 结束 (body)
+    );  // Scaffold 结束
+  }
+}
     );  // Scaffold 结束
   }
 }
