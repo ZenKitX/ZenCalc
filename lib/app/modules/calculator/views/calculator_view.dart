@@ -290,7 +290,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           ),
         ),
         
-        // 第三行：^, 7, 8, 9, ⌫
+        // 第三行：xʸ, 7, 8, 9, ⌫
         Expanded(
           child: Row(
             children: [
@@ -511,7 +511,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           ),
         ),
         
-        // 第七行：+, =（占两列）
+        // 第七行：+ 和 = 
         Expanded(
           child: Row(
             children: [
@@ -526,7 +526,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 ),
               ),
               Expanded(
-                flex: 4,
+                flex: 3,
                 child: Padding(
                   padding: const EdgeInsets.all(3.0),
                   child: NeumorphicButton(
