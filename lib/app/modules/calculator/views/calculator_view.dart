@@ -405,81 +405,82 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     vertical: isSmallScreen ? 8.0 : 16.0,
                   ),
                   child: Column(
-                children: [
-                  // 顶部工具栏
-                  CalculatorTopBar(
-                    isScientificMode: _isScientificMode,
-                    onScientificToggle: () {
-                      setState(() {
-                        _isScientificMode = !_isScientificMode;
-                      });
-                    },
-                    onSettingsTap: () => _showSettingsDialog(context),
-                    onHistoryTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HistoryScreen(
-                            onSelectHistory: (value) {
-                              setState(() {
-                                displayText = value;
-                                result = value;
-                                shouldResetDisplay = true;
-                              });
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                    onThemeToggle: widget.onThemeToggle,
-                    isDark: isDark,
-                  ),
-                  
-                  SizedBox(height: isSmallScreen ? 16 : 24),
-                  
-                  // 显示区域 - 占据更多空间
-                  Expanded(
-                    flex: 3,
-                    child: NeumorphicDisplay(
-                      displayText: displayText,
-                      result: result,
-                    ),
-                  ),
-              
-              SizedBox(height: isSmallScreen ? 16 : 24),
-              
-              // 按钮区域 - 根据模式切换
-              Expanded(
-                flex: _isScientificMode ? 6 : 5,
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  transitionBuilder: (Widget child, Animation<double> animation) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: SlideTransition(
-                        position: Tween<Offset>(
-                          begin: const Offset(0.1, 0),
-                          end: Offset.zero,
-                        ).animate(animation),
-                        child: child,
+                    children: [
+                      // 顶部工具栏
+                      CalculatorTopBar(
+                        isScientificMode: _isScientificMode,
+                        onScientificToggle: () {
+                          setState(() {
+                            _isScientificMode = !_isScientificMode;
+                          });
+                        },
+                        onSettingsTap: () => _showSettingsDialog(context),
+                        onHistoryTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HistoryScreen(
+                                onSelectHistory: (value) {
+                                  setState(() {
+                                    displayText = value;
+                                    result = value;
+                                    shouldResetDisplay = true;
+                                  });
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                        onThemeToggle: widget.onThemeToggle,
+                        isDark: isDark,
                       ),
-                    );
-                  },
-                  child: _isScientificMode
-                      ? _buildScientificCalculator()
-                      : BasicButtonGrid(
-                          onButtonPressed: onButtonPressed,
-                          onClear: onClear,
-                          onDelete: onDelete,
-                          onEquals: onEquals,
+                      
+                      SizedBox(height: isSmallScreen ? 16 : 24),
+                      
+                      // 显示区域 - 占据更多空间
+                      Expanded(
+                        flex: 3,
+                        child: NeumorphicDisplay(
+                          displayText: displayText,
+                          result: result,
                         ),
+                      ),
+                  
+                      SizedBox(height: isSmallScreen ? 16 : 24),
+                      
+                      // 按钮区域 - 根据模式切换
+                      Expanded(
+                        flex: _isScientificMode ? 6 : 5,
+                        child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          transitionBuilder: (Widget child, Animation<double> animation) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(0.1, 0),
+                                  end: Offset.zero,
+                                ).animate(animation),
+                                child: child,
+                              ),
+                            );
+                          },
+                          child: _isScientificMode
+                              ? _buildScientificCalculator()
+                              : BasicButtonGrid(
+                                  onButtonPressed: onButtonPressed,
+                                  onClear: onClear,
+                                  onDelete: onDelete,
+                                  onEquals: onEquals,
+                                ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-                ],
               ),
             ),
           ),
-        ),
         
         // 禅语浮层
         if (_currentQuote != null)
