@@ -5,25 +5,63 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 并且本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [Unreleased]
+
+### 计划中
+
+- 科学计算器模式（横屏自动切换）
+- 手势操作（左滑清除、右滑撤销、长按复制）
+- 呼吸模式动画（待机时的柔和动画）
+- 专注模式（隐藏历史和设置，全屏沉浸）
+- 自定义音效（用户上传音效文件）
+- 国际化支持（英文、日文）
+- 云同步功能
+- 主题定制
+- 小部件支持
+
+### 已知问题
+
+- 部分设备上触觉反馈可能不工作（降级到系统默认）
+- 音效功能尚未实现（框架已就绪）
+- 某些 Flutter 3.41+ 的 API 使用了已弃用的方法（withOpacity）
+
 ## [1.0.2] - 2026-02-26
 
 ### 新增
-- 🎨 禅意风格应用图标
-  - 圆形设计，竹绿色背景
-  - 简洁的计算器网格符号
-  - 符合 Digital Zen 设计哲学
-- 📱 完整的图标资源
+
+- 🎨 全新的禅意应用图标（ensō + 等号设计）
+  - 不完美的圆（ensō）象征禅宗美学
+  - 等号符号代表计算的本质
+  - 沙色背景 + 竹绿色主体
+  - 手绘质感的线条变化
+- 📱 完整的图标资源生成配置
   - Android 所有密度的图标（mdpi 到 xxxhdpi）
   - iOS 所有尺寸的图标（20x20 到 1024x1024）
+  - Adaptive Icon 支持
+- 📝 详细的签名配置文档（SETUP_SIGNING.md）
+- 📚 开发路线图和下一步计划
+- 🔧 flutter_launcher_icons 配置
+
+### 修复
+
+- 🐛 修正所有组件文件的导入路径（使用 package: 导入）
+- 🐛 修正 HistoryService 的导入路径和使用方式
+- 🐛 创建 GetX View 包装器桥接 StatefulWidget 和 GetX 路由
+- 🐛 简化 controller 实现，移除未使用的方法
+- 🐛 修正测试文件的包名导入
 
 ### 改进
-- 📦 APK 文件名优化
-  - 从 `app-release.apk` 改为 `ZenCalc-版本号.apk`
-  - 更清晰的发布文件命名
+
+- 📦 APK 文件名优化（ZenCalc-版本号.apk）
+- ⚡ 保持 GetX 依赖用于路由管理
+- ⚡ 优化项目结构，分离关注点
 
 ### 文档
-- 📝 添加图标设计哲学文档
-- 🔧 改进 GitHub Actions 工作流
+
+- 📝 添加图标设计哲学文档（design/icon_philosophy.md）
+- 📝 添加图标生成说明（design/README.md）
+- 📝 添加详细的签名配置步骤（docs/SETUP_SIGNING.md）
+- 📝 完善 CHANGELOG.md，添加计划和已知问题
 
 ## [1.0.1] - 2026-02-26
 
