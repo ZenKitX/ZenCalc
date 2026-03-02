@@ -4,6 +4,7 @@ import 'package:zen_calc/app/components/neumorphic_button.dart';
 import 'package:zen_calc/app/components/neumorphic_display.dart';
 import 'package:zen_calc/app/components/zen_quote_widget.dart';
 import 'package:zen_calc/app/utils/calculator_logic.dart';
+import 'package:zen_calc/app/utils/scientific_calculator_logic.dart';
 import 'package:zen_calc/app/services/haptic_service.dart';
 import 'package:zen_calc/app/services/audio_service.dart';
 import 'package:zen_calc/app/services/zen_quote_service.dart';
@@ -28,6 +29,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   bool shouldResetDisplay = false;
   ZenQuote? _currentQuote;
   bool _showZenQuotes = true; // 默认开启禅语
+  bool _isScientificMode = false; // 科学计算器模式
   
   @override
   void initState() {
@@ -126,8 +128,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         expression = expression.substring(0, expression.length - 1);
       }
 
-      // 计算结果
-      result = CalculatorLogic.calculate(expression);
+      // 根据模式选择计算逻辑
+      result = _isScientificMode 
+          ? ScientificCalculatorLogic.calculate(expression)
+          : CalculatorLogic.calculate(expression);
       shouldResetDisplay = true;
       
       // 保存到历史记录
