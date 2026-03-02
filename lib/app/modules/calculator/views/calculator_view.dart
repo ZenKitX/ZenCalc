@@ -53,6 +53,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         }
         shouldResetDisplay = false;
         result = '0';
+        _updatePreview();
         return;
       }
 
@@ -67,6 +68,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         } else {
           displayText = '0$value';
         }
+        _updatePreview();
         return;
       }
 
@@ -77,6 +79,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           return;
         }
         displayText += '00';
+        _updatePreview();
         return;
       }
 
@@ -85,6 +88,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         // 如果最后一个字符也是运算符，替换它
         if (displayText.isNotEmpty && _isOperator(displayText[displayText.length - 1])) {
           displayText = displayText.substring(0, displayText.length - 1) + value;
+          _updatePreview();
           return;
         }
       }
@@ -96,7 +100,44 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
       // 添加输入
       displayText += value;
+      
+      // 实时预览计算结果
+      _updatePreview();
     });
+  }
+
+  // 实时预览计算结果
+  void _updatePreview() {
+    String expression = displayText;
+    
+    // 如果表达式为空或只有一个数字，不显示预览
+    if (expression.isEmpty || expression == '0') {
+      result = '0';
+      return;
+    }
+    
+    // 如果表达式以运算符结尾，移除它再计算
+    if (expression.isNotEmpty && _isOperator(expression[expression.length - 1])) {
+      expression = expression.substring(0, expression.length - 1);
+    }
+    
+    // 如果移除运算符后为空，不显示预览
+    if (expression.isEmpty) {
+      result = '0';
+      return;
+    }
+    
+    // 计算预览结果
+    String previewResult = _isScientificMode 
+        ? ScientificCalculatorLogic.calculate(expression)
+        : CalculatorLogic.calculate(expression);
+    
+    // 只有当结果不是错误且与输入不同时才显示预览
+    if (previewResult != 'Error' && previewResult != expression) {
+      result = previewResult;
+    } else {
+      result = '0';
+    }
   }
 
   void onClear() {
@@ -131,29 +172,31 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       }
 
       // 根据模式选择计算逻辑
-      result = _isScientificMode 
+      String finalResult = _isScientificMode 
           ? ScientificCalculatorLogic.calculate(expression)
           : CalculatorLogic.calculate(expression);
+      
+      result = finalResult;
       shouldResetDisplay = true;
       
-      // 保存到历史记录
-      if (result != 'Error') {
-        HistoryService.addHistory(expression, result);
+      // 只在按等号时保存到历史记录
+      if (finalResult != 'Error') {
+        HistoryService.addHistory(expression, finalResult);
       }
       
       // 显示等号相关的禅语
       if (_showZenQuotes) {
-        if (result == 'Error') {
+        if (finalResult == 'Error') {
           // 错误时显示错误相关禅语
           if (ZenQuoteService.shouldShowQuote(probability: 0.6)) {
             _currentQuote = ZenQuoteService.getQuote(ZenContext.error);
           }
         } else {
           // 检查特殊结果
-          if (result == '0' && ZenQuoteService.shouldShowQuote(probability: 0.4)) {
+          if (finalResult == '0' && ZenQuoteService.shouldShowQuote(probability: 0.4)) {
             _currentQuote = ZenQuoteService.getQuote(ZenContext.zero);
-          } else if ((result == '100' || result == '1000') && ZenQuoteService.shouldShowQuote(probability: 0.7)) {
-            _currentQuote = ZenQuoteService.getQuote(ZenContext.equals, trigger: result);
+          } else if ((finalResult == '100' || finalResult == '1000') && ZenQuoteService.shouldShowQuote(probability: 0.7)) {
+            _currentQuote = ZenQuoteService.getQuote(ZenContext.equals, trigger: finalResult);
           } else if (ZenQuoteService.shouldShowQuote(probability: 0.3)) {
             _currentQuote = ZenQuoteService.getQuote(ZenContext.equals);
           }
@@ -452,17 +495,26 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       Expanded(
                         flex: _isScientificMode ? 6 : 5,
                         child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 400),
+                          switchInCurve: Curves.easeOutCubic,
+                          switchOutCurve: Curves.easeInCubic,
                           transitionBuilder: (Widget child, Animation<double> animation) {
-                            return FadeTransition(
-                              opacity: animation,
-                              child: SlideTransition(
-                                position: Tween<Offset>(
-                                  begin: const Offset(0.1, 0),
-                                  end: Offset.zero,
-                                ).animate(animation),
+                            return SizeTransition(
+                              sizeFactor: animation,
+                              axisAlignment: -1.0, // 从顶部开始展开
+                              child: FadeTransition(
+                                opacity: animation,
                                 child: child,
                               ),
+                            );
+                          },
+                          layoutBuilder: (Widget? currentChild, List<Widget> previousChildren) {
+                            return Stack(
+                              alignment: Alignment.topCenter,
+                              children: <Widget>[
+                                ...previousChildren,
+                                if (currentChild != null) currentChild,
+                              ],
                             );
                           },
                           child: _isScientificMode
