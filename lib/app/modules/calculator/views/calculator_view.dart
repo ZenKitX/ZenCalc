@@ -1282,6 +1282,3 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     );  // Scaffold 结束
   }
 }
-    );  // Scaffold 结束
-  }
-}
