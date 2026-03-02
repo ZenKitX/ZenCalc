@@ -46,6 +46,54 @@ class ConversionData {
     ConversionUnit(id: 'kelvin', name: '开尔文', symbol: 'K', toBaseRatio: 1.0),
   ];
 
+  /// 体积单位
+  static const volumeUnits = [
+    ConversionUnit(id: 'cubic_meter', name: '立方米', symbol: 'm³', toBaseRatio: 1.0),
+    ConversionUnit(id: 'liter', name: '升', symbol: 'L', toBaseRatio: 0.001),
+    ConversionUnit(id: 'milliliter', name: '毫升', symbol: 'mL', toBaseRatio: 0.000001),
+    ConversionUnit(id: 'cubic_centimeter', name: '立方厘米', symbol: 'cm³', toBaseRatio: 0.000001),
+    ConversionUnit(id: 'gallon', name: '加仑', symbol: 'gal', toBaseRatio: 0.00378541),
+    ConversionUnit(id: 'pint', name: '品脱', symbol: 'pt', toBaseRatio: 0.000473176),
+    ConversionUnit(id: 'cubic_foot', name: '立方英尺', symbol: 'ft³', toBaseRatio: 0.0283168),
+  ];
+
+  /// 速度单位
+  static const speedUnits = [
+    ConversionUnit(id: 'meter_per_second', name: '米/秒', symbol: 'm/s', toBaseRatio: 1.0),
+    ConversionUnit(id: 'kilometer_per_hour', name: '千米/时', symbol: 'km/h', toBaseRatio: 0.277778),
+    ConversionUnit(id: 'mile_per_hour', name: '英里/时', symbol: 'mph', toBaseRatio: 0.44704),
+    ConversionUnit(id: 'knot', name: '节', symbol: 'kn', toBaseRatio: 0.514444),
+    ConversionUnit(id: 'foot_per_second', name: '英尺/秒', symbol: 'ft/s', toBaseRatio: 0.3048),
+  ];
+
+  /// 压强单位
+  static const pressureUnits = [
+    ConversionUnit(id: 'pascal', name: '帕斯卡', symbol: 'Pa', toBaseRatio: 1.0),
+    ConversionUnit(id: 'kilopascal', name: '千帕', symbol: 'kPa', toBaseRatio: 1000.0),
+    ConversionUnit(id: 'megapascal', name: '兆帕', symbol: 'MPa', toBaseRatio: 1000000.0),
+    ConversionUnit(id: 'bar', name: '巴', symbol: 'bar', toBaseRatio: 100000.0),
+    ConversionUnit(id: 'atmosphere', name: '大气压', symbol: 'atm', toBaseRatio: 101325.0),
+    ConversionUnit(id: 'mmhg', name: '毫米汞柱', symbol: 'mmHg', toBaseRatio: 133.322),
+    ConversionUnit(id: 'psi', name: '磅/平方英寸', symbol: 'psi', toBaseRatio: 6894.76),
+  ];
+
+  /// 功率单位
+  static const powerUnits = [
+    ConversionUnit(id: 'watt', name: '瓦特', symbol: 'W', toBaseRatio: 1.0),
+    ConversionUnit(id: 'kilowatt', name: '千瓦', symbol: 'kW', toBaseRatio: 1000.0),
+    ConversionUnit(id: 'megawatt', name: '兆瓦', symbol: 'MW', toBaseRatio: 1000000.0),
+    ConversionUnit(id: 'horsepower', name: '马力', symbol: 'hp', toBaseRatio: 745.7),
+    ConversionUnit(id: 'btu_per_hour', name: 'BTU/时', symbol: 'BTU/h', toBaseRatio: 0.293071),
+  ];
+
+  /// 进制单位（特殊处理）
+  static const numberSystemUnits = [
+    ConversionUnit(id: 'binary', name: '二进制', symbol: 'BIN', toBaseRatio: 2.0),
+    ConversionUnit(id: 'octal', name: '八进制', symbol: 'OCT', toBaseRatio: 8.0),
+    ConversionUnit(id: 'decimal', name: '十进制', symbol: 'DEC', toBaseRatio: 10.0),
+    ConversionUnit(id: 'hexadecimal', name: '十六进制', symbol: 'HEX', toBaseRatio: 16.0),
+  ];
+
   /// 所有类别
   static final categories = [
     const ConversionCategory(
@@ -71,6 +119,37 @@ class ConversionData {
       name: '温度',
       icon: Icons.thermostat,
       units: temperatureUnits,
+      isSpecial: true,
+    ),
+    const ConversionCategory(
+      id: 'volume',
+      name: '体积',
+      icon: Icons.view_in_ar,
+      units: volumeUnits,
+    ),
+    const ConversionCategory(
+      id: 'speed',
+      name: '速度',
+      icon: Icons.speed,
+      units: speedUnits,
+    ),
+    const ConversionCategory(
+      id: 'pressure',
+      name: '压强',
+      icon: Icons.compress,
+      units: pressureUnits,
+    ),
+    const ConversionCategory(
+      id: 'power',
+      name: '功率',
+      icon: Icons.bolt,
+      units: powerUnits,
+    ),
+    const ConversionCategory(
+      id: 'number_system',
+      name: '进制',
+      icon: Icons.calculate,
+      units: numberSystemUnits,
       isSpecial: true,
     ),
   ];

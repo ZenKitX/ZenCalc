@@ -36,6 +36,18 @@ class ConverterController extends GetxController {
 
   /// 输入数字
   void inputDigit(String digit) {
+    // 进制转换特殊处理
+    if (selectedCategory.value?.id == 'number_system') {
+      // 验证输入是否合法
+      final testValue = inputValue.value + digit;
+      if (!ConversionLogic.isValidNumberSystemInput(testValue, fromUnit.value?.id ?? 'decimal')) {
+        return;
+      }
+      inputValue.value = testValue;
+      _calculate();
+      return;
+    }
+
     if (digit == '.' && inputValue.value.contains('.')) return;
     
     inputValue.value += digit;
@@ -88,6 +100,17 @@ class ConverterController extends GetxController {
     }
 
     try {
+      // 进制转换特殊处理
+      if (selectedCategory.value?.id == 'number_system') {
+        final result = ConversionLogic.convertNumberSystem(
+          value: inputValue.value,
+          fromUnitId: fromUnit.value!.id,
+          toUnitId: toUnit.value!.id,
+        );
+        outputValue.value = result;
+        return;
+      }
+
       final value = double.parse(inputValue.value);
       double result;
 

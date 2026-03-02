@@ -50,6 +50,58 @@ class ConversionLogic {
     }
   }
 
+  /// 进制转换（特殊处理）
+  static String convertNumberSystem({
+    required String value,
+    required String fromUnitId,
+    required String toUnitId,
+  }) {
+    if (fromUnitId == toUnitId) return value;
+
+    try {
+      // 获取进制基数
+      int fromBase = _getBase(fromUnitId);
+      int toBase = _getBase(toUnitId);
+
+      // 先转换为十进制
+      int decimalValue = int.parse(value, radix: fromBase);
+
+      // 再转换为目标进制
+      return decimalValue.toRadixString(toBase).toUpperCase();
+    } catch (e) {
+      return '';
+    }
+  }
+
+  /// 获取进制基数
+  static int _getBase(String unitId) {
+    switch (unitId) {
+      case 'binary':
+        return 2;
+      case 'octal':
+        return 8;
+      case 'decimal':
+        return 10;
+      case 'hexadecimal':
+        return 16;
+      default:
+        return 10;
+    }
+  }
+
+  /// 验证进制输入
+  static bool isValidNumberSystemInput(String value, String unitId) {
+    if (value.isEmpty) return true;
+
+    try {
+      int base = _getBase(unitId);
+      int.parse(value, radix: base);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   /// 格式化显示结果
   static String formatResult(double value) {
     if (value.abs() < 0.0001 && value != 0) {
