@@ -7,8 +7,6 @@ class ScientificCalculatorLogic {
       // 替换显示符号为计算符号
       expression = expression.replaceAll('×', '*');
       expression = expression.replaceAll('÷', '/');
-      expression = expression.replaceAll('π', math.pi.toString());
-      expression = expression.replaceAll('e', math.e.toString());
       
       // 移除空格
       expression = expression.replaceAll(' ', '');
@@ -47,6 +45,31 @@ class ScientificCalculatorLogic {
   
   // 处理科学函数
   static String _processScientificFunctions(String expression) {
+    // 先处理 e^ 和 10^，避免 e 被提前替换
+    // 处理 10^ (10的幂)
+    while (expression.contains('10^')) {
+      int index = expression.indexOf('10^');
+      int numStart = index + 3;
+      String numStr = _extractNumber(expression, numStart);
+      double num = double.parse(numStr);
+      double result = math.pow(10, num).toDouble();
+      expression = expression.replaceFirst('10^$numStr', result.toString());
+    }
+    
+    // 处理 e^ (e的幂) - 必须在替换单独的 e 之前
+    while (expression.contains('e^')) {
+      int index = expression.indexOf('e^');
+      int numStart = index + 2;
+      String numStr = _extractNumber(expression, numStart);
+      double num = double.parse(numStr);
+      double result = math.exp(num);
+      expression = expression.replaceFirst('e^$numStr', result.toString());
+    }
+    
+    // 现在可以安全地替换 π 和 e 常数
+    expression = expression.replaceAll('π', math.pi.toString());
+    expression = expression.replaceAll('e', math.e.toString());
+    
     // 处理 asin (反正弦)
     while (expression.contains('asin')) {
       int index = expression.indexOf('asin');
@@ -94,26 +117,6 @@ class ScientificCalculatorLogic {
       double num = double.parse(numStr);
       double result = num * num;
       expression = expression.replaceFirst('${numStr}x²', result.toString());
-    }
-    
-    // 处理 10^ (10的幂)
-    while (expression.contains('10^')) {
-      int index = expression.indexOf('10^');
-      int numStart = index + 3;
-      String numStr = _extractNumber(expression, numStart);
-      double num = double.parse(numStr);
-      double result = math.pow(10, num).toDouble();
-      expression = expression.replaceFirst('10^$numStr', result.toString());
-    }
-    
-    // 处理 e^ (e的幂)
-    while (expression.contains('e^')) {
-      int index = expression.indexOf('e^');
-      int numStart = index + 2;
-      String numStr = _extractNumber(expression, numStart);
-      double num = double.parse(numStr);
-      double result = math.exp(num);
-      expression = expression.replaceFirst('e^$numStr', result.toString());
     }
     
     // 处理 sin
