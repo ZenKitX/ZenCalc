@@ -4,11 +4,13 @@ import 'package:zen_calc/app/config/theme/app_theme.dart';
 class NeumorphicDisplay extends StatefulWidget {
   final String displayText;
   final String result;
+  final bool showResult; // 是否显示结果（按等号后）
 
   const NeumorphicDisplay({
     super.key,
     required this.displayText,
     required this.result,
+    this.showResult = false,
   });
 
   @override
@@ -16,19 +18,10 @@ class NeumorphicDisplay extends StatefulWidget {
 }
 
 class _NeumorphicDisplayState extends State<NeumorphicDisplay> {
-  String _previousResult = '';
-
-  @override
-  void didUpdateWidget(NeumorphicDisplay oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.result != widget.result) {
-      _previousResult = oldWidget.result;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final hasPreview = widget.result != '0' && !widget.showResult;
 
     return Container(
       width: double.infinity,
@@ -37,7 +30,6 @@ class _NeumorphicDisplayState extends State<NeumorphicDisplay> {
         color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
-          // 内阴影效果（凹陷）- 更柔和
           BoxShadow(
             color: isDark
                 ? AppTheme.darkShadowDark.withOpacity(0.5)
@@ -60,7 +52,34 @@ class _NeumorphicDisplayState extends State<NeumorphicDisplay> {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          // 输入显示 - 带淡入动画
+          // 上方文本（输入中显示空，按等号后显示表达式）
+          if (widget.showResult)
+            Flexible(
+              child: SingleChildScrollView(
+                reverse: true,
+                child: AnimatedOpacity(
+                  duration: const Duration(milliseconds: 300),
+                  opacity: 1.0,
+                  child: Text(
+                    widget.displayText,
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: isDark 
+                          ? AppTheme.darkTextSecondary 
+                          : AppTheme.lightTextSecondary,
+                      fontWeight: FontWeight.w300,
+                    ),
+                    textAlign: TextAlign.right,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ),
+          
+          if (widget.showResult) const SizedBox(height: 8),
+          
+          // 主显示区域
           Flexible(
             child: SingleChildScrollView(
               reverse: true,
@@ -81,45 +100,104 @@ class _NeumorphicDisplayState extends State<NeumorphicDisplay> {
                     ),
                   );
                 },
-                child: Text(
-                  widget.displayText,
-                  key: ValueKey<String>(widget.displayText),
-                  style: Theme.of(context).textTheme.displayMedium,
-                  textAlign: TextAlign.right,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
+                child: Row(
+                  key: ValueKey<String>('${widget.displayText}_${widget.showResult}'),
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        widget.showResult ? widget.result : widget.displayText,
+                        style: TextStyle(
+                          fontSize: widget.showResult ? 56 : 48,
+                          fontWeight: FontWeight.w300,
+                          color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                          height: 1.2,
+                        ),
+                        textAlign: TextAlign.right,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    // 光标（仅在输入时显示）
+                    if (!widget.showResult)
+                      _BlinkingCursor(isDark: isDark),
+                  ],
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 16),
-          // 结果显示 - 带淡入淡出动画
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 400),
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              return FadeTransition(
-                opacity: animation,
-                child: ScaleTransition(
-                  scale: Tween<double>(begin: 0.95, end: 1.0).animate(
-                    CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeOutCubic,
-                    ),
-                  ),
-                  child: child,
+          
+          // 预览结果（仅在输入中且有预览时显示）
+          if (hasPreview) ...[
+            const SizedBox(height: 12),
+            AnimatedOpacity(
+              duration: const Duration(milliseconds: 300),
+              opacity: 1.0,
+              child: Text(
+                widget.result,
+                style: TextStyle(
+                  fontSize: 28,
+                  color: isDark 
+                      ? AppTheme.darkTextSecondary 
+                      : AppTheme.lightTextSecondary,
+                  fontWeight: FontWeight.w300,
                 ),
-              );
-            },
-            child: Text(
-              widget.result,
-              key: ValueKey<String>(widget.result),
-              style: Theme.of(context).textTheme.displayLarge,
-              textAlign: TextAlign.right,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.right,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
+          ],
         ],
+      ),
+    );
+  }
+}
+
+// 闪烁光标组件
+class _BlinkingCursor extends StatefulWidget {
+  final bool isDark;
+
+  const _BlinkingCursor({required this.isDark});
+
+  @override
+  State<_BlinkingCursor> createState() => _BlinkingCursorState();
+}
+
+class _BlinkingCursorState extends State<_BlinkingCursor>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _controller,
+      child: Container(
+        width: 3,
+        height: 48,
+        margin: const EdgeInsets.only(left: 4, bottom: 4),
+        decoration: BoxDecoration(
+          color: widget.isDark 
+              ? AppTheme.accentColorDark 
+              : AppTheme.accentColor,
+          borderRadius: BorderRadius.circular(2),
+        ),
       ),
     );
   }

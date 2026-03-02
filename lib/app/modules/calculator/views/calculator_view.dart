@@ -513,6 +513,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         child: NeumorphicDisplay(
                           displayText: displayText,
                           result: result,
+                          showResult: shouldResetDisplay,
                         ),
                       ),
                   
