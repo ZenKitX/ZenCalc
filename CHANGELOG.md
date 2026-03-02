@@ -5,6 +5,24 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 并且本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.0.4] - 2024-03-XX
+
+### 新增
+- 实时预览功能：输入计算式时自动显示结果预览
+- 优化的模式切换动画：基础/科学模式使用扩展动画效果
+
+### 改进
+- 历史记录优化：只在按等号时才记录，避免历史污染
+- 代码重构：拆分为多个组件提高可维护性
+  - CalculatorTopBar：顶部工具栏组件
+  - BasicButtonGrid：基础计算器按钮网格
+  - ScientificButtonGrid：科学计算器按钮网格
+- 科学计算器布局优化为 7行5列
+
+### 修复
+- 修复括号闭合问题导致的编译错误
+- 修正代码缩进和结构问题
+
 ## [Unreleased]
 
 ### 计划中
