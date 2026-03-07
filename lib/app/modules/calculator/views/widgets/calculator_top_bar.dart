@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zen_calc/app/config/theme/app_theme.dart';
-import 'package:zen_calc/app/services/haptic_service.dart';
+import 'package:feedback_kit/feedback_kit.dart';
 
 class CalculatorTopBar extends StatelessWidget {
   final bool isScientificMode;

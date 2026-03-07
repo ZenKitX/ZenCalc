@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:zen_calc/app/config/theme/app_theme.dart';
 import 'package:zen_calc/app/data/models/calculation_history.dart';
-import 'package:zen_calc/app/services/history_service.dart';
-import 'package:zen_calc/app/services/haptic_service.dart';
+import 'package:zen_calc/app/services/calculation_history_service.dart';
+import 'package:feedback_kit/feedback_kit.dart';
 
 class HistoryScreen extends StatefulWidget {
   final Function(String) onSelectHistory;
@@ -20,8 +20,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final history = HistoryService.history;
-    final stats = HistoryService.getStatistics();
+    final history = CalculationHistoryService.history;
+    final stats = CalculationHistoryService.getStatistics();
     
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
@@ -255,7 +255,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       onDismissed: (direction) {
         HapticService.light();
         setState(() {
-          HistoryService.deleteHistory(index);
+          CalculationHistoryService.deleteHistory(index);
         });
       },
       background: Container(
@@ -421,7 +421,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       child: ElevatedButton(
                         onPressed: () async {
                           HapticService.heavy();
-                          await HistoryService.clearHistory();
+                          await CalculationHistoryService.clearHistory();
                           if (context.mounted) {
                             Navigator.pop(context);
                             setState(() {});
