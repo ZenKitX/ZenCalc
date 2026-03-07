@@ -52,3 +52,15 @@ app.*.map.json
 key.properties
 android/key.properties
 android/app/keystore.jks
+
+# 允许自定义 packages（但排除特定的包）
+packages/*
+
+# 忽略 packages 内的构建产物
+packages/**/.dart_tool/
+packages/**/build/
+packages/**/.pub/
+packages/**/pubspec.lock
+packages/**/.packages
+
+docs/archive
