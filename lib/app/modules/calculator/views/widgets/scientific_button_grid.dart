@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zen_calc/app/components/neumorphic_button.dart';
+import 'package:zen_calc/app/components/zen_calc_button.dart';
 
 class ScientificButtonGrid extends StatelessWidget {
   final Function(String) onButtonPressed;
@@ -30,11 +30,11 @@ class ScientificButtonGrid extends StatelessWidget {
         Expanded(
           child: Row(
             children: [
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: isInverseMode ? 'sin⁻¹' : 'sin', onTap: () => onButtonPressed(isInverseMode ? 'asin' : 'sin'), isOperator: true, fontSize: 14))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: isInverseMode ? 'cos⁻¹' : 'cos', onTap: () => onButtonPressed(isInverseMode ? 'acos' : 'cos'), isOperator: true, fontSize: 14))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: isInverseMode ? 'tan⁻¹' : 'tan', onTap: () => onButtonPressed(isInverseMode ? 'atan' : 'tan'), isOperator: true, fontSize: 14))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: 'rad', onTap: () {}, isOperator: true, fontSize: 14))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: 'deg', onTap: onShowLastExpression, isOperator: true, fontSize: 14))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: isInverseMode ? 'sin⁻¹' : 'sin', onTap: () => onButtonPressed(isInverseMode ? 'asin' : 'sin'), isOperator: true, fontSize: 14))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: isInverseMode ? 'cos⁻¹' : 'cos', onTap: () => onButtonPressed(isInverseMode ? 'acos' : 'cos'), isOperator: true, fontSize: 14))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: isInverseMode ? 'tan⁻¹' : 'tan', onTap: () => onButtonPressed(isInverseMode ? 'atan' : 'tan'), isOperator: true, fontSize: 14))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: 'rad', onTap: () {}, isOperator: true, fontSize: 14))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: 'deg', onTap: onShowLastExpression, isOperator: true, fontSize: 14))),
             ],
           ),
         ),
@@ -43,11 +43,11 @@ class ScientificButtonGrid extends StatelessWidget {
         Expanded(
           child: Row(
             children: [
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: isInverseMode ? '10^' : 'log', onTap: () => onButtonPressed(isInverseMode ? '10^' : 'log'), isOperator: true, fontSize: 14))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: isInverseMode ? 'e^' : 'ln', onTap: () => onButtonPressed(isInverseMode ? 'e^' : 'ln'), isOperator: true, fontSize: 14))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '(', onTap: () => onButtonPressed('('), isOperator: true))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: ')', onTap: () => onButtonPressed(')'), isOperator: true))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: 'inv', onTap: onToggleInverse, isOperator: true, fontSize: 14, textColor: isInverseMode ? Colors.deepOrange : null))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: isInverseMode ? '10^' : 'log', onTap: () => onButtonPressed(isInverseMode ? '10^' : 'log'), isOperator: true, fontSize: 14))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: isInverseMode ? 'e^' : 'ln', onTap: () => onButtonPressed(isInverseMode ? 'e^' : 'ln'), isOperator: true, fontSize: 14))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '(', onTap: () => onButtonPressed('('), isOperator: true))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: ')', onTap: () => onButtonPressed(')'), isOperator: true))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: 'inv', onTap: onToggleInverse, isOperator: true, fontSize: 14, textColor: isInverseMode ? Colors.deepOrange : null))),
             ],
           ),
         ),
@@ -56,11 +56,11 @@ class ScientificButtonGrid extends StatelessWidget {
         Expanded(
           child: Row(
             children: [
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '!', onTap: () => onButtonPressed('!'), isOperator: true))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: 'AC', onTap: onClear, isOperator: true, fontSize: 14))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '%', onTap: () => onButtonPressed('%'), isOperator: true))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '⌫', onTap: onDelete, isOperator: true))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '÷', onTap: () => onButtonPressed('÷'), isOperator: true))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '!', onTap: () => onButtonPressed('!'), isOperator: true))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: 'AC', onTap: onClear, isOperator: true, fontSize: 14))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '%', onTap: () => onButtonPressed('%'), isOperator: true))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '⌫', onTap: onDelete, isOperator: true))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '÷', onTap: () => onButtonPressed('÷'), isOperator: true))),
             ],
           ),
         ),
@@ -69,11 +69,11 @@ class ScientificButtonGrid extends StatelessWidget {
         Expanded(
           child: Row(
             children: [
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '^', onTap: () => onButtonPressed('^'), isOperator: true))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '7', onTap: () => onButtonPressed('7')))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '8', onTap: () => onButtonPressed('8')))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '9', onTap: () => onButtonPressed('9')))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '×', onTap: () => onButtonPressed('×'), isOperator: true))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '^', onTap: () => onButtonPressed('^'), isOperator: true))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '7', onTap: () => onButtonPressed('7')))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '8', onTap: () => onButtonPressed('8')))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '9', onTap: () => onButtonPressed('9')))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '×', onTap: () => onButtonPressed('×'), isOperator: true))),
             ],
           ),
         ),
@@ -82,11 +82,11 @@ class ScientificButtonGrid extends StatelessWidget {
         Expanded(
           child: Row(
             children: [
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: isInverseMode ? 'x²' : '√', onTap: () => onButtonPressed(isInverseMode ? 'x²' : 'sqrt'), isOperator: true))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '4', onTap: () => onButtonPressed('4')))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '5', onTap: () => onButtonPressed('5')))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '6', onTap: () => onButtonPressed('6')))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '-', onTap: () => onButtonPressed('-'), isOperator: true))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: isInverseMode ? 'x²' : '√', onTap: () => onButtonPressed(isInverseMode ? 'x²' : 'sqrt'), isOperator: true))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '4', onTap: () => onButtonPressed('4')))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '5', onTap: () => onButtonPressed('5')))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '6', onTap: () => onButtonPressed('6')))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '-', onTap: () => onButtonPressed('-'), isOperator: true))),
             ],
           ),
         ),
@@ -95,11 +95,11 @@ class ScientificButtonGrid extends StatelessWidget {
         Expanded(
           child: Row(
             children: [
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: 'π', onTap: () => onButtonPressed('π'), isOperator: true))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '1', onTap: () => onButtonPressed('1')))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '2', onTap: () => onButtonPressed('2')))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '3', onTap: () => onButtonPressed('3')))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '+', onTap: () => onButtonPressed('+'), isOperator: true))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: 'π', onTap: () => onButtonPressed('π'), isOperator: true))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '1', onTap: () => onButtonPressed('1')))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '2', onTap: () => onButtonPressed('2')))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '3', onTap: () => onButtonPressed('3')))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '+', onTap: () => onButtonPressed('+'), isOperator: true))),
             ],
           ),
         ),
@@ -108,11 +108,11 @@ class ScientificButtonGrid extends StatelessWidget {
         Expanded(
           child: Row(
             children: [
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: 'e', onTap: () => onButtonPressed('e'), isOperator: true))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '00', onTap: () => onButtonPressed('00')))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '0', onTap: () => onButtonPressed('0')))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '.', onTap: () => onButtonPressed('.')))),
-              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: NeumorphicButton(text: '=', onTap: onEquals, isEquals: true))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: 'e', onTap: () => onButtonPressed('e'), isOperator: true))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '00', onTap: () => onButtonPressed('00')))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '0', onTap: () => onButtonPressed('0')))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '.', onTap: () => onButtonPressed('.')))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(3.0), child: ZenCalcButton(text: '=', onTap: onEquals, isEquals: true))),
             ],
           ),
         ),

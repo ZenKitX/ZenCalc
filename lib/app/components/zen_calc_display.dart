@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:zen_calc/app/config/theme/app_theme.dart';
+import 'package:zen_theme_kit/zen_theme_kit.dart';
+import 'package:zen_ui_kit/zen_ui_kit.dart';
 
-class NeumorphicDisplay extends StatefulWidget {
+/// ZenCalc 计算器显示屏
+/// 
+/// 基于 ZenDisplay，添加了表达式预览和动画效果
+class ZenCalcDisplay extends StatefulWidget {
   final String displayText;
   final String result;
-  final bool showResult; // 是否显示结果（按等号后）
+  final bool showResult;
 
-  const NeumorphicDisplay({
+  const ZenCalcDisplay({
     super.key,
     required this.displayText,
     required this.result,
@@ -14,39 +18,26 @@ class NeumorphicDisplay extends StatefulWidget {
   });
 
   @override
-  State<NeumorphicDisplay> createState() => _NeumorphicDisplayState();
+  State<ZenCalcDisplay> createState() => _ZenCalcDisplayState();
 }
 
-class _NeumorphicDisplayState extends State<NeumorphicDisplay> {
+class _ZenCalcDisplayState extends State<ZenCalcDisplay> {
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = ZenTheme.of(context);
+    final shadows = ZenShadows(
+      shadowDark: theme.colors.shadowDark,
+      shadowLight: theme.colors.shadowLight,
+    );
     final hasPreview = widget.result != '0' && !widget.showResult;
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
       decoration: BoxDecoration(
-        color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+        color: theme.colors.surface,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: isDark
-                ? AppTheme.darkShadowDark.withOpacity(0.5)
-                : AppTheme.lightShadowDark.withOpacity(0.3),
-            offset: const Offset(3, 3),
-            blurRadius: 8,
-            spreadRadius: 0,
-          ),
-          BoxShadow(
-            color: isDark
-                ? AppTheme.darkShadowLight.withOpacity(0.5)
-                : AppTheme.lightShadowLight.withOpacity(0.9),
-            offset: const Offset(-3, -3),
-            blurRadius: 8,
-            spreadRadius: 0,
-          ),
-        ],
+        boxShadow: shadows.neumorphicInset,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -63,11 +54,9 @@ class _NeumorphicDisplayState extends State<NeumorphicDisplay> {
                   child: Text(
                     widget.displayText,
                     style: TextStyle(
-                      fontSize: 24,
-                      color: isDark 
-                          ? AppTheme.darkTextSecondary 
-                          : AppTheme.lightTextSecondary,
-                      fontWeight: FontWeight.w300,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                      color: theme.colors.textSecondary,
                     ),
                     textAlign: TextAlign.right,
                     maxLines: 2,
@@ -111,7 +100,7 @@ class _NeumorphicDisplayState extends State<NeumorphicDisplay> {
                         style: TextStyle(
                           fontSize: widget.showResult ? 56 : 48,
                           fontWeight: FontWeight.w300,
-                          color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                          color: theme.colors.textPrimary,
                           height: 1.2,
                         ),
                         textAlign: TextAlign.right,
@@ -121,7 +110,7 @@ class _NeumorphicDisplayState extends State<NeumorphicDisplay> {
                     ),
                     // 光标（仅在输入时显示）
                     if (!widget.showResult)
-                      _BlinkingCursor(isDark: isDark),
+                      _BlinkingCursor(theme: theme),
                   ],
                 ),
               ),
@@ -138,10 +127,8 @@ class _NeumorphicDisplayState extends State<NeumorphicDisplay> {
                 widget.result,
                 style: TextStyle(
                   fontSize: 28,
-                  color: isDark 
-                      ? AppTheme.darkTextSecondary 
-                      : AppTheme.lightTextSecondary,
-                  fontWeight: FontWeight.w300,
+                  fontWeight: FontWeight.w400,
+                  color: theme.colors.textSecondary,
                 ),
                 textAlign: TextAlign.right,
                 maxLines: 1,
@@ -155,11 +142,11 @@ class _NeumorphicDisplayState extends State<NeumorphicDisplay> {
   }
 }
 
-// 闪烁光标组件
+/// 闪烁光标组件
 class _BlinkingCursor extends StatefulWidget {
-  final bool isDark;
+  final ZenThemeData theme;
 
-  const _BlinkingCursor({required this.isDark});
+  const _BlinkingCursor({required this.theme});
 
   @override
   State<_BlinkingCursor> createState() => _BlinkingCursorState();
@@ -193,9 +180,7 @@ class _BlinkingCursorState extends State<_BlinkingCursor>
         height: 48,
         margin: const EdgeInsets.only(left: 4, bottom: 4),
         decoration: BoxDecoration(
-          color: widget.isDark 
-              ? AppTheme.accentColorDark 
-              : AppTheme.accentColor,
+          color: widget.theme.colors.accent,
           borderRadius: BorderRadius.circular(2),
         ),
       ),
