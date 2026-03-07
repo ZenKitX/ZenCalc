@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:zen_calc/app/config/theme/app_theme.dart';
-import 'package:zen_calc/app/components/neumorphic_display.dart';
-import 'package:zen_calc/app/components/zen_quote_widget.dart';
-import 'package:zen_calc/app/utils/calculator_logic.dart';
-import 'package:zen_calc/app/utils/scientific_calculator_logic.dart';
-import 'package:zen_calc/app/services/haptic_service.dart';
-import 'package:zen_calc/app/services/audio_service.dart';
-import 'package:zen_calc/app/services/zen_quote_service.dart';
-import 'package:zen_calc/app/services/history_service.dart';
+import 'package:zen_calc/app/components/zen_calc_display.dart';
+import 'package:arithmetic_kit/arithmetic_kit.dart';
+import 'package:feedback_kit/feedback_kit.dart';
+import 'package:zen_calc/app/services/calculation_history_service.dart';
+import 'package:zen_calc/app/services/zen_settings_service.dart';
+import 'package:zen_quote_kit/zen_quote_kit.dart';
 import 'package:zen_calc/app/modules/history/views/history_view.dart';
 import 'package:zen_calc/app/modules/calculator/views/widgets/calculator_top_bar.dart';
 import 'package:zen_calc/app/modules/calculator/views/widgets/basic_button_grid.dart';
@@ -31,16 +29,43 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   String result = '0';
   bool shouldResetDisplay = false;
   ZenQuote? _currentQuote;
-  bool _showZenQuotes = true; // 默认开启禅语
+  bool _showZenQuotes = true; // Will be loaded from settings
+  String _zenQuotesLanguage = 'zh'; // Will be loaded from settings
   bool _isScientificMode = false; // 科学计算器模式
   bool _isInverseMode = false; // 反函数模式
   String _lastExpression = ''; // 保存上次的计算式
+  late ZenQuoteService _zenQuoteService; // ZenQuoteKit service instance
   
   @override
   void initState() {
     super.initState();
+    // Initialize zen quote service with default language
+    _zenQuoteService = ZenQuoteService(language: _zenQuotesLanguage);
     // 加载历史记录
-    HistoryService.loadFromLocal();
+    CalculationHistoryService.loadFromLocal();
+    // 加载禅语设置
+    _loadZenSettings();
+  }
+  
+  /// Load zen quote settings from SharedPreferences
+  Future<void> _loadZenSettings() async {
+    final enabled = await ZenSettingsService.getZenQuotesEnabled();
+    final language = await ZenSettingsService.getZenQuotesLanguage();
+    
+    setState(() {
+      _showZenQuotes = enabled;
+      _zenQuotesLanguage = language;
+      // Recreate service with new language
+      _zenQuoteService = ZenQuoteService(language: language);
+    });
+  }
+  
+  /// Update zen quote language and recreate service
+  void _updateZenQuoteLanguage(String language) {
+    setState(() {
+      _zenQuotesLanguage = language;
+      _zenQuoteService = ZenQuoteService(language: language);
+    });
   }
 
   void onButtonPressed(String value) {
@@ -97,7 +122,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       }
 
       // 验证输入
-      if (!CalculatorLogic.isValidInput(displayText, value)) {
+      if (!BasicCalculator.isValidInput(displayText, value)) {
         return;
       }
 
@@ -132,8 +157,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     
     // 计算预览结果
     String previewResult = _isScientificMode 
-        ? ScientificCalculatorLogic.calculate(expression)
-        : CalculatorLogic.calculate(expression);
+        ? ScientificCalculator.calculate(expression)
+        : BasicCalculator.calculate(expression);
     
     // 只有当结果不是错误且与输入不同时才显示预览
     if (previewResult != 'Error' && previewResult != expression) {
@@ -150,8 +175,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       shouldResetDisplay = false;
       
       // 显示清除相关的禅语
-      if (_showZenQuotes && ZenQuoteService.shouldShowQuote(probability: 0.5)) {
-        _currentQuote = ZenQuoteService.getQuote(ZenContext.clear);
+      if (_showZenQuotes && _zenQuoteService.shouldShowQuote(probability: 0.5)) {
+        _currentQuote = _zenQuoteService.getQuote(ZenContext.clear);
       }
     });
   }
@@ -179,32 +204,32 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
       // 根据模式选择计算逻辑
       String finalResult = _isScientificMode 
-          ? ScientificCalculatorLogic.calculate(expression)
-          : CalculatorLogic.calculate(expression);
+          ? ScientificCalculator.calculate(expression)
+          : BasicCalculator.calculate(expression);
       
       result = finalResult;
       shouldResetDisplay = true;
       
       // 只在按等号时保存到历史记录
       if (finalResult != 'Error') {
-        HistoryService.addHistory(expression, finalResult);
+        CalculationHistoryService.addHistory(expression, finalResult);
       }
       
       // 显示等号相关的禅语
       if (_showZenQuotes) {
         if (finalResult == 'Error') {
           // 错误时显示错误相关禅语
-          if (ZenQuoteService.shouldShowQuote(probability: 0.6)) {
-            _currentQuote = ZenQuoteService.getQuote(ZenContext.error);
+          if (_zenQuoteService.shouldShowQuote(probability: 0.6)) {
+            _currentQuote = _zenQuoteService.getQuote(ZenContext.error);
           }
         } else {
           // 检查特殊结果
-          if (finalResult == '0' && ZenQuoteService.shouldShowQuote(probability: 0.4)) {
-            _currentQuote = ZenQuoteService.getQuote(ZenContext.zero);
-          } else if ((finalResult == '100' || finalResult == '1000') && ZenQuoteService.shouldShowQuote(probability: 0.7)) {
-            _currentQuote = ZenQuoteService.getQuote(ZenContext.equals, trigger: finalResult);
-          } else if (ZenQuoteService.shouldShowQuote(probability: 0.3)) {
-            _currentQuote = ZenQuoteService.getQuote(ZenContext.equals);
+          if (finalResult == '0' && _zenQuoteService.shouldShowQuote(probability: 0.4)) {
+            _currentQuote = _zenQuoteService.getQuote(ZenContext.zero);
+          } else if ((finalResult == '100' || finalResult == '1000') && _zenQuoteService.shouldShowQuote(probability: 0.7)) {
+            _currentQuote = _zenQuoteService.getQuote(ZenContext.equals, trigger: finalResult);
+          } else if (_zenQuoteService.shouldShowQuote(probability: 0.3)) {
+            _currentQuote = _zenQuoteService.getQuote(ZenContext.equals);
           }
         }
       }
@@ -319,18 +344,38 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       title: '禅意语录',
                       subtitle: '在特定时刻显示禅语',
                       value: _showZenQuotes,
-                      onChanged: (value) {
+                      onChanged: (value) async {
                         setDialogState(() {
                           _showZenQuotes = value;
-                          // 如果开启，立即显示一条禅语作为示例
-                          if (value) {
-                            setState(() {
-                              _currentQuote = ZenQuoteService.getQuote(ZenContext.general);
-                            });
-                          }
                         });
+                        // 保存到 SharedPreferences
+                        await ZenSettingsService.setZenQuotesEnabled(value);
+                        // 如果开启，立即显示一条禅语作为示例
+                        if (value) {
+                          setState(() {
+                            _currentQuote = _zenQuoteService.getQuote(ZenContext.general);
+                          });
+                        }
                       },
                       isDark: isDark,
+                    ),
+                    
+                    const SizedBox(height: 16),
+                    
+                    // 语言选择
+                    _buildLanguageSelector(
+                      context,
+                      isDark: isDark,
+                      currentLanguage: _zenQuotesLanguage,
+                      onLanguageChanged: (language) async {
+                        // 保存到 SharedPreferences
+                        await ZenSettingsService.setZenQuotesLanguage(language);
+                        // Update language and recreate service
+                        _updateZenQuoteLanguage(language);
+                        setDialogState(() {
+                          _zenQuotesLanguage = language;
+                        });
+                      },
                     ),
                     
                     const SizedBox(height: 16),
@@ -376,6 +421,96 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           },
         );
       },
+    );
+  }
+
+  Widget _buildLanguageSelector(
+    BuildContext context, {
+    required bool isDark,
+    required String currentLanguage,
+    required Function(String) onLanguageChanged,
+  }) {
+    final languages = {
+      'zh': '中文',
+      'en': 'English',
+      'ja': '日本語',
+    };
+    
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: isDark
+                    ? AppTheme.darkShadowDark.withValues(alpha: 0.5)
+                    : AppTheme.lightShadowDark.withValues(alpha: 0.3),
+                offset: const Offset(2, 2),
+                blurRadius: 4,
+              ),
+              BoxShadow(
+                color: isDark
+                    ? AppTheme.darkShadowLight.withValues(alpha: 0.5)
+                    : AppTheme.lightShadowLight,
+                offset: const Offset(-2, -2),
+                blurRadius: 4,
+              ),
+            ],
+          ),
+          child: Icon(
+            Icons.language,
+            color: isDark ? AppTheme.darkText : AppTheme.lightText,
+            size: 20,
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '禅语语言',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                '选择禅语显示的语言',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: isDark ? AppTheme.darkTextSecondary : AppTheme.lightTextSecondary,
+                ),
+              ),
+            ],
+          ),
+        ),
+        DropdownButton<String>(
+          value: currentLanguage,
+          dropdownColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+          style: TextStyle(
+            color: isDark ? AppTheme.darkText : AppTheme.lightText,
+            fontSize: 14,
+          ),
+          underline: Container(),
+          items: languages.entries.map((entry) {
+            return DropdownMenuItem<String>(
+              value: entry.key,
+              child: Text(entry.value),
+            );
+          }).toList(),
+          onChanged: (value) {
+            if (value != null) {
+              onLanguageChanged(value);
+            }
+          },
+        ),
+      ],
     );
   }
 
@@ -519,7 +654,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       // 显示区域 - 占据更多空间
                       Expanded(
                         flex: 3,
-                        child: NeumorphicDisplay(
+                        child: ZenCalcDisplay(
                           displayText: displayText,
                           result: result,
                           showResult: shouldResetDisplay,
@@ -571,7 +706,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             ),
           ),
         
-        // 禅语浮层
+        // 禅语浮层 - 使用 ZenQuoteKit 的 ZenQuoteWidget
         if (_currentQuote != null)
           Positioned(
             top: 0,
