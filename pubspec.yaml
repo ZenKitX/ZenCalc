@@ -41,81 +41,49 @@ dependencies:
   # 本地存储
   shared_preferences: ^2.2.0
   
-  # # ArithmeticKit - 计算逻辑
-  # arithmetic_kit:
-  #   git:
-  #     url: https://github.com/ZenKitX/ArithmeticKit.git
-  #     ref: main
-  
-  # # ConversionKit - 单位换算逻辑
-  # conversion_kit:
-  #   git:
-  #     url: https://github.com/ZenKitX/ConversionKit.git
-  #     ref: main
-  
-  # # ZenUIKit - UI 组件库
-  # zen_ui_kit:
-  #   git:
-  #     url: https://github.com/ZenKitX/ZenUIKit.git
-  #     ref: main
-  
-  # # ZenThemeKit - 主题预设
-  # zen_theme_kit:
-  #   git:
-  #     url: https://github.com/ZenKitX/ZenThemeKit.git
-  #     ref: main
-  
-  # # ZenQuoteKit - 禅语服务
-  # zen_quote_kit:
-  #   git:
-  #     url: https://github.com/ZenKitX/ZenQuoteKit.git
-  #     ref: main
-  
-  # # FeedbackKit - 触觉和音频反馈
-  # feedback_kit:
-  #   git:
-  #     url: https://github.com/ZenKitX/FeedbackKit.git
-  #     ref: main
-  
-  # # HistoryKit - 历史记录管理
-  # history_kit:
-  #   git:
-  #     url: https://github.com/ZenKitX/HistoryKit.git
-  #     ref: main
-
- 
-  # ============================================
-  # 本地路径依赖配置（用于开发和网络问题时）
-  # ============================================
-  
   # ArithmeticKit - 计算逻辑
   arithmetic_kit:
-    path: packages/ArithmeticKit
+    git:
+      url: https://github.com/ZenKitX/ArithmeticKit.git
+      ref: main
   
   # ConversionKit - 单位换算逻辑
   conversion_kit:
-    path: packages/ConversionKit
+    git:
+      url: https://github.com/ZenKitX/ConversionKit.git
+      ref: main
   
   # ZenUIKit - UI 组件库
   zen_ui_kit:
-    path: packages/ZenUIKit
+    git:
+      url: https://github.com/ZenKitX/ZenUIKit.git
+      ref: main
   
   # ZenThemeKit - 主题预设
   zen_theme_kit:
-    path: packages/ZenThemeKit
+    git:
+      url: https://github.com/ZenKitX/ZenThemeKit.git
+      ref: main
   
   # ZenQuoteKit - 禅语服务
   zen_quote_kit:
-    path: packages/ZenQuoteKit
+    git:
+      url: https://github.com/ZenKitX/ZenQuoteKit.git
+      ref: main
   
   # FeedbackKit - 触觉和音频反馈
   feedback_kit:
-    path: packages/FeedbackKit
+    git:
+      url: https://github.com/ZenKitX/FeedbackKit.git
+      ref: main
   
   # HistoryKit - 历史记录管理
   history_kit:
-    path: packages/HistoryKit
-    
+    git:
+      url: https://github.com/ZenKitX/HistoryKit.git
+      ref: main
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
