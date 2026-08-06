@@ -30,6 +30,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   String _zenQuotesLanguage = 'zh'; // Will be loaded from settings
   bool _isScientificMode = false; // 科学计算器模式
   bool _isInverseMode = false; // 反函数模式
+  bool _isDegreeMode = false; // 角度模式（默认弧度，与 ArithmeticKit 保持一致）
   String _lastExpression = ''; // 保存上次的计算式
   late ZenQuoteService _zenQuoteService; // ZenQuoteKit service instance
 
@@ -156,9 +157,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       return;
     }
 
-    // 计算预览结果
+    // 计算预览结果（DEG 模式下先把三角函数参数/结果换算成对应的弧度/角度）
     String previewResult = _isScientificMode
-        ? ScientificCalculator.calculate(expression)
+        ? ScientificCalculator.calculate(
+            _isDegreeMode ? _applyDegreeMode(expression) : expression,
+          )
         : BasicCalculator.calculate(expression);
 
     // 只有当结果不是错误且与输入不同时才显示预览
@@ -205,9 +208,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       // 保存计算式
       _lastExpression = expression;
 
-      // 根据模式选择计算逻辑
+      // 根据模式选择计算逻辑（DEG 模式下先把三角函数参数/结果换算成对应的弧度/角度）
       String finalResult = _isScientificMode
-          ? ScientificCalculator.calculate(expression)
+          ? ScientificCalculator.calculate(
+              _isDegreeMode ? _applyDegreeMode(expression) : expression,
+            )
           : BasicCalculator.calculate(expression);
 
       result = finalResult;
@@ -263,12 +268,163 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     });
   }
 
+  // rad/deg 按钮：切换角度模式
+  void onToggleAngleMode() {
+    setState(() {
+      _isDegreeMode = !_isDegreeMode;
+    });
+  }
+
   bool _isOperator(String char) {
     return char == '+' ||
         char == '-' ||
         char == '×' ||
         char == '÷' ||
         char == '%';
+  }
+
+  /// DEG 模式下对表达式做角度换算，再交给 ArithmeticKit（内部恒为弧度制）计算。
+  ///
+  /// - 正向三角函数 sin/cos/tan：参数按 角度 × π/180 换算为弧度；
+  /// - 反向三角函数 asin/acos/atan：结果按 弧度 × 180/π 换算为角度。
+  ///
+  /// 参数支持 `sin30` 与 `sin(30)`（含括号内可求值表达式）两种写法。
+  String _applyDegreeMode(String expression) {
+    const double radPerDeg = 0.017453292519943295; // π/180
+    const double degPerRad = 57.29577951308232; // 180/π
+    final buffer = StringBuffer();
+    var i = 0;
+    while (i < expression.length) {
+      // 反向三角函数优先处理，避免其中的 sin/cos/tan 子串被正向分支误匹配
+      final invEnd = _tryConvertTrig(
+        expression,
+        i,
+        inverse: true,
+        buffer: buffer,
+        radPerDeg: radPerDeg,
+        degPerRad: degPerRad,
+      );
+      if (invEnd != null) {
+        i = invEnd;
+        continue;
+      }
+      final fwdEnd = _tryConvertTrig(
+        expression,
+        i,
+        inverse: false,
+        buffer: buffer,
+        radPerDeg: radPerDeg,
+        degPerRad: degPerRad,
+      );
+      if (fwdEnd != null) {
+        i = fwdEnd;
+        continue;
+      }
+      buffer.write(expression[i]);
+      i++;
+    }
+    return buffer.toString();
+  }
+
+  /// 尝试在 [index] 处匹配一个三角函数并做角度换算。
+  /// 成功时把换算结果写入 [buffer] 并返回参数结束位置；失败返回 null（原样保留）。
+  int? _tryConvertTrig(
+    String expression,
+    int index, {
+    required bool inverse,
+    required StringBuffer buffer,
+    required double radPerDeg,
+    required double degPerRad,
+  }) {
+    final names = inverse
+        ? const ['asin', 'acos', 'atan']
+        : const ['sin', 'cos', 'tan'];
+    String? name;
+    for (final n in names) {
+      if (expression.startsWith(n, index)) {
+        name = n;
+        break;
+      }
+    }
+    if (name == null) return null;
+
+    final argStart = index + name.length;
+    String? argStr;
+    int argEnd;
+    if (argStart < expression.length && expression[argStart] == '(') {
+      final close = _findClosingParen(expression, argStart);
+      if (close == null) return null; // 括号不匹配，原样保留
+      argStr = expression.substring(argStart + 1, close);
+      argEnd = close + 1;
+    } else {
+      argStr = _extractPlainNumber(expression, argStart);
+      if (argStr == null || argStr.isEmpty) return null;
+      argEnd = argStart + argStr.length;
+    }
+
+    // 解析参数值；括号内表达式先用基础计算器求值
+    var argValue = double.tryParse(argStr);
+    if (argValue == null) {
+      final evaluated = BasicCalculator.calculate(argStr);
+      argValue = double.tryParse(evaluated);
+      if (argValue == null) return null; // 无法求值，原样保留
+    }
+
+    if (inverse) {
+      buffer.write('$name$argValue*$degPerRad');
+    } else {
+      buffer.write('$name${argValue * radPerDeg}');
+    }
+    return argEnd;
+  }
+
+  /// 从 [start] 开始提取一个纯数字（含可选负号、小数点、科学计数法），与 ArithmeticKit 保持一致。
+  String? _extractPlainNumber(String expression, int start) {
+    final buffer = StringBuffer();
+    var j = start;
+    var hasDigits = false;
+    var hasE = false;
+    if (j < expression.length && expression[j] == '-') {
+      buffer.write('-');
+      j++;
+    }
+    while (j < expression.length) {
+      final c = expression[j];
+      if (c.codeUnitAt(0) >= 48 && c.codeUnitAt(0) <= 57) {
+        buffer.write(c);
+        hasDigits = true;
+        j++;
+      } else if (c == '.') {
+        buffer.write(c);
+        j++;
+      } else if (c == 'e' && hasDigits && !hasE) {
+        buffer.write(c);
+        hasE = true;
+        j++;
+        if (j < expression.length &&
+            (expression[j] == '+' || expression[j] == '-')) {
+          buffer.write(expression[j]);
+          j++;
+        }
+      } else {
+        break;
+      }
+    }
+    return hasDigits ? buffer.toString() : null;
+  }
+
+  /// 找到与 [open] 处左括号匹配的右括号位置，找不到返回 null。
+  int? _findClosingParen(String expression, int open) {
+    var depth = 0;
+    for (var j = open; j < expression.length; j++) {
+      if (expression[j] == '(') {
+        depth++;
+      } else if (expression[j] == ')') {
+        depth--;
+        if (depth == 0) return j;
+      }
+    }
+    return null;
   }
 
   // 构建科学计算器布局（使用独立组件）
@@ -280,6 +436,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       onEquals: onEquals,
       isInverseMode: _isInverseMode,
       onToggleInverse: onToggleInverse,
+      isDegreeMode: _isDegreeMode,
+      onToggleAngleMode: onToggleAngleMode,
       onShowLastExpression: onShowLastExpression,
     );
   }

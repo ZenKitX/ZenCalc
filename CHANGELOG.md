@@ -5,6 +5,21 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 并且本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.0.8] - 2026-08-06
+
+### 修复
+- 科学计算器 rad/deg 按钮功能修复：RAD 切换为实际的角度模式开关（点击在 RAD/DEG 间切换），解决此前按钮无响应的问题
+- DEG 模式接入真实计算：sin/cos/tan 参数按 `角度 × π/180` 换算为弧度后交给 ArithmeticKit（内部恒为弧度制），asin/acos/atan 结果按 `弧度 × 180/π` 换算为角度，`sin(30°) = 0.5` 等输入得到符合预期的结果
+- 旧 `deg`（显示上次计算式）按钮改名为 `ANS`，避免与 DEG 模式标识语义冲突
+- 默认保持弧度模式，与 ArithmeticKit 的三角函数实现（弧度制）保持一致
+
+### 改进
+- 移除 calculator 模块未使用的 GetX Controller/Binding（计算逻辑实际在 CalculatorScreen 中，属历史遗留死代码）
+
+### 测试
+- 新增 calculator 视图层 widget 测试（基础输入与等号、科学模式切换、RAD/DEG 角度模式切换、AC 清零）
+- 补充 RAD/DEG 下 `sin(30)` 真实计算行为断言（弧度≈-0.98803162、角度=0.5），防止 DEG 换算逻辑缺失仍可通过测试
+
 ## [1.0.7] - 2026-08-06
 
 ### 新增

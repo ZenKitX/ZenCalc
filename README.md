@@ -5,7 +5,7 @@
 ![Flutter](https://img.shields.io/badge/Flutter-3.41+-blue)
 ![Dart](https://img.shields.io/badge/Dart-3.11+-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
-![Version](https://img.shields.io/badge/Version-1.0.6-blue)
+![Version](https://img.shields.io/badge/Version-1.0.8-blue)
 
 ## ✨ 禅意特性
 
@@ -82,7 +82,8 @@
 - ✅ 基础/科学模式一键切换
 - ✅ 7行5列科学计算器布局
 - ✅ inv 反函数模式
-- ✅ deg 返回计算式功能
+- ✅ deg 返回计算式功能（按钮已更名 ANS）
+- ✅ RAD/DEG 角度模式（DEG 下 sin/cos/tan 按角度计算，asin/acos/atan 返回角度）
 
 ### 单位换算（v1.0.5 新增）
 - ✅ 长度换算（8个单位）

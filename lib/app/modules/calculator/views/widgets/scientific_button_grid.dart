@@ -8,6 +8,8 @@ class ScientificButtonGrid extends StatelessWidget {
   final VoidCallback onEquals;
   final bool isInverseMode;
   final VoidCallback onToggleInverse;
+  final bool isDegreeMode;
+  final VoidCallback onToggleAngleMode;
   final VoidCallback onShowLastExpression;
 
   const ScientificButtonGrid({
@@ -18,6 +20,8 @@ class ScientificButtonGrid extends StatelessWidget {
     required this.onEquals,
     required this.isInverseMode,
     required this.onToggleInverse,
+    required this.isDegreeMode,
+    required this.onToggleAngleMode,
     required this.onShowLastExpression,
   });
 
@@ -26,7 +30,7 @@ class ScientificButtonGrid extends StatelessWidget {
     return Column(
       key: const ValueKey('scientific'),
       children: [
-        // 第一行：sin/sin⁻¹, cos/cos⁻¹, tan/tan⁻¹, rad, deg
+        // 第一行：sin/sin⁻¹, cos/cos⁻¹, tan/tan⁻¹, RAD/DEG, ANS
         Expanded(
           child: Row(
             children: [
@@ -70,10 +74,13 @@ class ScientificButtonGrid extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(3.0),
                   child: ZenCalcButton(
-                    text: 'rad',
-                    onTap: () {},
+                    text: isDegreeMode ? 'DEG' : 'RAD',
+                    textColor: isDegreeMode
+                        ? const Color(0xFF7C9885)
+                        : const Color(0xFF8B8680),
+                    onTap: onToggleAngleMode,
                     isOperator: true,
-                    fontSize: 14,
+                    fontSize: 13,
                   ),
                 ),
               ),
@@ -81,10 +88,10 @@ class ScientificButtonGrid extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(3.0),
                   child: ZenCalcButton(
-                    text: 'deg',
+                    text: 'ANS',
                     onTap: onShowLastExpression,
                     isOperator: true,
-                    fontSize: 14,
+                    fontSize: 13,
                   ),
                 ),
               ),
