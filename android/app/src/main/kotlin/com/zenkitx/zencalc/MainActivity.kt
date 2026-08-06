@@ -1,4 +1,4 @@
-package com.example.calculator
+package com.zenkitx.zencalc
 
 import io.flutter.embedding.android.FlutterActivity
 

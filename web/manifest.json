@@ -1,11 +1,11 @@
 {
-    "name": "calculator",
-    "short_name": "calculator",
+    "name": "ZenCalc",
+    "short_name": "ZenCalc",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#E8E4DC",
+    "theme_color": "#E8E4DC",
+    "description": "ZenCalc - A beautiful calculator app.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

@@ -57,11 +57,11 @@ signingConfigs {
 signingConfig = signingConfigs.getByName("release")
 ```
 
-## CNB 流水线自动签名配置（规划中）
+## CNB 流水线自动签名配置
 
-> ⚠️ **状态说明**：当前 `release` 构建类型仍使用 `signingConfigs.getByName("debug")`（即 debug 签名），**CNB 流水线自动签名尚未启用**。以下为规划方案，待密钥配置就绪后再落地。
+> ✅ **状态说明**：`android/app/build.gradle.kts` 已实现"有密钥则正式签名、无密钥回退 debug 签名"的双模式逻辑。CNB 流水线（`.cnb.yml` 的 `tag_push`）已接入签名注入，密钥配置就绪后即可自动签名发布。
 > 说明：ZenCalc 的 CI/CD 已迁移到 CNB 流水线（`.cnb.yml`），不再使用 GitHub Actions。
-> 打 `v*` 标签时通过 CNB 流水线自动构建 release APK 并发布 Release。
+> 打 `v*` 标签时通过 CNB 流水线自动构建 release APK/AAB、Web 与 Linux 包并发布 Release。
 
 要在 CNB 流水线中自动签名，需要：
 
@@ -77,17 +77,7 @@ base64 ~/zencalc-key.jks > zencalc-key.jks.base64
    - `KEY_ALIAS`: 密钥别名（zencalc）
    - `KEY_PASSWORD`: 密钥密码
 
-3. 在 `.cnb.yml` 的 `tag_push` 流水线中，在 `build apk` 前注入密钥：
-
-```yaml
-- name: setup keystore
-  script: |
-    echo "$KEYSTORE_BASE64" | base64 -d > android/app/keystore.jks
-    echo "storePassword=$KEYSTORE_PASSWORD" > android/key.properties
-    echo "keyPassword=$KEY_PASSWORD" >> android/key.properties
-    echo "keyAlias=$KEY_ALIAS" >> android/key.properties
-    echo "storeFile=keystore.jks" >> android/key.properties
-```
+3. `.cnb.yml` 的 `tag_push` 流水线已在 `build apk` 前注入密钥（注入脚本见 `.cnb.yml` 的 `setup keystore` 阶段）。流水线会将密钥写入 `android/key.properties`，`build.gradle.kts` 读取后即使用正式 release 签名。
 
 ## 构建签名 APK
 
