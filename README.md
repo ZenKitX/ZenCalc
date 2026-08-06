@@ -118,7 +118,7 @@
 ## 📥 下载安装
 
 ### 从 Release 下载
-前往 [Releases 页面](https://cnb.cool/h1s97x/ZenCalc/-/releases) 下载最新版本的 APK 文件。
+前往 [Releases 页面](https://cnb.cool/h1s97x/ZenKitX/ZenCalc/-/releases) 下载最新版本的 APK 文件。
 
 ### 从源码构建
 参见下方"快速开始"部分。
@@ -133,7 +133,7 @@
 
 1. 克隆项目
 ```bash
-git clone https://cnb.cool/h1s97x/ZenCalc.git
+git clone https://cnb.cool/h1s97x/ZenKitX/ZenCalc.git
 cd ZenCalc
 ```
 
