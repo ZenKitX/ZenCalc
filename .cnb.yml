@@ -1,0 +1,39 @@
+main:
+  push:
+    - imports: https://cnb.cool/h1s97x/secret-env/-/blob/main/env.yml
+      name: sync to github
+      stages:
+        - name: sync to github
+          image: tencentcom/git-sync
+          settings:
+            target_url: https://github.com/h1s97x/OneFolio.git
+            auth_type: https
+            username: $GITHUB_USERNAME
+            password: $GITHUB_TOKEN
+            branch: main
+            force: true
+
+"$":
+  issue.open:
+    - stages:
+        - name: auto assign issue to h1s97x
+          type: git:issue-update
+          options:
+            assignee:
+              add: h1s97x
+  issue.reopen:
+    - stages:
+        - name: auto assign issue to h1s97x
+          type: git:issue-update
+          options:
+            assignee:
+              add: h1s97x
+
+"**":
+  pull_request:
+    - stages:
+        - name: auto assign pr to h1s97x
+          type: git:reviewer
+          options:
+            type: add-assignee
+            reviewers: h1s97x
