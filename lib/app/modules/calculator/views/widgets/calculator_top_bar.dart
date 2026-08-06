@@ -28,11 +28,8 @@ class CalculatorTopBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // 设置按钮
-        _buildIconButton(
-          icon: Icons.tune_outlined,
-          onTap: onSettingsTap,
-        ),
-        
+        _buildIconButton(icon: Icons.tune_outlined, onTap: onSettingsTap),
+
         // 科学模式切换按钮
         GestureDetector(
           onTap: () {
@@ -45,13 +42,18 @@ class CalculatorTopBar extends StatelessWidget {
             decoration: BoxDecoration(
               color: isScientificMode
                   ? (isDark ? AppTheme.accentColorDark : AppTheme.accentColor)
-                  : (isDark ? AppTheme.darkBackground : AppTheme.lightBackground),
+                  : (isDark
+                        ? AppTheme.darkBackground
+                        : AppTheme.lightBackground),
               borderRadius: BorderRadius.circular(20),
               boxShadow: isScientificMode
                   ? [
                       BoxShadow(
-                        color: (isDark ? AppTheme.accentColorDark : AppTheme.accentColor)
-                            .withOpacity(0.3),
+                        color:
+                            (isDark
+                                    ? AppTheme.accentColorDark
+                                    : AppTheme.accentColor)
+                                .withValues(alpha: 0.3),
                         offset: const Offset(0, 2),
                         blurRadius: 8,
                       ),
@@ -59,14 +61,14 @@ class CalculatorTopBar extends StatelessWidget {
                   : [
                       BoxShadow(
                         color: isDark
-                            ? AppTheme.darkShadowDark.withOpacity(0.6)
-                            : AppTheme.lightShadowDark.withOpacity(0.4),
+                            ? AppTheme.darkShadowDark.withValues(alpha: 0.6)
+                            : AppTheme.lightShadowDark.withValues(alpha: 0.4),
                         offset: const Offset(3, 3),
                         blurRadius: 6,
                       ),
                       BoxShadow(
                         color: isDark
-                            ? AppTheme.darkShadowLight.withOpacity(0.6)
+                            ? AppTheme.darkShadowLight.withValues(alpha: 0.6)
                             : AppTheme.lightShadowLight,
                         offset: const Offset(-3, -3),
                         blurRadius: 6,
@@ -98,7 +100,7 @@ class CalculatorTopBar extends StatelessWidget {
             ),
           ),
         ),
-        
+
         Row(
           children: [
             _buildIconButton(icon: Icons.swap_horiz, onTap: onConverterTap),
@@ -112,7 +114,10 @@ class CalculatorTopBar extends StatelessWidget {
     );
   }
 
-  Widget _buildIconButton({required IconData icon, required VoidCallback onTap}) {
+  Widget _buildIconButton({
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
     return GestureDetector(
       onTap: () {
         HapticService.selection();
@@ -127,14 +132,14 @@ class CalculatorTopBar extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: isDark
-                  ? AppTheme.darkShadowDark.withOpacity(0.6)
-                  : AppTheme.lightShadowDark.withOpacity(0.4),
+                  ? AppTheme.darkShadowDark.withValues(alpha: 0.6)
+                  : AppTheme.lightShadowDark.withValues(alpha: 0.4),
               offset: const Offset(3, 3),
               blurRadius: 6,
             ),
             BoxShadow(
               color: isDark
-                  ? AppTheme.darkShadowLight.withOpacity(0.6)
+                  ? AppTheme.darkShadowLight.withValues(alpha: 0.6)
                   : AppTheme.lightShadowLight,
               offset: const Offset(-3, -3),
               blurRadius: 6,
@@ -165,14 +170,14 @@ class CalculatorTopBar extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: isDark
-                  ? AppTheme.darkShadowDark.withOpacity(0.6)
-                  : AppTheme.lightShadowDark.withOpacity(0.4),
+                  ? AppTheme.darkShadowDark.withValues(alpha: 0.6)
+                  : AppTheme.lightShadowDark.withValues(alpha: 0.4),
               offset: const Offset(3, 3),
               blurRadius: 6,
             ),
             BoxShadow(
               color: isDark
-                  ? AppTheme.darkShadowLight.withOpacity(0.6)
+                  ? AppTheme.darkShadowLight.withValues(alpha: 0.6)
                   : AppTheme.lightShadowLight,
               offset: const Offset(-3, -3),
               blurRadius: 6,

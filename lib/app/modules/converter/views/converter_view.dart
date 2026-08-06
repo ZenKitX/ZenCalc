@@ -22,7 +22,9 @@ class ConverterView extends StatelessWidget {
 
       // 否则显示类别选择
       return Scaffold(
-        backgroundColor: isDark ? const Color(0xFF1A1A1A) : const Color(0xFFE8E4DC),
+        backgroundColor: isDark
+            ? const Color(0xFF1A1A1A)
+            : const Color(0xFFE8E4DC),
         body: SafeArea(
           child: Column(
             children: [
@@ -56,12 +58,13 @@ class ConverterView extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                      childAspectRatio: 1.5,
-                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: 1.5,
+                        ),
                     itemCount: ConversionData.categories.length,
                     itemBuilder: (context, index) {
                       final category = ConversionData.categories[index];

@@ -32,14 +32,16 @@ class ConversionDetailView extends StatelessWidget {
                     onPressed: () => controller.backToCategories(),
                   ),
                   const SizedBox(width: 8),
-                  Obx(() => Text(
-                        '${controller.selectedCategory.value?.name ?? ''}换算',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: isDark ? Colors.white : Colors.black87,
-                        ),
-                      )),
+                  Obx(
+                    () => Text(
+                      '${controller.selectedCategory.value?.name ?? ''}换算',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: isDark ? Colors.white : Colors.black87,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -56,14 +58,10 @@ class ConversionDetailView extends StatelessWidget {
                       child: Column(
                         children: [
                           // 输入卡片
-                          Expanded(
-                            child: _buildInputCard(controller, isDark),
-                          ),
+                          Expanded(child: _buildInputCard(controller, isDark)),
                           const SizedBox(height: 16),
                           // 输出卡片
-                          Expanded(
-                            child: _buildOutputCard(controller, isDark),
-                          ),
+                          Expanded(child: _buildOutputCard(controller, isDark)),
                         ],
                       ),
                     ),
@@ -78,10 +76,7 @@ class ConversionDetailView extends StatelessWidget {
             const SizedBox(height: 16),
 
             // 键盘
-            Expanded(
-              flex: 4,
-              child: ConversionKeypad(controller: controller),
-            ),
+            Expanded(flex: 4, child: ConversionKeypad(controller: controller)),
           ],
         ),
       ),
@@ -98,8 +93,8 @@ class ConversionDetailView extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.3)
-                : Colors.black.withOpacity(0.08),
+                ? Colors.black.withValues(alpha: 0.3)
+                : Colors.black.withValues(alpha: 0.08),
             offset: const Offset(0, 2),
             blurRadius: 8,
           ),
@@ -109,25 +104,31 @@ class ConversionDetailView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 单位选择器
-          Obx(() => UnitSelector(
-                selectedUnit: controller.fromUnit.value,
-                units: controller.selectedCategory.value?.units ?? [],
-                onUnitChanged: (unit) => controller.setFromUnit(unit),
-                isDark: isDark,
-              )),
+          Obx(
+            () => UnitSelector(
+              selectedUnit: controller.fromUnit.value,
+              units: controller.selectedCategory.value?.units ?? [],
+              onUnitChanged: (unit) => controller.setFromUnit(unit),
+              isDark: isDark,
+            ),
+          ),
           const Spacer(),
           // 输入值
-          Obx(() => Text(
-                controller.inputValue.value.isEmpty ? '0' : controller.inputValue.value,
-                style: TextStyle(
-                  fontSize: 56,
-                  fontWeight: FontWeight.w300,
-                  color: const Color(0xFFFF6B35),
-                  height: 1.0,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              )),
+          Obx(
+            () => Text(
+              controller.inputValue.value.isEmpty
+                  ? '0'
+                  : controller.inputValue.value,
+              style: TextStyle(
+                fontSize: 56,
+                fontWeight: FontWeight.w300,
+                color: const Color(0xFFFF6B35),
+                height: 1.0,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ],
       ),
     );
@@ -146,18 +147,14 @@ class ConversionDetailView extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: isDark
-                  ? Colors.black.withOpacity(0.3)
-                  : Colors.black.withOpacity(0.08),
+                  ? Colors.black.withValues(alpha: 0.3)
+                  : Colors.black.withValues(alpha: 0.08),
               offset: const Offset(0, 2),
               blurRadius: 8,
             ),
           ],
         ),
-        child: Icon(
-          Icons.swap_vert,
-          color: const Color(0xFF6B8E23),
-          size: 28,
-        ),
+        child: Icon(Icons.swap_vert, color: const Color(0xFF6B8E23), size: 28),
       ),
     );
   }
@@ -172,8 +169,8 @@ class ConversionDetailView extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: isDark
-                ? Colors.black.withOpacity(0.3)
-                : Colors.black.withOpacity(0.08),
+                ? Colors.black.withValues(alpha: 0.3)
+                : Colors.black.withValues(alpha: 0.08),
             offset: const Offset(0, 2),
             blurRadius: 8,
           ),
@@ -183,25 +180,31 @@ class ConversionDetailView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 单位选择器
-          Obx(() => UnitSelector(
-                selectedUnit: controller.toUnit.value,
-                units: controller.selectedCategory.value?.units ?? [],
-                onUnitChanged: (unit) => controller.setToUnit(unit),
-                isDark: isDark,
-              )),
+          Obx(
+            () => UnitSelector(
+              selectedUnit: controller.toUnit.value,
+              units: controller.selectedCategory.value?.units ?? [],
+              onUnitChanged: (unit) => controller.setToUnit(unit),
+              isDark: isDark,
+            ),
+          ),
           const Spacer(),
           // 输出值
-          Obx(() => Text(
-                controller.outputValue.value.isEmpty ? '0' : controller.outputValue.value,
-                style: TextStyle(
-                  fontSize: 56,
-                  fontWeight: FontWeight.w300,
-                  color: isDark ? Colors.white : Colors.black87,
-                  height: 1.0,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              )),
+          Obx(
+            () => Text(
+              controller.outputValue.value.isEmpty
+                  ? '0'
+                  : controller.outputValue.value,
+              style: TextStyle(
+                fontSize: 56,
+                fontWeight: FontWeight.w300,
+                color: isDark ? Colors.white : Colors.black87,
+                height: 1.0,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ],
       ),
     );

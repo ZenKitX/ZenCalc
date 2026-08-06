@@ -67,21 +67,23 @@ class UnitSelector extends StatelessWidget {
             ),
             const Divider(),
             // 单位列表
-            ...units.map((unit) => ListTile(
-                  title: Text(
-                    '${unit.name} (${unit.symbol})',
-                    style: TextStyle(
-                      color: isDark ? Colors.white : Colors.black87,
-                    ),
+            ...units.map(
+              (unit) => ListTile(
+                title: Text(
+                  '${unit.name} (${unit.symbol})',
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black87,
                   ),
-                  trailing: selectedUnit?.id == unit.id
-                      ? const Icon(Icons.check, color: Color(0xFF6B8E23))
-                      : null,
-                  onTap: () {
-                    onUnitChanged(unit);
-                    Navigator.pop(context);
-                  },
-                )),
+                ),
+                trailing: selectedUnit?.id == unit.id
+                    ? const Icon(Icons.check, color: Color(0xFF6B8E23))
+                    : null,
+                onTap: () {
+                  onUnitChanged(unit);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
           ],
         ),
       ),

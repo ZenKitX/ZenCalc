@@ -1,5 +1,11 @@
+# ZenCalc CNB 流水线配置
+# - push: 同步到 GitHub 镜像 + CI（analyze / test）
+# - tag_push: 构建 release APK 并发布 Release
+# - issue/PR 自动指派
+
 main:
   push:
+    # 同步到 GitHub 镜像（依赖 h1s97x/secret-env 仓库中的 GITHUB_USERNAME/GITHUB_TOKEN）
     - imports: https://cnb.cool/h1s97x/secret-env/-/blob/main/env.yml
       name: sync to github
       stages:
@@ -12,6 +18,18 @@ main:
             password: $GITHUB_TOKEN
             branch: main
             force: true
+
+    # CI：静态分析 + 单元测试
+    - name: ci
+      docker:
+        image: ghcr.io/cirruslabs/flutter:stable
+      stages:
+        - name: install dependencies
+          script: flutter pub get
+        - name: analyze
+          script: flutter analyze
+        - name: test
+          script: flutter test
 
 "$":
   issue.open:
@@ -28,6 +46,28 @@ main:
           options:
             assignee:
               add: h1s97x
+
+  # 打 tag 时构建 APK 并发布 Release
+  tag_push:
+    - name: release apk
+      docker:
+        image: ghcr.io/cirruslabs/flutter:stable
+      stages:
+        - name: install dependencies
+          script: flutter pub get
+        - name: build apk
+          script: flutter build apk --release
+        # git:release 官方不支持上传附件，仅用于创建 Release（tag 缺省取 $CNB_BRANCH，description 自动从 CHANGELOG.md 读取）
+        - name: create release
+          type: git:release
+          options:
+            descriptionFromFile: CHANGELOG.md
+        # 使用 cnbcool/attachments 插件将 APK 作为附件上传到 Release
+        - name: upload artifact
+          image: cnbcool/attachments:latest
+          settings:
+            attachments:
+              - "./build/app/outputs/flutter-apk/app-release.apk"
 
 "**":
   pull_request:

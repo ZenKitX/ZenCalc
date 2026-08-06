@@ -9,9 +9,7 @@ class CalculatorView extends StatelessWidget {
   Widget build(BuildContext context) {
     return CalculatorScreen(
       onThemeToggle: () {
-        Get.changeThemeMode(
-          Get.isDarkMode ? ThemeMode.light : ThemeMode.dark,
-        );
+        Get.changeThemeMode(Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
       },
     );
   }

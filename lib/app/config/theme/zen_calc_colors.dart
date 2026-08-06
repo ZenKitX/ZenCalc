@@ -1,7 +1,7 @@
 import 'package:zen_theme_kit/zen_theme_kit.dart';
 
 /// ZenCalc 主题配置
-/// 
+///
 /// 使用 ZenThemeKit 的预设主题
 class ZenCalcColors {
   /// 沙石庭院主题（浅色）

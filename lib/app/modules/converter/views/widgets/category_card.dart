@@ -6,11 +6,7 @@ class CategoryCard extends StatefulWidget {
   final ConversionCategory category;
   final VoidCallback onTap;
 
-  const CategoryCard({
-    super.key,
-    required this.category,
-    required this.onTap,
-  });
+  const CategoryCard({super.key, required this.category, required this.onTap});
 
   @override
   State<CategoryCard> createState() => _CategoryCardState();
@@ -43,15 +39,15 @@ class _CategoryCardState extends State<CategoryCard> {
                 : [
                     BoxShadow(
                       color: isDark
-                          ? Colors.black.withOpacity(0.5)
-                          : Colors.black.withOpacity(0.1),
+                          ? Colors.black.withValues(alpha: 0.5)
+                          : Colors.black.withValues(alpha: 0.1),
                       offset: const Offset(4, 4),
                       blurRadius: 8,
                     ),
                     BoxShadow(
                       color: isDark
-                          ? Colors.white.withOpacity(0.05)
-                          : Colors.white.withOpacity(0.9),
+                          ? Colors.white.withValues(alpha: 0.05)
+                          : Colors.white.withValues(alpha: 0.9),
                       offset: const Offset(-4, -4),
                       blurRadius: 8,
                     ),

@@ -3,7 +3,7 @@ import 'package:zen_theme_kit/zen_theme_kit.dart';
 import 'package:zen_ui_kit/zen_ui_kit.dart';
 
 /// ZenCalc 计算器显示屏
-/// 
+///
 /// 基于 ZenDisplay，添加了表达式预览和动画效果
 class ZenCalcDisplay extends StatefulWidget {
   final String displayText;
@@ -65,9 +65,9 @@ class _ZenCalcDisplayState extends State<ZenCalcDisplay> {
                 ),
               ),
             ),
-          
+
           if (widget.showResult) const SizedBox(height: 8),
-          
+
           // 主显示区域
           Flexible(
             child: SingleChildScrollView(
@@ -78,19 +78,24 @@ class _ZenCalcDisplayState extends State<ZenCalcDisplay> {
                   return FadeTransition(
                     opacity: animation,
                     child: SlideTransition(
-                      position: Tween<Offset>(
-                        begin: const Offset(0.0, 0.1),
-                        end: Offset.zero,
-                      ).animate(CurvedAnimation(
-                        parent: animation,
-                        curve: Curves.easeOutCubic,
-                      )),
+                      position:
+                          Tween<Offset>(
+                            begin: const Offset(0.0, 0.1),
+                            end: Offset.zero,
+                          ).animate(
+                            CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeOutCubic,
+                            ),
+                          ),
                       child: child,
                     ),
                   );
                 },
                 child: Row(
-                  key: ValueKey<String>('${widget.displayText}_${widget.showResult}'),
+                  key: ValueKey<String>(
+                    '${widget.displayText}_${widget.showResult}',
+                  ),
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -109,14 +114,13 @@ class _ZenCalcDisplayState extends State<ZenCalcDisplay> {
                       ),
                     ),
                     // 光标（仅在输入时显示）
-                    if (!widget.showResult)
-                      _BlinkingCursor(theme: theme),
+                    if (!widget.showResult) _BlinkingCursor(theme: theme),
                   ],
                 ),
               ),
             ),
           ),
-          
+
           // 预览结果（仅在输入中且有预览时显示）
           if (hasPreview) ...[
             const SizedBox(height: 12),

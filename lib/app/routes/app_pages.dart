@@ -9,16 +9,16 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.CALCULATOR;
+  static const initial = Routes.calculator;
 
   static final routes = [
     GetPage(
-      name: _Paths.CALCULATOR,
+      name: _Paths.calculator,
       page: () => const CalculatorView(),
       binding: CalculatorBinding(),
     ),
     GetPage(
-      name: _Paths.HISTORY,
+      name: _Paths.history,
       page: () => const HistoryView(),
       binding: HistoryBinding(),
     ),

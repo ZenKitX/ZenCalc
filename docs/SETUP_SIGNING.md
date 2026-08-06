@@ -161,7 +161,11 @@ jar verified.
 keytool -printcert -jarfile build/app/outputs/flutter-apk/app-release.apk
 ```
 
-## 步骤 5：配置 GitHub Actions 自动签名
+## 步骤 5：配置 CNB 流水线自动签名（规划中）
+
+> ⚠️ **状态说明**：当前 `release` 构建类型仍使用 `signingConfigs.getByName("debug")`（即 debug 签名），**CNB 流水线自动签名尚未启用**。以下为规划方案，待密钥配置就绪后再落地。
+> 说明：ZenCalc 的 CI/CD 已迁移到 CNB 流水线（`.cnb.yml`），不再使用 GitHub Actions。
+> 打 `v*` 标签时会自动构建 release APK 并发布 Release。
 
 ### 5.1 准备密钥库的 Base64 编码
 
@@ -173,13 +177,9 @@ keytool -printcert -jarfile build/app/outputs/flutter-apk/app-release.apk
 base64 ~/zencalc-release-key.jks > zencalc-key.base64
 ```
 
-### 5.2 添加 GitHub Secrets
+### 5.2 配置 CNB 密钥仓库
 
-在 GitHub 仓库设置中添加以下 Secrets：
-
-1. 进入仓库 → Settings → Secrets and variables → Actions
-2. 点击 "New repository secret"
-3. 添加以下 secrets：
+在 CNB 的密钥仓库（如 `h1s97x/secret-env`）的 `env.yml` 中配置以下变量：
 
 | Name | Value |
 |------|-------|
@@ -188,18 +188,29 @@ base64 ~/zencalc-release-key.jks > zencalc-key.base64
 | `KEY_ALIAS` | `zencalc` |
 | `KEY_PASSWORD` | 你的密钥密码 |
 
-### 5.3 更新 GitHub Actions 工作流
+### 5.3 在 `.cnb.yml` 发布流水线中启用签名（规划中）
 
-在 `.github/workflows/release.yml` 中，在 "Build APK" 步骤之前添加：
+> ⚠️ 此步骤尚未在 `.cnb.yml` 中落地，待密钥配置就绪后启用。
+
+在 `tag_push` 流水线的 `build apk` 阶段之前，将密钥注入构建环境：
 
 ```yaml
-- name: Decode and setup keystore
-  run: |
-    echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/keystore.jks
-    echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
-    echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
-    echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
+- name: setup keystore
+  script: |
+    echo "$KEYSTORE_BASE64" | base64 -d > android/app/keystore.jks
+    echo "storePassword=$KEYSTORE_PASSWORD" > android/key.properties
+    echo "keyPassword=$KEY_PASSWORD" >> android/key.properties
+    echo "keyAlias=$KEY_ALIAS" >> android/key.properties
     echo "storeFile=keystore.jks" >> android/key.properties
+- name: build apk
+  script: flutter build apk --release
+```
+
+同时在 `tag_push` 流水线添加密钥仓库 imports：
+
+```yaml
+imports:
+  - https://cnb.cool/h1s97x/secret-env/-/blob/main/env.yml
 ```
 
 ## 常见问题
@@ -235,6 +246,6 @@ keytool -storepasswd -keystore ~/zencalc-release-key.jks
 配置完成后，你可以：
 1. 构建签名的 release APK
 2. 上传到 Google Play Console
-3. 通过 GitHub Actions 自动构建和发布
+3. 打 `v*` 标签，通过 CNB 流水线自动构建和发布
 
 参考 [SIGNING.md](./SIGNING.md) 了解更多详细信息。

@@ -6,11 +6,8 @@ import 'package:feedback_kit/feedback_kit.dart';
 
 class HistoryScreen extends StatefulWidget {
   final Function(String) onSelectHistory;
-  
-  const HistoryScreen({
-    super.key,
-    required this.onSelectHistory,
-  });
+
+  const HistoryScreen({super.key, required this.onSelectHistory});
 
   @override
   State<HistoryScreen> createState() => _HistoryScreenState();
@@ -22,9 +19,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final history = CalculationHistoryService.history;
     final stats = CalculationHistoryService.getStatistics();
-    
+
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark
+          ? AppTheme.darkBackground
+          : AppTheme.lightBackground,
       body: SafeArea(
         child: Column(
           children: [
@@ -42,19 +41,25 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+                        color: isDark
+                            ? AppTheme.darkBackground
+                            : AppTheme.lightBackground,
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
                             color: isDark
-                                ? AppTheme.darkShadowDark.withOpacity(0.6)
-                                : AppTheme.lightShadowDark.withOpacity(0.4),
+                                ? AppTheme.darkShadowDark.withValues(alpha: 0.6)
+                                : AppTheme.lightShadowDark.withValues(
+                                    alpha: 0.4,
+                                  ),
                             offset: const Offset(3, 3),
                             blurRadius: 6,
                           ),
                           BoxShadow(
                             color: isDark
-                                ? AppTheme.darkShadowLight.withOpacity(0.6)
+                                ? AppTheme.darkShadowLight.withValues(
+                                    alpha: 0.6,
+                                  )
                                 : AppTheme.lightShadowLight,
                             offset: const Offset(-3, -3),
                             blurRadius: 6,
@@ -68,9 +73,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       ),
                     ),
                   ),
-                  
+
                   const SizedBox(width: 16),
-                  
+
                   // 标题
                   Expanded(
                     child: Text(
@@ -82,7 +87,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       ),
                     ),
                   ),
-                  
+
                   // 清除按钮
                   if (history.isNotEmpty)
                     GestureDetector(
@@ -93,19 +98,27 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+                          color: isDark
+                              ? AppTheme.darkBackground
+                              : AppTheme.lightBackground,
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
                               color: isDark
-                                  ? AppTheme.darkShadowDark.withOpacity(0.6)
-                                  : AppTheme.lightShadowDark.withOpacity(0.4),
+                                  ? AppTheme.darkShadowDark.withValues(
+                                      alpha: 0.6,
+                                    )
+                                  : AppTheme.lightShadowDark.withValues(
+                                      alpha: 0.4,
+                                    ),
                               offset: const Offset(3, 3),
                               blurRadius: 6,
                             ),
                             BoxShadow(
                               color: isDark
-                                  ? AppTheme.darkShadowLight.withOpacity(0.6)
+                                  ? AppTheme.darkShadowLight.withValues(
+                                      alpha: 0.6,
+                                    )
                                   : AppTheme.lightShadowLight,
                               offset: const Offset(-3, -3),
                               blurRadius: 6,
@@ -114,7 +127,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         ),
                         child: Icon(
                           Icons.delete_outline,
-                          color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                          color: isDark
+                              ? AppTheme.darkText
+                              : AppTheme.lightText,
                           size: 20,
                         ),
                       ),
@@ -122,7 +137,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 ],
               ),
             ),
-            
+
             // 统计信息
             if (history.isNotEmpty)
               Padding(
@@ -130,19 +145,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+                    color: isDark
+                        ? AppTheme.darkBackground
+                        : AppTheme.lightBackground,
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
                         color: isDark
-                            ? AppTheme.darkShadowDark.withOpacity(0.5)
-                            : AppTheme.lightShadowDark.withOpacity(0.3),
+                            ? AppTheme.darkShadowDark.withValues(alpha: 0.5)
+                            : AppTheme.lightShadowDark.withValues(alpha: 0.3),
                         offset: const Offset(3, 3),
                         blurRadius: 8,
                       ),
                       BoxShadow(
                         color: isDark
-                            ? AppTheme.darkShadowLight.withOpacity(0.5)
+                            ? AppTheme.darkShadowLight.withValues(alpha: 0.5)
                             : AppTheme.lightShadowLight,
                         offset: const Offset(-3, -3),
                         blurRadius: 8,
@@ -154,14 +171,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     children: [
                       _buildStatItem('总计', stats['total'].toString(), isDark),
                       _buildStatItem('今日', stats['today'].toString(), isDark),
-                      _buildStatItem('本周', stats['thisWeek'].toString(), isDark),
+                      _buildStatItem(
+                        '本周',
+                        stats['thisWeek'].toString(),
+                        isDark,
+                      ),
                     ],
                   ),
                 ),
               ),
-            
+
             const SizedBox(height: 16),
-            
+
             // 历史记录列表
             Expanded(
               child: history.isEmpty
@@ -184,7 +205,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       ),
     );
   }
-  
+
   Widget _buildStatItem(String label, String value, bool isDark) {
     return Column(
       children: [
@@ -201,13 +222,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
           label,
           style: TextStyle(
             fontSize: 12,
-            color: isDark ? AppTheme.darkTextSecondary : AppTheme.lightTextSecondary,
+            color: isDark
+                ? AppTheme.darkTextSecondary
+                : AppTheme.lightTextSecondary,
           ),
         ),
       ],
     );
   }
-  
+
   Widget _buildEmptyState(bool isDark) {
     return Center(
       child: Column(
@@ -216,16 +239,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
           Icon(
             Icons.history,
             size: 64,
-            color: isDark 
-                ? AppTheme.darkTextSecondary.withOpacity(0.5)
-                : AppTheme.lightTextSecondary.withOpacity(0.5),
+            color: isDark
+                ? AppTheme.darkTextSecondary.withValues(alpha: 0.5)
+                : AppTheme.lightTextSecondary.withValues(alpha: 0.5),
           ),
           const SizedBox(height: 16),
           Text(
             '暂无历史记录',
             style: TextStyle(
               fontSize: 16,
-              color: isDark ? AppTheme.darkTextSecondary : AppTheme.lightTextSecondary,
+              color: isDark
+                  ? AppTheme.darkTextSecondary
+                  : AppTheme.lightTextSecondary,
             ),
           ),
           const SizedBox(height: 8),
@@ -233,16 +258,16 @@ class _HistoryScreenState extends State<HistoryScreen> {
             '开始计算，记录将自动保存',
             style: TextStyle(
               fontSize: 14,
-              color: isDark 
-                  ? AppTheme.darkTextSecondary.withOpacity(0.7)
-                  : AppTheme.lightTextSecondary.withOpacity(0.7),
+              color: isDark
+                  ? AppTheme.darkTextSecondary.withValues(alpha: 0.7)
+                  : AppTheme.lightTextSecondary.withValues(alpha: 0.7),
             ),
           ),
         ],
       ),
     );
   }
-  
+
   Widget _buildHistoryItem(
     BuildContext context,
     CalculationHistory item,
@@ -263,13 +288,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
         padding: const EdgeInsets.only(right: 20),
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
-          color: Colors.red.withOpacity(0.8),
+          color: Colors.red.withValues(alpha: 0.8),
           borderRadius: BorderRadius.circular(12),
         ),
-        child: const Icon(
-          Icons.delete,
-          color: Colors.white,
-        ),
+        child: const Icon(Icons.delete, color: Colors.white),
       ),
       child: GestureDetector(
         onTap: () {
@@ -286,14 +308,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
             boxShadow: [
               BoxShadow(
                 color: isDark
-                    ? AppTheme.darkShadowDark.withOpacity(0.5)
-                    : AppTheme.lightShadowDark.withOpacity(0.3),
+                    ? AppTheme.darkShadowDark.withValues(alpha: 0.5)
+                    : AppTheme.lightShadowDark.withValues(alpha: 0.3),
                 offset: const Offset(3, 3),
                 blurRadius: 6,
               ),
               BoxShadow(
                 color: isDark
-                    ? AppTheme.darkShadowLight.withOpacity(0.5)
+                    ? AppTheme.darkShadowLight.withValues(alpha: 0.5)
                     : AppTheme.lightShadowLight,
                 offset: const Offset(-3, -3),
                 blurRadius: 6,
@@ -308,11 +330,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 item.displayExpression,
                 style: TextStyle(
                   fontSize: 16,
-                  color: isDark ? AppTheme.darkTextSecondary : AppTheme.lightTextSecondary,
+                  color: isDark
+                      ? AppTheme.darkTextSecondary
+                      : AppTheme.lightTextSecondary,
                 ),
               ),
               const SizedBox(height: 8),
-              
+
               // 结果和时间
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -329,9 +353,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     item.formattedTime,
                     style: TextStyle(
                       fontSize: 12,
-                      color: isDark 
-                          ? AppTheme.darkTextSecondary.withOpacity(0.7)
-                          : AppTheme.lightTextSecondary.withOpacity(0.7),
+                      color: isDark
+                          ? AppTheme.darkTextSecondary.withValues(alpha: 0.7)
+                          : AppTheme.lightTextSecondary.withValues(alpha: 0.7),
                     ),
                   ),
                 ],
@@ -342,10 +366,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
       ),
     );
   }
-  
+
   void _showClearConfirmDialog(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -354,19 +378,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
           child: Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+              color: isDark
+                  ? AppTheme.darkBackground
+                  : AppTheme.lightBackground,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
                   color: isDark
-                      ? AppTheme.darkShadowDark.withOpacity(0.6)
-                      : AppTheme.lightShadowDark.withOpacity(0.4),
+                      ? AppTheme.darkShadowDark.withValues(alpha: 0.6)
+                      : AppTheme.lightShadowDark.withValues(alpha: 0.4),
                   offset: const Offset(6, 6),
                   blurRadius: 12,
                 ),
                 BoxShadow(
                   color: isDark
-                      ? AppTheme.darkShadowLight.withOpacity(0.6)
+                      ? AppTheme.darkShadowLight.withValues(alpha: 0.6)
                       : AppTheme.lightShadowLight,
                   offset: const Offset(-6, -6),
                   blurRadius: 12,
@@ -379,7 +405,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 Icon(
                   Icons.warning_amber_rounded,
                   size: 48,
-                  color: isDark ? AppTheme.accentColorDark : AppTheme.accentColor,
+                  color: isDark
+                      ? AppTheme.accentColorDark
+                      : AppTheme.accentColor,
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -395,7 +423,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   '此操作无法撤销',
                   style: TextStyle(
                     fontSize: 14,
-                    color: isDark ? AppTheme.darkTextSecondary : AppTheme.lightTextSecondary,
+                    color: isDark
+                        ? AppTheme.darkTextSecondary
+                        : AppTheme.lightTextSecondary,
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -411,7 +441,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           '取消',
                           style: TextStyle(
                             fontSize: 16,
-                            color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                            color: isDark
+                                ? AppTheme.darkText
+                                : AppTheme.lightText,
                           ),
                         ),
                       ),
@@ -428,17 +460,16 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: isDark ? AppTheme.accentColorDark : AppTheme.accentColor,
+                          backgroundColor: isDark
+                              ? AppTheme.accentColorDark
+                              : AppTheme.accentColor,
                           foregroundColor: Colors.white,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text(
-                          '清除',
-                          style: TextStyle(fontSize: 16),
-                        ),
+                        child: const Text('清除', style: TextStyle(fontSize: 16)),
                       ),
                     ),
                   ],

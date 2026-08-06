@@ -14,11 +14,8 @@ import 'package:zen_calc/app/modules/converter/views/converter_view.dart';
 
 class CalculatorScreen extends StatefulWidget {
   final VoidCallback onThemeToggle;
-  
-  const CalculatorScreen({
-    super.key,
-    required this.onThemeToggle,
-  });
+
+  const CalculatorScreen({super.key, required this.onThemeToggle});
 
   @override
   State<CalculatorScreen> createState() => _CalculatorScreenState();
@@ -35,7 +32,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   bool _isInverseMode = false; // 反函数模式
   String _lastExpression = ''; // 保存上次的计算式
   late ZenQuoteService _zenQuoteService; // ZenQuoteKit service instance
-  
+
   @override
   void initState() {
     super.initState();
@@ -46,12 +43,12 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     // 加载禅语设置
     _loadZenSettings();
   }
-  
+
   /// Load zen quote settings from SharedPreferences
   Future<void> _loadZenSettings() async {
     final enabled = await ZenSettingsService.getZenQuotesEnabled();
     final language = await ZenSettingsService.getZenQuotesLanguage();
-    
+
     setState(() {
       _showZenQuotes = enabled;
       _zenQuotesLanguage = language;
@@ -59,7 +56,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       _zenQuoteService = ZenQuoteService(language: language);
     });
   }
-  
+
   /// Update zen quote language and recreate service
   void _updateZenQuoteLanguage(String language) {
     setState(() {
@@ -103,7 +100,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       // 处理 00 按钮
       if (value == '00') {
         // 如果最后一个字符是运算符，不添加 00
-        if (displayText.isNotEmpty && _isOperator(displayText[displayText.length - 1])) {
+        if (displayText.isNotEmpty &&
+            _isOperator(displayText[displayText.length - 1])) {
           return;
         }
         displayText += '00';
@@ -114,8 +112,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       // 处理运算符替换
       if (_isOperator(value)) {
         // 如果最后一个字符也是运算符，替换它
-        if (displayText.isNotEmpty && _isOperator(displayText[displayText.length - 1])) {
-          displayText = displayText.substring(0, displayText.length - 1) + value;
+        if (displayText.isNotEmpty &&
+            _isOperator(displayText[displayText.length - 1])) {
+          displayText =
+              displayText.substring(0, displayText.length - 1) + value;
           _updatePreview();
           return;
         }
@@ -128,7 +128,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
       // 添加输入
       displayText += value;
-      
+
       // 实时预览计算结果
       _updatePreview();
     });
@@ -137,29 +137,30 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   // 实时预览计算结果
   void _updatePreview() {
     String expression = displayText;
-    
+
     // 如果表达式为空或只有一个数字，不显示预览
     if (expression.isEmpty || expression == '0') {
       result = '0';
       return;
     }
-    
+
     // 如果表达式以运算符结尾，移除它再计算
-    if (expression.isNotEmpty && _isOperator(expression[expression.length - 1])) {
+    if (expression.isNotEmpty &&
+        _isOperator(expression[expression.length - 1])) {
       expression = expression.substring(0, expression.length - 1);
     }
-    
+
     // 如果移除运算符后为空，不显示预览
     if (expression.isEmpty) {
       result = '0';
       return;
     }
-    
+
     // 计算预览结果
-    String previewResult = _isScientificMode 
+    String previewResult = _isScientificMode
         ? ScientificCalculator.calculate(expression)
         : BasicCalculator.calculate(expression);
-    
+
     // 只有当结果不是错误且与输入不同时才显示预览
     if (previewResult != 'Error' && previewResult != expression) {
       result = previewResult;
@@ -173,9 +174,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       displayText = '0';
       result = '0';
       shouldResetDisplay = false;
-      
+
       // 显示清除相关的禅语
-      if (_showZenQuotes && _zenQuoteService.shouldShowQuote(probability: 0.5)) {
+      if (_showZenQuotes &&
+          _zenQuoteService.shouldShowQuote(probability: 0.5)) {
         _currentQuote = _zenQuoteService.getQuote(ZenContext.clear);
       }
     });
@@ -195,7 +197,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     setState(() {
       // 如果表达式以运算符结尾，移除它
       String expression = displayText;
-      if (expression.isNotEmpty && _isOperator(expression[expression.length - 1])) {
+      if (expression.isNotEmpty &&
+          _isOperator(expression[expression.length - 1])) {
         expression = expression.substring(0, expression.length - 1);
       }
 
@@ -203,18 +206,18 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       _lastExpression = expression;
 
       // 根据模式选择计算逻辑
-      String finalResult = _isScientificMode 
+      String finalResult = _isScientificMode
           ? ScientificCalculator.calculate(expression)
           : BasicCalculator.calculate(expression);
-      
+
       result = finalResult;
       shouldResetDisplay = true;
-      
+
       // 只在按等号时保存到历史记录
       if (finalResult != 'Error') {
         CalculationHistoryService.addHistory(expression, finalResult);
       }
-      
+
       // 显示等号相关的禅语
       if (_showZenQuotes) {
         if (finalResult == 'Error') {
@@ -224,10 +227,15 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           }
         } else {
           // 检查特殊结果
-          if (finalResult == '0' && _zenQuoteService.shouldShowQuote(probability: 0.4)) {
+          if (finalResult == '0' &&
+              _zenQuoteService.shouldShowQuote(probability: 0.4)) {
             _currentQuote = _zenQuoteService.getQuote(ZenContext.zero);
-          } else if ((finalResult == '100' || finalResult == '1000') && _zenQuoteService.shouldShowQuote(probability: 0.7)) {
-            _currentQuote = _zenQuoteService.getQuote(ZenContext.equals, trigger: finalResult);
+          } else if ((finalResult == '100' || finalResult == '1000') &&
+              _zenQuoteService.shouldShowQuote(probability: 0.7)) {
+            _currentQuote = _zenQuoteService.getQuote(
+              ZenContext.equals,
+              trigger: finalResult,
+            );
           } else if (_zenQuoteService.shouldShowQuote(probability: 0.3)) {
             _currentQuote = _zenQuoteService.getQuote(ZenContext.equals);
           }
@@ -256,7 +264,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   }
 
   bool _isOperator(String char) {
-    return char == '+' || char == '-' || char == '×' || char == '÷' || char == '%';
+    return char == '+' ||
+        char == '-' ||
+        char == '×' ||
+        char == '÷' ||
+        char == '%';
   }
 
   // 构建科学计算器布局（使用独立组件）
@@ -275,7 +287,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   // 显示设置对话框
   void _showSettingsDialog(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -286,19 +298,21 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               child: Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+                  color: isDark
+                      ? AppTheme.darkBackground
+                      : AppTheme.lightBackground,
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
                       color: isDark
-                          ? AppTheme.darkShadowDark.withOpacity(0.6)
-                          : AppTheme.lightShadowDark.withOpacity(0.4),
+                          ? AppTheme.darkShadowDark.withValues(alpha: 0.6)
+                          : AppTheme.lightShadowDark.withValues(alpha: 0.4),
                       offset: const Offset(6, 6),
                       blurRadius: 12,
                     ),
                     BoxShadow(
                       color: isDark
-                          ? AppTheme.darkShadowLight.withOpacity(0.6)
+                          ? AppTheme.darkShadowLight.withValues(alpha: 0.6)
                           : AppTheme.lightShadowLight,
                       offset: const Offset(-6, -6),
                       blurRadius: 12,
@@ -318,7 +332,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    
+
                     // 触觉反馈开关
                     _buildSettingRow(
                       context,
@@ -334,9 +348,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       },
                       isDark: isDark,
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // 禅语开关
                     _buildSettingRow(
                       context,
@@ -353,15 +367,17 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         // 如果开启，立即显示一条禅语作为示例
                         if (value) {
                           setState(() {
-                            _currentQuote = _zenQuoteService.getQuote(ZenContext.general);
+                            _currentQuote = _zenQuoteService.getQuote(
+                              ZenContext.general,
+                            );
                           });
                         }
                       },
                       isDark: isDark,
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // 语言选择
                     _buildLanguageSelector(
                       context,
@@ -377,9 +393,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         });
                       },
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // 音效开关
                     _buildSettingRow(
                       context,
@@ -394,9 +410,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       },
                       isDark: isDark,
                     ),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // 关闭按钮
                     Align(
                       alignment: Alignment.centerRight,
@@ -409,7 +425,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           '完成',
                           style: TextStyle(
                             fontSize: 16,
-                            color: isDark ? AppTheme.accentColorDark : AppTheme.accentColor,
+                            color: isDark
+                                ? AppTheme.accentColorDark
+                                : AppTheme.accentColor,
                           ),
                         ),
                       ),
@@ -430,12 +448,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     required String currentLanguage,
     required Function(String) onLanguageChanged,
   }) {
-    final languages = {
-      'zh': '中文',
-      'en': 'English',
-      'ja': '日本語',
-    };
-    
+    final languages = {'zh': '中文', 'en': 'English', 'ja': '日本語'};
+
     return Row(
       children: [
         Container(
@@ -484,7 +498,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 '选择禅语显示的语言',
                 style: TextStyle(
                   fontSize: 12,
-                  color: isDark ? AppTheme.darkTextSecondary : AppTheme.lightTextSecondary,
+                  color: isDark
+                      ? AppTheme.darkTextSecondary
+                      : AppTheme.lightTextSecondary,
                 ),
               ),
             ],
@@ -492,7 +508,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         ),
         DropdownButton<String>(
           value: currentLanguage,
-          dropdownColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+          dropdownColor: isDark
+              ? AppTheme.darkBackground
+              : AppTheme.lightBackground,
           style: TextStyle(
             color: isDark ? AppTheme.darkText : AppTheme.lightText,
             fontSize: 14,
@@ -533,14 +551,14 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             boxShadow: [
               BoxShadow(
                 color: isDark
-                    ? AppTheme.darkShadowDark.withOpacity(0.5)
-                    : AppTheme.lightShadowDark.withOpacity(0.3),
+                    ? AppTheme.darkShadowDark.withValues(alpha: 0.5)
+                    : AppTheme.lightShadowDark.withValues(alpha: 0.3),
                 offset: const Offset(2, 2),
                 blurRadius: 4,
               ),
               BoxShadow(
                 color: isDark
-                    ? AppTheme.darkShadowLight.withOpacity(0.5)
+                    ? AppTheme.darkShadowLight.withValues(alpha: 0.5)
                     : AppTheme.lightShadowLight,
                 offset: const Offset(-2, -2),
                 blurRadius: 4,
@@ -571,7 +589,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 subtitle,
                 style: TextStyle(
                   fontSize: 12,
-                  color: isDark ? AppTheme.darkTextSecondary : AppTheme.lightTextSecondary,
+                  color: isDark
+                      ? AppTheme.darkTextSecondary
+                      : AppTheme.lightTextSecondary,
                 ),
               ),
             ],
@@ -580,7 +600,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         Switch(
           value: value,
           onChanged: onChanged,
-          activeColor: isDark ? AppTheme.accentColorDark : AppTheme.accentColor,
+          activeThumbColor: isDark
+              ? AppTheme.accentColorDark
+              : AppTheme.accentColor,
         ),
       ],
     );
@@ -591,13 +613,15 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    
+
     // 根据屏幕大小调整布局
     final isSmallScreen = screenHeight < 600;
     final maxWidth = screenWidth > 500 ? 500.0 : screenWidth;
-    
+
     return Scaffold(
-      backgroundColor: isDark ? AppTheme.darkBackground : AppTheme.lightBackground,
+      backgroundColor: isDark
+          ? AppTheme.darkBackground
+          : AppTheme.lightBackground,
       body: Stack(
         children: [
           // 主界面
@@ -648,9 +672,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         onThemeToggle: widget.onThemeToggle,
                         isDark: isDark,
                       ),
-                      
+
                       SizedBox(height: isSmallScreen ? 16 : 24),
-                      
+
                       // 显示区域 - 占据更多空间
                       Expanded(
                         flex: 3,
@@ -660,9 +684,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           showResult: shouldResetDisplay,
                         ),
                       ),
-                  
+
                       SizedBox(height: isSmallScreen ? 16 : 24),
-                      
+
                       // 按钮区域 - 根据模式切换
                       Expanded(
                         flex: _isScientificMode ? 6 : 5,
@@ -670,25 +694,30 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           duration: const Duration(milliseconds: 400),
                           switchInCurve: Curves.easeOutCubic,
                           switchOutCurve: Curves.easeInCubic,
-                          transitionBuilder: (Widget child, Animation<double> animation) {
-                            return SizeTransition(
-                              sizeFactor: animation,
-                              axisAlignment: -1.0, // 从顶部开始展开
-                              child: FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              ),
-                            );
-                          },
-                          layoutBuilder: (Widget? currentChild, List<Widget> previousChildren) {
-                            return Stack(
-                              alignment: Alignment.topCenter,
-                              children: <Widget>[
-                                ...previousChildren,
-                                if (currentChild != null) currentChild,
-                              ],
-                            );
-                          },
+                          transitionBuilder:
+                              (Widget child, Animation<double> animation) {
+                                return SizeTransition(
+                                  sizeFactor: animation,
+                                  alignment: Alignment.topCenter, // 从顶部开始展开
+                                  child: FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  ),
+                                );
+                              },
+                          layoutBuilder:
+                              (
+                                Widget? currentChild,
+                                List<Widget> previousChildren,
+                              ) {
+                                return Stack(
+                                  alignment: Alignment.topCenter,
+                                  children: <Widget>[
+                                    ...previousChildren,
+                                    ?currentChild,
+                                  ],
+                                );
+                              },
                           child: _isScientificMode
                               ? _buildScientificCalculator()
                               : BasicButtonGrid(
@@ -705,26 +734,26 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               ),
             ),
           ),
-        
-        // 禅语浮层 - 使用 ZenQuoteKit 的 ZenQuoteWidget
-        if (_currentQuote != null)
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: SafeArea(
-              child: ZenQuoteWidget(
-                quote: _currentQuote!,
-                onDismiss: () {
-                  setState(() {
-                    _currentQuote = null;
-                  });
-                },
+
+          // 禅语浮层 - 使用 ZenQuoteKit 的 ZenQuoteWidget
+          if (_currentQuote != null)
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: SafeArea(
+                child: ZenQuoteWidget(
+                  quote: _currentQuote!,
+                  onDismiss: () {
+                    setState(() {
+                      _currentQuote = null;
+                    });
+                  },
+                ),
               ),
             ),
-          ),
-        ],  // Stack children 结束
-      ),  // Stack 结束 (body)
-    );  // Scaffold 结束
+        ], // Stack children 结束
+      ), // Stack 结束 (body)
+    ); // Scaffold 结束
   }
 }

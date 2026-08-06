@@ -5,7 +5,24 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 并且本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
-## [1.0.6] - 2026-03-XX
+## [1.0.7] - 2026-08-06
+
+### 新增
+- 🔧 CNB 流水线 CI：push 自动运行 flutter analyze + flutter test
+- 🚀 CNB 流水线发布：打 tag 自动构建 APK 并发布 Release
+
+### 改进
+- 移除失效的 GitHub Actions 工作流（代码审查/发布已迁移至 CNB 流水线）
+- 清理 60+ 处弃用 API（withOpacity → withValues、activeColor → activeThumbColor 等）
+- 修复 lint 警告（未使用导入、多余 override、路由常量命名、null-aware 元素）
+- Release 发布改用 `cnbcool/attachments` 插件上传 APK（`git:release` 不支持附件）
+- Release 描述自动从 CHANGELOG.md 生成（`descriptionFromFile`）
+- 签名文档标注「规划中」，与当前 debug 签名实现保持一致
+
+### 修复
+- CHANGELOG v1.0.6 补全发布日期
+
+## [1.0.6] - 2026-03-07
 
 ### 新增
 - 🔧 CI/CD 代码审查流程
@@ -85,7 +102,6 @@
 
 - 部分设备上触觉反馈可能不工作（降级到系统默认）
 - 音效功能尚未实现（框架已就绪）
-- 某些 Flutter 3.41+ 的 API 使用了已弃用的方法（withOpacity）
 
 ## [1.0.3] - 2026-03-02
 

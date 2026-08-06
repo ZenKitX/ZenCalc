@@ -131,12 +131,18 @@ void main() {
     });
 
     test('进制输入验证 - 十六进制合法输入', () {
-      final result = ConversionLogic.isValidNumberSystemInput('1A2F', 'hexadecimal');
+      final result = ConversionLogic.isValidNumberSystemInput(
+        '1A2F',
+        'hexadecimal',
+      );
       expect(result, isTrue);
     });
 
     test('进制输入验证 - 十六进制非法输入', () {
-      final result = ConversionLogic.isValidNumberSystemInput('1G2F', 'hexadecimal');
+      final result = ConversionLogic.isValidNumberSystemInput(
+        '1G2F',
+        'hexadecimal',
+      );
       expect(result, isFalse);
     });
 

@@ -107,11 +107,11 @@ class ConversionLogic {
     if (value.abs() < 0.0001 && value != 0) {
       return value.toStringAsExponential(6);
     }
-    
+
     // 移除尾部的零
     String result = value.toStringAsFixed(8);
     result = result.replaceAll(RegExp(r'\.?0+$'), '');
-    
+
     return result;
   }
 }

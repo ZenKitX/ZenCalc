@@ -2,12 +2,12 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
-  static const CALCULATOR = _Paths.CALCULATOR;
-  static const HISTORY = _Paths.HISTORY;
+  static const calculator = _Paths.calculator;
+  static const history = _Paths.history;
 }
 
 abstract class _Paths {
   _Paths._();
-  static const CALCULATOR = '/calculator';
-  static const HISTORY = '/history';
+  static const calculator = '/calculator';
+  static const history = '/history';
 }

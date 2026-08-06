@@ -7,7 +7,7 @@
 | Package | 状态 | 使用位置 | 说明 |
 |---------|------|----------|------|
 | ArithmeticKit | ✅ 已集成 | calculator_view.dart | 替代本地计算逻辑 |
-| ConversionKit | ❌ 未集成 | - | 单位换算功能独立模块 |
+| ConversionKit | ⚖️ 独立维护 | - | 单位换算功能独立模块（converter 模块保持本地实现） |
 | ZenUIKit | ✅ 已集成 | 多个组件 | 替代 Neumorphic 组件 |
 | ZenThemeKit | ✅ 已集成 | app_theme.dart | 主题预设 |
 | ZenQuoteKit | ✅ 已集成 | calculator_view.dart | 替代本地禅语服务 |
@@ -15,6 +15,9 @@
 | HistoryKit | ✅ 已集成 | history 模块 | 替代本地历史服务 |
 
 **集成进度：6/7 (85.7%)**
+
+> **决策（2026-08-06）**：ConversionKit 保持独立维护，converter 模块继续使用本地实现（`lib/app/modules/converter/`）。
+> 原因：本地实现功能完整、测试通过，迁移收益低且存在 API 差异风险。后续若需统一生态可再评估。
 
 ---
 
@@ -35,18 +38,18 @@
 
 ---
 
-### ❌ ConversionKit - 未集成
+### ⚖️ ConversionKit - 独立维护
 
-**状态：** 包已创建，但未集成到主项目
+**状态：** 包已创建，converter 模块保持本地实现（决策：独立维护）
 
-**原因：** 单位换算功能在独立的 converter 模块中，使用本地实现
+**原因：** 单位换算功能在独立的 converter 模块中，使用本地实现，功能完整且测试全部通过
 
 **本地实现位置：**
 - `lib/app/modules/converter/` - 完整的换算模块
 - `lib/app/modules/converter/utils/conversion_logic.dart`
 - `lib/app/modules/converter/utils/conversion_data.dart`
 
-**建议：** 保持现状或未来迁移
+**决策（2026-08-06）：** 保持独立维护，不迁移到 ConversionKit
 
 ---
 
@@ -325,8 +328,8 @@ ZenCalc (主应用)
 ### 短期（1-2 周）
 
 1. ✅ 完成包集成（6/7 已完成 - 85.7%）
-2. ⏳ 修复 ConversionKit 的 8 个测试失败
-3. ⏳ 考虑是否迁移 converter 模块到 ConversionKit
+2. ✅ ConversionKit 决策：保持独立维护（converter 模块本地实现）
+3. ✅ CI/CD 迁移至 CNB 流水线（`.cnb.yml`：push 自动 analyze/test，tag 自动发布）
 
 ### 中期（2-4 周）
 
@@ -353,4 +356,4 @@ ZenCalc (主应用)
 ---
 
 **维护者：** ZenKitX Team  
-**最后更新：** 2026-03-07
+**最后更新：** 2026-08-06

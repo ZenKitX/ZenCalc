@@ -6,10 +6,7 @@ import '../../controllers/converter_controller.dart';
 class ConversionKeypad extends StatelessWidget {
   final ConverterController controller;
 
-  const ConversionKeypad({
-    super.key,
-    required this.controller,
-  });
+  const ConversionKeypad({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +14,14 @@ class ConversionKeypad extends StatelessWidget {
 
     return Obx(() {
       // 检查是否是进制转换
-      final isNumberSystem = controller.selectedCategory.value?.id == 'number_system';
+      final isNumberSystem =
+          controller.selectedCategory.value?.id == 'number_system';
 
       return Padding(
         padding: const EdgeInsets.all(16.0),
-        child: isNumberSystem ? _buildNumberSystemKeypad(isDark) : _buildNormalKeypad(isDark),
+        child: isNumberSystem
+            ? _buildNumberSystemKeypad(isDark)
+            : _buildNormalKeypad(isDark),
       );
     });
   }
@@ -92,7 +92,11 @@ class ConversionKeypad extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: _buildSpecialKey('⌫', isDark, () => controller.deleteLast()),
+                child: _buildSpecialKey(
+                  '⌫',
+                  isDark,
+                  () => controller.deleteLast(),
+                ),
               ),
             ],
           ),
@@ -160,17 +164,18 @@ class ConversionKeypad extends StatelessWidget {
         Expanded(
           child: Row(
             children: [
-              Expanded(
-                flex: 2,
-                child: _buildKey('0', isDark),
-              ),
+              Expanded(flex: 2, child: _buildKey('0', isDark)),
               const SizedBox(width: 8),
               Expanded(
                 child: _buildSpecialKey('AC', isDark, () => controller.clear()),
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: _buildSpecialKey('⌫', isDark, () => controller.deleteLast()),
+                child: _buildSpecialKey(
+                  '⌫',
+                  isDark,
+                  () => controller.deleteLast(),
+                ),
               ),
             ],
           ),
@@ -190,8 +195,8 @@ class ConversionKeypad extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: isDark
-                    ? Colors.black.withOpacity(0.3)
-                    : Colors.black.withOpacity(0.08),
+                    ? Colors.black.withValues(alpha: 0.3)
+                    : Colors.black.withValues(alpha: 0.08),
                 offset: const Offset(0, 2),
                 blurRadius: 8,
               ),
@@ -222,8 +227,8 @@ class ConversionKeypad extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: isDark
-                  ? Colors.black.withOpacity(0.3)
-                  : Colors.black.withOpacity(0.08),
+                  ? Colors.black.withValues(alpha: 0.3)
+                  : Colors.black.withValues(alpha: 0.08),
               offset: const Offset(0, 2),
               blurRadius: 8,
             ),
@@ -235,7 +240,9 @@ class ConversionKeypad extends StatelessWidget {
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.w400,
-              color: label == 'AC' ? Colors.red : (isDark ? Colors.white : Colors.black87),
+              color: label == 'AC'
+                  ? Colors.red
+                  : (isDark ? Colors.white : Colors.black87),
             ),
           ),
         ),
