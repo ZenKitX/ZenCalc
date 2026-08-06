@@ -77,3 +77,15 @@ main:
           options:
             type: add-assignee
             reviewers: h1s97x
+
+    # PR CI：静态分析 + 单元测试（确保合并前代码质量与测试通过）
+    - name: ci
+      docker:
+        image: ghcr.io/cirruslabs/flutter:stable
+      stages:
+        - name: install dependencies
+          script: flutter pub get
+        - name: analyze
+          script: flutter analyze
+        - name: test
+          script: flutter test

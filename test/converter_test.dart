@@ -160,5 +160,155 @@ void main() {
       final result = ConversionLogic.formatResult(0.00001);
       expect(result, contains('e'));
     });
+
+    test('基本单位换算 - 千米到米（反向）', () {
+      const fromUnit = ConversionUnit(
+        id: 'kilometer',
+        name: '千米',
+        symbol: 'km',
+        toBaseRatio: 1000.0,
+      );
+      const toUnit = ConversionUnit(
+        id: 'meter',
+        name: '米',
+        symbol: 'm',
+        toBaseRatio: 1.0,
+      );
+
+      final result = ConversionLogic.convert(
+        value: 2.5,
+        fromUnit: fromUnit,
+        toUnit: toUnit,
+      );
+
+      expect(result, closeTo(2500.0, 1e-9));
+    });
+
+    test('基本单位换算 - 同单位直接返回', () {
+      const unit = ConversionUnit(
+        id: 'meter',
+        name: '米',
+        symbol: 'm',
+        toBaseRatio: 1.0,
+      );
+
+      final result = ConversionLogic.convert(
+        value: 42,
+        fromUnit: unit,
+        toUnit: unit,
+      );
+
+      expect(result, 42.0);
+    });
+
+    test('温度换算 - 开尔文到摄氏度', () {
+      final result = ConversionLogic.convertTemperature(
+        value: 273.15,
+        fromUnitId: 'kelvin',
+        toUnitId: 'celsius',
+      );
+
+      expect(result, closeTo(0.0, 1e-9));
+    });
+
+    test('温度换算 - 华氏度到开尔文', () {
+      final result = ConversionLogic.convertTemperature(
+        value: 32,
+        fromUnitId: 'fahrenheit',
+        toUnitId: 'kelvin',
+      );
+
+      expect(result, closeTo(273.15, 1e-9));
+    });
+
+    test('温度换算 - 同单位直接返回', () {
+      final result = ConversionLogic.convertTemperature(
+        value: 100,
+        fromUnitId: 'celsius',
+        toUnitId: 'celsius',
+      );
+
+      expect(result, 100.0);
+    });
+
+    test('温度换算 - 未知单位按摄氏度处理', () {
+      final result = ConversionLogic.convertTemperature(
+        value: 25,
+        fromUnitId: 'unknown',
+        toUnitId: 'celsius',
+      );
+
+      expect(result, 25.0);
+    });
+
+    test('进制转换 - 十进制到八进制', () {
+      final result = ConversionLogic.convertNumberSystem(
+        value: '8',
+        fromUnitId: 'decimal',
+        toUnitId: 'octal',
+      );
+
+      expect(result, equals('10'));
+    });
+
+    test('进制转换 - 二进制到十六进制', () {
+      final result = ConversionLogic.convertNumberSystem(
+        value: '11111111',
+        fromUnitId: 'binary',
+        toUnitId: 'hexadecimal',
+      );
+
+      expect(result, equals('FF'));
+    });
+
+    test('进制转换 - 同单位直接返回', () {
+      final result = ConversionLogic.convertNumberSystem(
+        value: '1010',
+        fromUnitId: 'binary',
+        toUnitId: 'binary',
+      );
+
+      expect(result, equals('1010'));
+    });
+
+    test('进制转换 - 非法输入返回空字符串', () {
+      final result = ConversionLogic.convertNumberSystem(
+        value: 'XYZ',
+        fromUnitId: 'hexadecimal',
+        toUnitId: 'decimal',
+      );
+
+      expect(result, equals(''));
+    });
+
+    test('进制输入验证 - 八进制合法输入', () {
+      final result = ConversionLogic.isValidNumberSystemInput('777', 'octal');
+      expect(result, isTrue);
+    });
+
+    test('进制输入验证 - 八进制非法输入', () {
+      final result = ConversionLogic.isValidNumberSystemInput('789', 'octal');
+      expect(result, isFalse);
+    });
+
+    test('进制输入验证 - 空字符串视为合法', () {
+      final result = ConversionLogic.isValidNumberSystemInput('', 'binary');
+      expect(result, isTrue);
+    });
+
+    test('格式化结果 - 负数', () {
+      final result = ConversionLogic.formatResult(-1.5);
+      expect(result, equals('-1.5'));
+    });
+
+    test('格式化结果 - 零', () {
+      final result = ConversionLogic.formatResult(0.0);
+      expect(result, equals('0'));
+    });
+
+    test('格式化结果 - 多位小数', () {
+      final result = ConversionLogic.formatResult(3.1415926535);
+      expect(result, equals('3.14159265'));
+    });
   });
 }
