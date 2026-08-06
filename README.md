@@ -5,7 +5,7 @@
 ![Flutter](https://img.shields.io/badge/Flutter-3.41+-blue)
 ![Dart](https://img.shields.io/badge/Dart-3.11+-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
-![Release](https://img.shields.io/github/v/release/ZenKitX/ZenCalc)
+![Version](https://img.shields.io/badge/Version-1.0.6-blue)
 
 ## ✨ 禅意特性
 
@@ -117,7 +117,7 @@
 ## 📥 下载安装
 
 ### 从 Release 下载
-前往 [Releases 页面](https://github.com/ZenKitX/ZenCalc/releases) 下载最新版本的 APK 文件。
+前往 [Releases 页面](https://cnb.cool/h1s97x/ZenCalc/-/releases) 下载最新版本的 APK 文件。
 
 ### 从源码构建
 参见下方"快速开始"部分。
@@ -132,7 +132,7 @@
 
 1. 克隆项目
 ```bash
-git clone https://github.com/ZenKitX/ZenCalc.git
+git clone https://cnb.cool/h1s97x/ZenCalc.git
 cd ZenCalc
 ```
 
@@ -149,29 +149,23 @@ flutter run
 ## 📁 项目结构
 
 ```
-calculator/
+zen_calc/
 ├── lib/
 │   ├── main.dart                      # 应用入口
-│   ├── screens/
-│   │   ├── calculator_screen.dart     # 计算器主界面
-│   │   └── history_screen.dart        # 历史记录界面
-│   ├── widgets/
-│   │   ├── neumorphic_button.dart     # Neumorphic 按钮组件
-│   │   ├── neumorphic_display.dart    # 显示屏组件
-│   │   ├── neumorphic_container.dart  # 通用容器组件
-│   │   └── zen_quote_widget.dart      # 禅语显示组件
-│   ├── models/
-│   │   └── calculation_history.dart   # 历史记录模型
-│   ├── services/
-│   │   ├── haptic_service.dart        # 触觉反馈服务
-│   │   ├── audio_service.dart         # 音效服务
-│   │   ├── zen_quote_service.dart     # 禅语服务
-│   │   └── history_service.dart       # 历史记录服务
-│   ├── utils/
-│   │   └── calculator_logic.dart      # 计算逻辑
-│   └── theme/
-│       └── app_theme.dart             # 禅意主题配置
-└── README.md
+│   └── app/
+│       ├── components/                # 通用组件（按钮、显示屏）
+│       ├── config/theme/              # 禅意主题与配色
+│       ├── data/models/               # 数据模型（计算历史）
+│       ├── modules/
+│       │   ├── calculator/            # 计算器模块（基础 + 科学）
+│       │   ├── converter/             # 单位换算模块
+│       │   └── history/               # 历史记录模块
+│       ├── routes/                    # GetX 路由配置
+│       └── services/                  # 设置与历史持久化服务
+├── test/                              # 单元测试与 Widget 测试
+├── android/ ios/ web/ windows/ macos/ linux/   # 各平台工程
+├── docs/                              # 集成与签名等文档
+└── pubspec.yaml                       # 依赖与版本定义
 ```
 
 ## 🎨 禅意设计理念
@@ -277,7 +271,36 @@ calculator/
 
 ## 📄 许可证
 
-本项目采用 MIT 许可证。
+本项目采用 **MIT 许可证** 开源，详见 [LICENSE](LICENSE) 文件。
+
+- ✅ 允许商业使用、修改、分发和私人使用
+- ✅ 允许闭源再分发（需保留版权声明和许可声明）
+- ✅ 提供“按现状”分发，不附带任何明示或默示的担保
+- 📄 完整条款请参阅仓库根目录的 [LICENSE](LICENSE) 文件
+
+```text
+MIT License
+
+Copyright (c) 2026 H1S97X
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
 
 ## 🙏 致谢
 
@@ -289,5 +312,6 @@ calculator/
 
 **项目名称**：ZenCalc  
 **开发时间**：2026-02-26  
-**当前版本**：1.0.5  
+**当前版本**：1.0.6  
+**许可证**：[MIT](LICENSE)  
 **理念**：在计算中寻找宁静
