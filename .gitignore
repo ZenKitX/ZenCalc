@@ -46,6 +46,9 @@ app.*.map.json
 
 .kiro/
 
+# 工具产物
+.trae-html-share-packages/
+
 # 签名密钥文件（不要提交）
 *.jks
 *.keystore

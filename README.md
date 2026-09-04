@@ -222,10 +222,10 @@ zen_calc/
 
 ## 🔧 技术亮点
 
-- **零第三方 UI 依赖**：手动实现所有 Neumorphic 效果
+- **ZenKitX 包生态**：核心能力拆分为独立包（ArithmeticKit、ZenUIKit、ZenThemeKit、ZenQuoteKit、FeedbackKit、HistoryKit），职责清晰、可独立复用
 - **性能优化**：使用 AnimationController 和 SingleTickerProviderStateMixin
 - **智能降级**：触觉反馈在不支持的设备上自动降级到系统反馈
-- **状态管理**：简洁的 StatefulWidget 状态管理
+- **状态管理**：GetX 路由 + 视图层状态管理
 - **响应式设计**：适配不同屏幕尺寸
 
 ## 📝 开发历程
@@ -313,6 +313,6 @@ SOFTWARE.
 
 **项目名称**：ZenCalc  
 **开发时间**：2026-02-26  
-**当前版本**：1.0.6  
+**当前版本**：1.0.8  
 **许可证**：[MIT](LICENSE)  
 **理念**：在计算中寻找宁静
