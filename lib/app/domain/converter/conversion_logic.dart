@@ -1,4 +1,4 @@
-import '../models/conversion_unit.dart';
+import 'conversion_unit.dart';
 
 /// 换算逻辑工具类
 class ConversionLogic {

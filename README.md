@@ -157,9 +157,10 @@ zen_calc/
 │       ├── components/                # 通用组件（按钮、显示屏）
 │       ├── config/theme/              # 禅意主题与配色
 │       ├── data/models/               # 数据模型（计算历史）
+│       ├── domain/converter/          # 换算领域逻辑（单位、类别、算法、数据）
 │       ├── modules/
 │       │   ├── calculator/            # 计算器模块（基础 + 科学）
-│       │   ├── converter/             # 单位换算模块
+│       │   ├── converter/             # 单位换算模块（控制器与视图）
 │       │   └── history/               # 历史记录模块
 │       ├── routes/                    # GetX 路由配置
 │       └── services/                  # 设置与历史持久化服务

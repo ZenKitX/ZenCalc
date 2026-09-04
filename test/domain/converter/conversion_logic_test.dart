@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zen_calc/app/modules/converter/utils/conversion_logic.dart';
-import 'package:zen_calc/app/modules/converter/models/conversion_unit.dart';
+import 'package:zen_calc/app/domain/converter/conversion_logic.dart';
+import 'package:zen_calc/app/domain/converter/conversion_unit.dart';
 
 void main() {
   group('ConversionLogic Tests', () {
@@ -309,6 +309,56 @@ void main() {
     test('格式化结果 - 多位小数', () {
       final result = ConversionLogic.formatResult(3.1415926535);
       expect(result, equals('3.14159265'));
+    });
+
+    test('格式化结果 - 极小值使用科学计数法', () {
+      expect(ConversionLogic.formatResult(0.00001), equals('1.000000e-5'));
+      expect(ConversionLogic.formatResult(-0.0000001), equals('-1.000000e-7'));
+    });
+
+    test('往返换算一致：米 → 千米 → 米', () {
+      const meter = ConversionUnit(
+        id: 'meter',
+        name: '米',
+        symbol: 'm',
+        toBaseRatio: 1.0,
+      );
+      const kilometer = ConversionUnit(
+        id: 'kilometer',
+        name: '千米',
+        symbol: 'km',
+        toBaseRatio: 1000.0,
+      );
+
+      const original = 1234.5;
+      final km = ConversionLogic.convert(
+        value: original,
+        fromUnit: meter,
+        toUnit: kilometer,
+      );
+      final back = ConversionLogic.convert(
+        value: km,
+        fromUnit: kilometer,
+        toUnit: meter,
+      );
+
+      expect(back, closeTo(original, 1e-9));
+    });
+
+    test('温度换算往返一致：摄氏 → 华氏 → 摄氏', () {
+      const original = 37.5;
+      final f = ConversionLogic.convertTemperature(
+        value: original,
+        fromUnitId: 'celsius',
+        toUnitId: 'fahrenheit',
+      );
+      final back = ConversionLogic.convertTemperature(
+        value: f,
+        fromUnitId: 'fahrenheit',
+        toUnitId: 'celsius',
+      );
+
+      expect(back, closeTo(original, 1e-9));
     });
   });
 }

@@ -21,7 +21,7 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: main
+      ref: "9d0e0752e096c2ecb7d2ddb2fc05b04f18494bfa"
       resolved-ref: "9d0e0752e096c2ecb7d2ddb2fc05b04f18494bfa"
       url: "https://github.com/ZenKitX/ArithmeticKit.git"
     source: git
@@ -190,7 +190,7 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: main
+      ref: "9356336a6666eefc775a6f13bb18e4bacac28c13"
       resolved-ref: "9356336a6666eefc775a6f13bb18e4bacac28c13"
       url: "https://github.com/ZenKitX/FeedbackKit.git"
     source: git
@@ -262,7 +262,7 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: main
+      ref: "01dd2415626955e668619265126180702b2d0b57"
       resolved-ref: "01dd2415626955e668619265126180702b2d0b57"
       url: "https://github.com/ZenKitX/HistoryKit.git"
     source: git
@@ -375,10 +375,10 @@ packages:
     dependency: transitive
     description:
       name: matcher
-      sha256: dc0b7dc7651697ea4ff3e69ef44b0407ea32c487a39fff6a4004fa585e901861
+      sha256: "31bd099b47c10cd1aeb55146a2d46ce0277630ecef3f7dae54ad7873f36696cd"
       url: "https://pub.dev"
     source: hosted
-    version: "0.12.19"
+    version: "0.12.20"
   material_color_utilities:
     dependency: transitive
     description:
@@ -391,10 +391,10 @@ packages:
     dependency: transitive
     description:
       name: meta
-      sha256: "1741988757a65eb6b36abe716829688cf01910bbf91c34354ff7ec1c3de2b349"
+      sha256: "307249ce4ff29d58a18e97f6345f539382eb9c9c29ecda628900f31de0443dd9"
       url: "https://pub.dev"
     source: hosted
-    version: "1.18.0"
+    version: "1.19.0"
   objective_c:
     dependency: transitive
     description:
@@ -628,10 +628,10 @@ packages:
     dependency: transitive
     description:
       name: test_api
-      sha256: "949a932224383300f01be9221c39180316445ecb8e7547f70a41a35bf421fb9e"
+      sha256: "2a122cbe059f8b610d3a5415f42e255b6c17b1f21eee1d960f31080237fb4f11"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.11"
+    version: "0.7.12"
   typed_data:
     dependency: transitive
     description:
@@ -652,10 +652,10 @@ packages:
     dependency: transitive
     description:
       name: vector_math
-      sha256: d530bd74fea330e6e364cda7a85019c434070188383e1cd8d9777ee586914c5b
+      sha256: f36f9f3be64c6198714492bb455c11056e33e2f85d9a0b676a48301e44fdcf47
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.0"
+    version: "2.4.2"
   vibration:
     dependency: transitive
     description:
@@ -732,7 +732,7 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: main
+      ref: "05b664f80b4f76266346203333481afb1fc32747"
       resolved-ref: "05b664f80b4f76266346203333481afb1fc32747"
       url: "https://github.com/ZenKitX/ZenQuoteKit.git"
     source: git
@@ -741,7 +741,7 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: main
+      ref: "1eb7dc3e2da8a4ac98038637188321bd5005bcf3"
       resolved-ref: "1eb7dc3e2da8a4ac98038637188321bd5005bcf3"
       url: "https://github.com/ZenKitX/ZenThemeKit.git"
     source: git
@@ -750,7 +750,7 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: main
+      ref: "6a6718c9be80c4af0c1234fa741b35c281a2b321"
       resolved-ref: "6a6718c9be80c4af0c1234fa741b35c281a2b321"
       url: "https://github.com/ZenKitX/ZenUIKit.git"
     source: git

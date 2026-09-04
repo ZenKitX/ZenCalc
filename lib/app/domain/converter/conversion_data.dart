@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../models/conversion_category.dart';
-import '../models/conversion_unit.dart';
+import 'conversion_category.dart';
+import 'conversion_unit.dart';
 
 /// 换算数据定义
 class ConversionData {

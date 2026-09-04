@@ -3,6 +3,7 @@ import 'package:zen_calc/app/config/theme/app_theme.dart';
 import 'package:zen_calc/app/data/models/calculation_history.dart';
 import 'package:zen_calc/app/services/calculation_history_service.dart';
 import 'package:feedback_kit/feedback_kit.dart';
+import 'history_time_formatter.dart';
 
 class HistoryScreen extends StatefulWidget {
   final Function(String) onSelectHistory;
@@ -327,7 +328,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             children: [
               // 表达式
               Text(
-                item.displayExpression,
+                item.expression,
                 style: TextStyle(
                   fontSize: 16,
                   color: isDark
@@ -342,7 +343,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '= ${item.displayResult}',
+                    '= ${item.result}',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
@@ -350,7 +351,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     ),
                   ),
                   Text(
-                    item.formattedTime,
+                    formatHistoryTime(item.timestamp),
                     style: TextStyle(
                       fontSize: 12,
                       color: isDark

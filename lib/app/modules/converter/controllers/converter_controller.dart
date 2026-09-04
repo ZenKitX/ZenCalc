@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import '../models/conversion_category.dart';
-import '../models/conversion_unit.dart';
-import '../utils/conversion_logic.dart';
+import 'package:zen_calc/app/domain/converter/conversion_category.dart';
+import 'package:zen_calc/app/domain/converter/conversion_logic.dart';
+import 'package:zen_calc/app/domain/converter/conversion_unit.dart';
 
 class ConverterController extends GetxController {
   // 当前选择的类别

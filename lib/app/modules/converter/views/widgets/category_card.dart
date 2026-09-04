@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../models/conversion_category.dart';
+import 'package:zen_calc/app/domain/converter/conversion_category.dart';
 
 /// 类别卡片组件
 class CategoryCard extends StatefulWidget {

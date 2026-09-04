@@ -1,17 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/converter_controller.dart';
-import '../utils/conversion_data.dart';
+import 'package:zen_calc/app/domain/converter/conversion_data.dart';
 import 'widgets/category_card.dart';
 import 'conversion_detail_view.dart';
 
 /// 单位换算主视图（类别选择）
-class ConverterView extends StatelessWidget {
+///
+/// Controller 生命周期与该视图绑定：进入时注册、退出时销毁，
+/// 避免全局残留（等效于路由 Binding 的行为，因其为 Navigator.push 页面）。
+class ConverterView extends StatefulWidget {
   const ConverterView({super.key});
 
   @override
+  State<ConverterView> createState() => _ConverterViewState();
+}
+
+class _ConverterViewState extends State<ConverterView> {
+  late final ConverterController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = Get.put(ConverterController());
+  }
+
+  @override
+  void dispose() {
+    Get.delete<ConverterController>();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ConverterController());
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Obx(() {

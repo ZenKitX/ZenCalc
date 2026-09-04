@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zen_calc/app/modules/converter/utils/conversion_data.dart';
+import 'package:zen_calc/app/domain/converter/conversion_data.dart';
 
 void main() {
   group('ConversionData 完整性测试', () {

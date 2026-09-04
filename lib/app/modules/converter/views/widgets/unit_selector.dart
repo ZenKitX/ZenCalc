@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../models/conversion_unit.dart';
+import 'package:zen_calc/app/domain/converter/conversion_unit.dart';
 
 /// 单位选择器组件
 class UnitSelector extends StatelessWidget {
