@@ -47,11 +47,8 @@ dependencies:
       url: https://github.com/ZenKitX/ArithmeticKit.git
       ref: main
   
-  # ConversionKit - 单位换算逻辑
-  conversion_kit:
-    git:
-      url: https://github.com/ZenKitX/ConversionKit.git
-      ref: main
+  # 注：单位换算由 lib/app/modules/converter/ 本地实现（决策见 docs/INTEGRATION_STATUS.md），
+  # 不再依赖 ConversionKit
   
   # ZenUIKit - UI 组件库
   zen_ui_kit:

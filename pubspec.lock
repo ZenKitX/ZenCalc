@@ -146,15 +146,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.19.1"
-  conversion_kit:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: main
-      resolved-ref: "0457540366e10df73eacf8795ed63c7652c1488c"
-      url: "https://github.com/ZenKitX/ConversionKit.git"
-    source: git
-    version: "0.2.0"
   crypto:
     dependency: transitive
     description:
